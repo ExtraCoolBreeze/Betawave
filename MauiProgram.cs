@@ -1,5 +1,6 @@
 ﻿using Betawave;
 using Microsoft.Extensions.Logging;
+using CommunityToolkit.Maui;
 
 namespace Betawave
 {
@@ -10,10 +11,11 @@ namespace Betawave
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("Roboto-Regular.ttf", "RobotoRegular");
+                    fonts.AddFont("Roboto-Bold.ttf", "RobotoBold");
                 });
 
 #if DEBUG

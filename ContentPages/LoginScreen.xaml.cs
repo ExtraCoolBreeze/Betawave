@@ -4,7 +4,6 @@ namespace Betawave;
 
 public partial class LoginScreen : ContentPage
 {
-    private Account account = new Account(); // Instantiate Account to access its Login method
     private DatabaseAccess dbAccess = new DatabaseAccess(); // Assuming DatabaseAccess is needed for account operations
 
     public LoginScreen()
