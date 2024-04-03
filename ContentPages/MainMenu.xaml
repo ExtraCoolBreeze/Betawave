@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BetaWaveMultiplatform.MainMenu"
+             BackgroundColor="#151417"
+             Padding="0"
+             >
+
+    <Grid RowDefinitions="9*, 1*" ColumnDefinitions="2*, 8*">
+
+        <!-- Left side VerticalStackLayout -->
+        <Frame Grid.Row="0" Grid.Column="0" CornerRadius="15" Margin="5" Padding= "2" BackgroundColor="#27232E" BorderColor="#27232E">
+            <ScrollView>
+                <VerticalStackLayout  Margin="2" BackgroundColor="#27232E">
+                    <!-- Your existing VerticalStackLayout content -->
+                    <Label Text="Test test test" FontSize="20" TextColor="Red" Margin="5" VerticalOptions="Start" HorizontalOptions="Center"/>
+                    <Entry Placeholder="type your password" Margin="5" Background="#ffffff"/>
+                    <Button Text="Create Playlist" FontSize="20" Margin="5" x:Name="MMCreatePlaylistButton" Clicked="MMCreatePlaylistButton_Clicked"/>
+                    <Button Text="My Playlists" FontSize="20" Margin="5" x:Name="MMmyPlaylistsButton" Clicked="MMmyPlaylistsButton_Clicked"/>
+                    <Button Text="Favourites" FontSize="20" Margin="5" x:Name="MMFavouritesButton" Clicked="MMFavouritesButton_Clicked"/>
+                    <Button Text="Play Queue" FontSize="20" Margin="5" x:Name="MMPlayQueueButton" Clicked="MMPlayQueueButton_Clicked"/>
+                    <Button Text="Logout" FontSize="20" Margin="5" VerticalOptions="End" x:Name="MMLogoutButton" Clicked="MMLogoutButton_Clicked"/>
+                </VerticalStackLayout>
+            </ScrollView>
+        </Frame>
+
+        <!-- Main content Grid -->
+        <Grid Grid.Row="0" Grid.Column="1" Margin="5" Padding="5">
+            <!-- Place the main content here -->
+            <Frame Grid.Row="0" Grid.Column="0" CornerRadius="15" Margin="5" Padding= "2" BackgroundColor="#27232E" BorderColor="#27232E">
+                <ScrollView Orientation="Vertical">
+                    <FlexLayout Wrap="Wrap" Direction="Row" AlignItems="Center"  AlignContent="SpaceEvenly" JustifyContent="SpaceEvenly" Padding="10" Margin="10">
+
+                        <Frame WidthRequest="200" HeightRequest="200" Margin="25">
+                            <Button Margin="2" Text="Do-Nothing Button" />
+                        </Frame>
+
+                        <Frame WidthRequest="200" HeightRequest="200" Margin="25">
+                            <Button Margin="2" Text="Do-Nothing Button" />
+                        </Frame>
+
+                        <Frame WidthRequest="200" HeightRequest="200" Margin="25">
+                            <Button Margin="2" Text="Do-Nothing Button" />
+                        </Frame>
+
+                        <Frame WidthRequest="200" HeightRequest="200" Margin="25">
+                            <Button Margin="2" Text="Do-Nothing Button" />
+                        </Frame>
+
+                        <Frame WidthRequest="200" HeightRequest="200" Margin="25">
+                            <Button  Margin="2" Text="Do-Nothing Button" />
+                        </Frame>
+
+                        <Frame WidthRequest="200" HeightRequest="200" Margin="25">
+                            <Button Margin="2" Text="Do-Nothing Button" />
+
+                        </Frame>
+
+                        <Frame WidthRequest="200" HeightRequest="200" Margin="25">
+                            <Button Margin="2" Text="Do-Nothing Button" />
+                        </Frame>
+
+                        <Frame WidthRequest="200" HeightRequest="200" Margin="25">
+                            <Button Margin="2" Text="Do-Nothing Button" />
+                        </Frame>
+
+                        <Frame WidthRequest="200" HeightRequest="200" Margin="25">
+                            <Button Margin="2" Text="Do-Nothing Button" />
+                        </Frame>
+
+                        <Frame WidthRequest="200" HeightRequest="200" Margin="25">
+                            <Button Margin="2" Text="Do-Nothing Button" />
+                        </Frame>
+
+                        <Frame WidthRequest="200" HeightRequest="200" Margin="25">
+                            <Button Margin="2" Text="Do-Nothing Button" />
+                        </Frame>
+
+                    </FlexLayout>
+                </ScrollView>
+            </Frame>
+        </Grid>
+
+        <Frame Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" CornerRadius="15" Margin="4" Padding="1" BackgroundColor="#27232E" BorderColor="#27232E">
+            <StackLayout>
+                <Grid RowDefinitions="Auto" ColumnDefinitions="*, *, *, *">
+                    <!-- Elements in the first grid -->
+                    <Button Text="Test1" FontSize="15" Margin="2" HorizontalOptions="Center" VerticalOptions="Center" />
+                    <Button Text="Test2" FontSize="15" Margin="2" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="1"/>
+                    <Label Text="Track name" TextColor="White" Margin="2" HorizontalOptions="Center" Grid.Column="2"/>
+                </Grid>
+
+                <Grid RowDefinitions="Auto" ColumnDefinitions="*, *, *, *">
+                    <!-- Elements in the second grid -->
+                    <HorizontalStackLayout Grid.Column="0" MaximumWidthRequest="400" MaximumHeightRequest="20">
+                        <Image Source="volume_up.png" Scale="2" Margin="4" MaximumHeightRequest="25" MaximumWidthRequest="25"/>
+                        <Slider Margin="2" Minimum="0" Maximum="100" Value="50" MaximumWidthRequest="200" VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+
+                    <Button Text="Second 1" FontSize="15" Margin="2" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="1"/>
+                    <Button Text="Second 2" FontSize="15" Margin="2" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="2"/>
+                    <Label Text="Track Artist" TextColor="White" Margin="2" HorizontalOptions="Center" Grid.Column="3"/>
+                </Grid>
+            </StackLayout>
+        </Frame>
+    </Grid>
+</ContentPage>

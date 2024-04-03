@@ -1,0 +1,205 @@
+        <Grid Grid.Column="1" ColumnDefinitions="*, *, *, *, *" RowDefinitions="Auto, Auto, Auto"> -->
+            <!-- Add your content for the 5-column layout here, specifying Grid.Column and Grid.Row for each element -->
+            <!-- Example content for the first row -->
+            <Label Grid.Column="0" Grid.Row="0" Text="Column 1 Row 1" Background="#ffffff"/>
+            <Label Grid.Column="1" Grid.Row="0" Text="Column 2 Row 1" Background="#ffffff"/> 
+            <Label Grid.Column="2" Grid.Row="0" Text="Column 3 Row 1" Background="#ffffff"/> 
+            <Label Grid.Column="3" Grid.Row="0" Text="Column 4 Row 1" Background="#ffffff"/> 
+            <Label Grid.Column="4" Grid.Row="0" Text="Column 5 Row 1" Background="#ffffff"/> 
+            <!-- Add more rows as needed -->
+        </Grid>
+
+<!--
+
+    using System;
+    using MySql.Data.MySqlClient;
+    using System;
+    using System.Data.SqlClient;
+    using System.Text;
+
+
+    namespace BetaWaveMultiplatform.Classes
+    {
+    public class DatabaseAccess
+    {
+    private string MySqlConnectionString;
+
+    public DatabaseAccess()
+    {
+    MySqlConnectionString = "server=localhost;userid=root;password=;database=betawave";
+    }
+
+    public MySqlConnection ConnectToMySql(string connectionString = null)
+    {
+    string connStr = connectionString ?? MySqlConnectionString;
+    MySqlConnection mySqlConnection = new MySqlConnection(connStr);
+    try
+    {
+    mySqlConnection.Open();
+    Console.WriteLine("Connected successfully.");
+    return mySqlConnection;
+    }
+    catch (Exception e)
+    {
+    Console.WriteLine($"Connection error: {e.Message}");
+    mySqlConnection?.Dispose();
+    throw;
+    }
+    }
+
+    public bool CheckUserExists(string username)
+    {
+    if (string.IsNullOrWhiteSpace(username))
+    {
+    throw new ArgumentException("Username cannot be null or empty.", nameof(username));
+    }
+
+    using (var connection = ConnectToMySql())
+    {
+    using (var cmd = new MySqlCommand($"SELECT COUNT(*) FROM mysql.user WHERE user = '{username}'", connection))
+    {
+    int userCount = Convert.ToInt32(cmd.ExecuteScalar());
+    return userCount > 0;
+    }
+    }
+    }
+
+    public void CreateUser(string username, string password)
+    {
+    // if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+    // {
+    //     throw new ArgumentException("Username and password cannot be null or empty.");
+    //}
+
+    // Hash the password
+    string hashedPassword = HashPassword(password);
+
+    using (var connection = ConnectToMySql())
+    {
+    connection.Open();
+
+    // Use parameterized query to prevent SQL injection
+    string query = "INSERT INTO account (username, userpassword) VALUES (@Username, @UserPassword);";
+    using (var cmd = new MySqlCommand(query, connection))
+    {
+    cmd.Parameters.AddWithValue("@Username", username);
+    cmd.Parameters.AddWithValue("@UserPassword", hashedPassword);
+    cmd.ExecuteNonQuery();
+    }
+
+    Console.WriteLine("New user created in the account table.");
+    }
+    }
+
+    public bool ValidateUser(string username, string password)
+    {
+    int invalidUser = 0;
+    if (string.IsNullOrWhiteSpace(username))
+    {
+    return invalidUser > 0;
+    }
+
+    using (var connection = ConnectToMySql())
+    {
+    using (var cmd = new MySqlCommand($"SELECT COUNT(*) FROM users WHERE username = @Username AND password = @Password", connection))
+    {
+    cmd.Parameters.AddWithValue("@Username", username);
+    cmd.Parameters.AddWithValue("@Password", password); // Consider storing hashed passwords instead of plain text
+
+    int userCount = Convert.ToInt32(cmd.ExecuteScalar());
+    return userCount > 0;
+    }
+    }
+    }
+
+
+
+    public string Get_connection()
+    {
+    return MySqlConnectionString;
+    }
+
+    // create a function specifically for an list or array to get albums and sort them appropriately
+    public void Query(string userinputQuery)
+    {
+    if (Get_connection() != null)
+    {
+    MySqlCommand command = new MySqlCommand(userinputQuery);
+
+    using (MySqlDataReader reader = command.ExecuteReader())
+    {
+    while (reader.Read())
+    {
+    // Read data into a variable and print the results of the query
+    string result = reader[0].ToString(); // Adjust based on your query
+    // if using a lot store, not just print.
+    }
+    }
+    }
+    }
+
+    public void AddData(string userInput)
+    {
+    if (Get_connection() != null)
+    {
+    string sqlAddQuery = ""; // Generate SQL query from user input to add data
+
+    MySqlCommand command = new MySqlCommand(sqlAddQuery);
+    int result = command.ExecuteNonQuery();
+
+    if (result > 0)
+    {
+    Console.WriteLine("Data added successfully");
+    }
+    else
+    {
+    Console.WriteLine("Failed to add data");
+    }
+    }
+    }
+
+    public void DeleteData(string userInput)
+    {
+    if (Get_connection() != null)
+    {
+    string sqlDeleteQuery = ""; // Generate SQL query from user input to delete data
+
+    MySqlCommand command = new MySqlCommand(sqlDeleteQuery);
+    int result = command.ExecuteNonQuery();
+
+    if (result > 0)
+    {
+    Console.WriteLine("Data deleted successfully");
+    }
+    else
+    {
+    Console.WriteLine("Failed to delete data");
+    }
+    }
+    }
+
+    public void Print_Connection_Details()
+    {
+    if (Get_connection() != null)
+    {
+    Console.WriteLine(Get_connection());
+    }
+    }
+
+    private string HashPassword(string password)
+    {
+    // This is a simple hash for demonstration. Use a more secure hashing algorithm like BCrypt or Argon2 in production.
+    using (SHA256 sha256Hash = SHA256.Create())
+    {
+    byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
+    StringBuilder builder = new StringBuilder();
+    for (int i = 0; i < bytes.Length; i++)
+                    {
+                        builder.Append(bytes[i].ToString("x2"));
+                    }
+                    return builder.ToString();
+                }
+            }
+        }
+    }
+ -->

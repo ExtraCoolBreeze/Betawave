@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Betawave.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Betawave"
+    Shell.FlyoutBehavior="Disabled"
+    Title="Betawave">
+
+
+    <ShellContent
+        Title="Login Screen"
+        ContentTemplate="{DataTemplate local:LoginScreen}"
+        Route="LoginScreen" />
+
+    <ShellContent
+        Title="Main Menu"
+        ContentTemplate="{DataTemplate local:MainMenu}"
+        Route="MainMenu" />
+
+    <ShellContent
+        Title="Create Account"
+        ContentTemplate="{DataTemplate local:CreateAccount}"
+        Route="CreateAccount" />
+
+    <ShellContent
+        Title="Create Playlist"
+        ContentTemplate="{DataTemplate local:CreatePlaylist}"
+        Route="CreatePlaylist" />
+
+    <ShellContent
+        Title="Add to Playlist"
+        ContentTemplate="{DataTemplate local:AddToPlaylist}"
+        Route="AddToPlaylist" />
+
+    <ShellContent
+        Title="My Playlists"
+        ContentTemplate="{DataTemplate local:MyPlaylists}"
+        Route="MyPlaylists" />
+
+    <ShellContent
+        Title="Playlist View"
+        ContentTemplate="{DataTemplate local:PlaylistView}"
+        Route="PlaylistView" />
+
+    <ShellContent
+        Title="Favourites View"
+        ContentTemplate="{DataTemplate local:FavouritesView}"
+        Route="FavouritesView" />
+
+    <ShellContent
+        Title="Play Queue"
+        ContentTemplate="{DataTemplate local:PlayQueue}"
+        Route="PlayQueue" />
+
+    <ShellContent
+        Title="Album View"
+        ContentTemplate="{DataTemplate local:AlbumView}"
+        Route="AlbumView" />
+
+    <ShellContent
+        Title="Admin Dashboard"
+        ContentTemplate="{DataTemplate local:AdminDashboard}"
+        Route="AdminDashboard" />
+
+    <ShellContent
+        Title="Add Media"
+        ContentTemplate="{DataTemplate local:AddMediaScreen}"
+        Route="AddMediaScreen" />
+
+</Shell>
