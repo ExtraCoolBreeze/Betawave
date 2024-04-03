@@ -1,10 +1,9 @@
-namespace BetaWaveMultiplatform
+namespace Betawave;
+
+public partial class AddToPlaylist : ContentPage
 {
-    public partial class AddToPlaylist : ContentPage
+    public AddToPlaylist()
     {
-        public AddToPlaylist()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

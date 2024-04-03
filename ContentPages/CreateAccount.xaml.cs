@@ -1,8 +1,6 @@
-using BetaWaveMultiplatform.Classes;
-using Microsoft.Identity.Client;
-using System;
+using Betawave.Classes;
 
-namespace BetaWaveMultiplatform;
+namespace Betawave;
 
 public partial class CreateAccount : ContentPage
 {

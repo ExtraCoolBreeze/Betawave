@@ -1,4 +1,4 @@
-namespace BetaWaveMultiplatform;
+namespace Betawave;
 
 public partial class MainMenu : ContentPage
 {

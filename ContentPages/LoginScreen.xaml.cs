@@ -1,6 +1,6 @@
-using BetaWaveMultiplatform.Classes; // Ensure this using directive is added to access the Account and DatabaseAccess classes
+using Betawave.Classes; // Ensure this using directive is added to access the Account and DatabaseAccess classes
 
-namespace BetaWaveMultiplatform;
+namespace Betawave;
 
 public partial class LoginScreen : ContentPage
 {
@@ -17,11 +17,17 @@ public partial class LoginScreen : ContentPage
         string enteredUsername = usernameEntry.Text;
         string enteredPassword = passwordEntry.Text;
 
-        // Directly attempt login with the entered credentials
-        if (!dbAccess.ValidateUser(enteredUsername, enteredPassword))
+        // Check if the username or password fields are empty or contain only whitespace
+        if (string.IsNullOrWhiteSpace(enteredUsername) || string.IsNullOrWhiteSpace(enteredPassword))
         {
-            // Logic to determine the navigation based on user role should ideally be here,
-            // possibly by extending the ValidateUser method to return more information about the user.
+            // Inform the user that both fields are required
+            await DisplayAlert("Error", "Both username and password are required.", "OK");
+            return; // Exit the method early if validation fails
+        }
+
+        // Proceed with the login attempt if validation passes
+        if (dbAccess.ValidateUser(enteredUsername, enteredPassword))
+        {
             await Shell.Current.GoToAsync("///MainMenu"); // Adjust navigation as needed
         }
         else
@@ -30,6 +36,7 @@ public partial class LoginScreen : ContentPage
             await DisplayAlert("Error", "Username or password incorrect.", "OK");
         }
     }
+
 
 
     async void CreateAccountButton_Clicked(object sender, EventArgs e)

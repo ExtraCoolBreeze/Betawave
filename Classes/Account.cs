@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BetaWaveMultiplatform.Classes
+namespace Betawave.Classes
 {
     using System;
 

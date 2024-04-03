@@ -2,7 +2,7 @@
 using System.Text;
 using System.Security.Cryptography;
 
-namespace BetaWaveMultiplatform.Classes
+namespace Betawave.Classes
 {
     public class DatabaseAccess
     {
@@ -57,30 +57,22 @@ namespace BetaWaveMultiplatform.Classes
 
             string hashedPassword = HashPassword(password);
 
-            using (var connection = new MySqlConnection(MySqlConnectionString))
+            // Use ConnectToMySql method to establish the connection
+            using (var connection = ConnectToMySql())
             {
-                try
+                // Use a parameterized query to prevent SQL injection
+                string query = "SELECT COUNT(*) FROM account WHERE username = @Username AND userpassword = @UserPassword";
+                using (var cmd = new MySqlCommand(query, connection))
                 {
-                    connection.Open();
+                    cmd.Parameters.AddWithValue("@Username", username);
+                    cmd.Parameters.AddWithValue("@UserPassword", hashedPassword);
 
-                    // Use a parameterized query to prevent SQL injection
-                    string query = "SELECT COUNT(*) FROM account WHERE username = @Username AND userpassword = @UserPassword";
-                    using (var cmd = new MySqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@Username", username);
-                        cmd.Parameters.AddWithValue("@UserPassword", hashedPassword);
-
-                        int userCount = Convert.ToInt32(cmd.ExecuteScalar());
-                        return userCount > 0;
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"An error occurred: {e.Message}");
-                    return false;
+                    int userCount = Convert.ToInt32(cmd.ExecuteScalar());
+                    return userCount > 0;
                 }
             }
         }
+
 
         private string HashPassword(string password)
         {

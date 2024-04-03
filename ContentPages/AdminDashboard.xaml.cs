@@ -1,10 +1,10 @@
-namespace BetaWaveMultiplatform;
+namespace Betawave;
 
 public partial class AdminDashboard : ContentPage
 {
 	public AdminDashboard()
 	{
-		InitializeComponent();
+        InitializeComponent();
 	}
 
     async void ADDashboardButton_Clicked(object sender, EventArgs e)

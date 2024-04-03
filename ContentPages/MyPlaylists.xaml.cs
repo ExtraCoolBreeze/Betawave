@@ -1,11 +1,11 @@
-namespace BetaWaveMultiplatform;
+namespace Betawave;
 
 public partial class MyPlaylists : ContentPage
 {
-	public MyPlaylists()
-	{
-		InitializeComponent();
-	}
+    public MyPlaylists()
+    {
+        InitializeComponent();
+    }
 
 
     async void MPCreatePlaylistButton_Clicked(object sender, EventArgs e)
@@ -27,8 +27,8 @@ public partial class MyPlaylists : ContentPage
     {
         await Shell.Current.GoToAsync("///PlayQueue");
     }
-	async void MPBackButton_Clicked(object sender, EventArgs e)
-	{
-		await Shell.Current.GoToAsync("///MainMenu");
-	}
+    async void MPBackButton_Clicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("///MainMenu");
+    }
 }

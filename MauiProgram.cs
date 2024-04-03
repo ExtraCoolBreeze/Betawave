@@ -1,4 +1,4 @@
-﻿using BetaWaveMultiplatform;
+﻿using Betawave;
 using Microsoft.Extensions.Logging;
 
 namespace Betawave

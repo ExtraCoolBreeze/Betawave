@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.SqlClient;
 
-namespace BetaWaveMultiplatform.Classes
+namespace Betawave.Classes
 {
-    using System;
-    using System.Collections.Generic;
-    using Microsoft.Data.SqlClient;
-
     namespace BetaWaveMultiplatform.Classes
     {
         public interface IDatabaseAccess
