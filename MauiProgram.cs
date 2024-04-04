@@ -1,6 +1,7 @@
 ﻿using Betawave;
 using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui;
+using LibVLCSharp.Shared;
 
 namespace Betawave
 {
@@ -8,10 +9,15 @@ namespace Betawave
     {
         public static MauiApp CreateMauiApp()
         {
+            Core.Initialize();
+
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
+                .UseMauiCommunityToolkitMediaElement()
+                
+
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("Roboto-Regular.ttf", "RobotoRegular");

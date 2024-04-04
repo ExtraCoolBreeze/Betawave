@@ -2,13 +2,14 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:compat="clr-namespace:Microsoft.Maui.Controls.Compatibility;assembly=Microsoft.Maui.Controls.Compatibility"
+          
              x:Class="Betawave.MainMenu"
              BackgroundColor="#151417"
              Padding="0"
              >
 
     <Grid RowDefinitions="9*, 1*" ColumnDefinitions="2*, 8*">
-
         <!-- Left side VerticalStackLayout -->
         <Frame Grid.Row="0" Grid.Column="0" CornerRadius="15" Margin="5" Padding= "2" BackgroundColor="#27232E" BorderColor="#27232E">
             <ScrollView>
@@ -94,8 +95,9 @@
                 <Grid RowDefinitions="Auto" ColumnDefinitions="*, *, *, *">
                     <!-- Elements in the second grid -->
                     <HorizontalStackLayout Grid.Column="0" MaximumWidthRequest="400" MaximumHeightRequest="20">
+                        <Image Source="volume_down.png" Scale="2" Margin="4" MaximumHeightRequest="25" MaximumWidthRequest="25"/>
+                        <Slider x:Name="volumeSlider" Margin="2" Minimum="0" Maximum="1" Value="0.5" ValueChanged="OnVolumeSliderValueChanged" MaximumWidthRequest="200" VerticalOptions="Center"/>
                         <Image Source="volume_up.png" Scale="2" Margin="4" MaximumHeightRequest="25" MaximumWidthRequest="25"/>
-                        <Slider Margin="2" Minimum="0" Maximum="100" Value="50" MaximumWidthRequest="200" VerticalOptions="Center"/>
                     </HorizontalStackLayout>
 
                     <Button Text="Second 1" FontSize="15" Margin="2" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="1"/>

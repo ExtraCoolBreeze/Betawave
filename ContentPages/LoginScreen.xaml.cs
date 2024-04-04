@@ -4,7 +4,7 @@ namespace Betawave;
 
 public partial class LoginScreen : ContentPage
 {
-    private DatabaseAccess dbAccess = new DatabaseAccess(); // Assuming DatabaseAccess is needed for account operations
+    private readonly DatabaseAccess dbAccess = new DatabaseAccess(); // Assuming DatabaseAccess is needed for account operations
 
     public LoginScreen()
     {
