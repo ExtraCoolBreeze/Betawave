@@ -1,7 +1,8 @@
 ﻿using Betawave;
 using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui;
-using LibVLCSharp.Shared;
+//using LibVLCSharp.Shared;
+
 
 namespace Betawave
 {
@@ -9,7 +10,7 @@ namespace Betawave
     {
         public static MauiApp CreateMauiApp()
         {
-            Core.Initialize();
+            //Core.Initialize();
 
             var builder = MauiApp.CreateBuilder();
             builder
