@@ -9,14 +9,14 @@
              Padding="0"
              >
 
-    <Grid RowDefinitions="9*, 1*" ColumnDefinitions="2*, 8*">
+    <Grid RowDefinitions="9*, 1.5*" ColumnDefinitions="2*, 8*" Margin="2">
         <!-- Left side VerticalStackLayout -->
-        <Frame Grid.Row="0" Grid.Column="0" CornerRadius="15" Margin="5" Padding= "2" BackgroundColor="#27232E" BorderColor="#27232E">
+        <Frame Grid.Row="0" Grid.Column="0" CornerRadius="15" Margin="5" BackgroundColor="#27232E" BorderColor="#27232E">
             <ScrollView>
-                <VerticalStackLayout  Margin="2" BackgroundColor="#27232E">
+                <VerticalStackLayout  Margin="9" BackgroundColor="#27232E">
                     <!-- Your existing VerticalStackLayout content -->
                     <Label Text="Test test test" FontSize="20" TextColor="Red" Margin="5" VerticalOptions="Start" HorizontalOptions="Center"/>
-                    <Entry Placeholder="type your password" Margin="5" Background="#ffffff"/>
+                    <Entry Placeholder="Search" Margin="5" Background="#ffffff"/>
                     <Button Text="Create Playlist" FontSize="20" Margin="5" x:Name="MMCreatePlaylistButton" Clicked="MMCreatePlaylistButton_Clicked"/>
                     <Button Text="My Playlists" FontSize="20" Margin="5" x:Name="MMmyPlaylistsButton" Clicked="MMmyPlaylistsButton_Clicked"/>
                     <Button Text="Favourites" FontSize="20" Margin="5" x:Name="MMFavouritesButton" Clicked="MMFavouritesButton_Clicked"/>
@@ -27,7 +27,7 @@
         </Frame>
 
         <!-- Main content Grid -->
-        <Grid Grid.Row="0" Grid.Column="1" Margin="5" Padding="5">
+        <Grid Grid.Row="0" Grid.Column="1" Margin="2" Padding="1">
             <!-- Place the main content here -->
             <Frame Grid.Row="0" Grid.Column="0" CornerRadius="15" Margin="5" Padding= "2" BackgroundColor="#27232E" BorderColor="#27232E">
                 <ScrollView Orientation="Vertical">
@@ -83,28 +83,31 @@
             </Frame>
         </Grid>
 
-        <Frame Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" CornerRadius="15" Margin="4" Padding="1" BackgroundColor="#27232E" BorderColor="#27232E">
-            <StackLayout>
-                <Grid RowDefinitions="Auto" ColumnDefinitions="*, *, *, *">
-                    <!-- Elements in the first grid -->
-                    <Button Text="Test1" FontSize="15" Margin="2" HorizontalOptions="Center" VerticalOptions="Center" />
-                    <Button Text="Test2" FontSize="15" Margin="2" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="1"/>
-                    <Label Text="Track name" TextColor="White" Margin="2" HorizontalOptions="Center" Grid.Column="2"/>
-                </Grid>
+            <!-- This is the bottom layout grid-->
+        <Frame Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" CornerRadius="15" Margin="0" Padding="1" BackgroundColor="#27232E" BorderColor="#27232E">
+            <Grid RowDefinitions="*,*" Padding="0" ColumnDefinitions="*, *, *, *, *, *, *, *, *, *, *">
+                
+                <!-- First Row Elements -->
+                <ImageButton Source="favorite.png" x:Name="Favourite" Scale="0.5" Margin="0" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="2" BackgroundColor="#27232E" />
+                <ImageButton Source="repeat.png"  Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="3" BackgroundColor="#27232E" />
+                <ImageButton Source="backward.png" Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="4" BackgroundColor="#27232E" />
+                <ImageButton Source="play.png" x:Name="Play" Scale="0.5"  Grid.Column="5" BackgroundColor="#27232E"/>
+                <ImageButton Source="forward.png"  Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="6" BackgroundColor="#27232E"/>
+                <ImageButton Source="shuffle.png"  Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="7" BackgroundColor="#27232E" />
+                <ImageButton Source="add.png"  Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="8" BackgroundColor="#27232E" />
+                <Label Text="This is the track name" TextColor="White" Margin="0" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="9"/>
+                <Image Source="volume_up.png" Scale="0.1" Grid.Column="10" Grid.RowSpan="2" VerticalOptions="CenterAndExpand"/>
 
-                <Grid RowDefinitions="Auto" ColumnDefinitions="*, *, *, *">
-                    <!-- Elements in the second grid -->
-                    <HorizontalStackLayout Grid.Column="0" MaximumWidthRequest="400" MaximumHeightRequest="20">
-                        <Image Source="volume_down.png" Scale="2" Margin="4" MaximumHeightRequest="25" MaximumWidthRequest="25"/>
-                        <Slider x:Name="volumeSlider" Margin="2" Minimum="0" Maximum="1" Value="0.5" ValueChanged="OnVolumeSliderValueChanged" MaximumWidthRequest="200" VerticalOptions="Center"/>
-                        <Image Source="volume_up.png" Scale="2" Margin="4" MaximumHeightRequest="25" MaximumWidthRequest="25"/>
-                    </HorizontalStackLayout>
-
-                    <Button Text="Second 1" FontSize="15" Margin="2" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="1"/>
-                    <Button Text="Second 2" FontSize="15" Margin="2" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="2"/>
-                    <Label Text="Track Artist" TextColor="White" Margin="2" HorizontalOptions="Center" Grid.Column="3"/>
-                </Grid>
-            </StackLayout>
+                <!-- Second Row Elements -->
+                <Image Source="volume.png" Scale="0.7" Grid.Column="0" Grid.Row="1" />
+                <Slider x:Name="volumeSlider" Margin="0" Minimum="0" Maximum="1" Value="0.5" ValueChanged="OnVolumeSliderValueChanged" MaximumWidthRequest="200" VerticalOptions="Center" Grid.Column="1" Grid.Row="1"/>
+                <Label Text="0:00" Margin="0" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="3" Grid.Row="1" TextColor="White" />
+                <Slider x:Name="x" Margin="2" Minimum="0" Maximum="0" Value="0.5" ValueChanged="OnVolumeSliderValueChanged" MaximumWidthRequest="400" VerticalOptions="Center" Grid.Column="4" Grid.ColumnSpan="3" Grid.Row="1"/>
+                <Label Text="4:70" Margin="2" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="7" Grid.Row="1" TextColor="White"/>
+                <Label Text="This is the track artist" TextColor="White" Margin="0" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="9" Grid.Row="1"/>
+                <Image Source="question.png" Scale="1" Grid.Column="10" Grid.Row="0" Grid.RowSpan="2" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+            </Grid>
         </Frame>
+
     </Grid>
 </ContentPage>
