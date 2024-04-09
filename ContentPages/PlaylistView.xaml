@@ -120,27 +120,28 @@
             </Frame>
         </Grid>
 
-        <Frame Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" CornerRadius="15" Margin="4" Padding="1" BackgroundColor="#27232E" BorderColor="#27232E">
-            <StackLayout>
-                <Grid RowDefinitions="Auto" ColumnDefinitions="*, *, *, *">
-                    <!-- Elements in the first grid -->
-                    <Button Text="Test1" FontSize="15" Margin="2" HorizontalOptions="Center" VerticalOptions="Center" />
-                    <Button Text="Test2" FontSize="15" Margin="2" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="1"/>
-                    <Label Text="Track name" TextColor="White" Margin="2" HorizontalOptions="Center" Grid.Column="2"/>
-                </Grid>
+        <Frame Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" CornerRadius="15" Margin="0" Padding="1" BackgroundColor="#27232E" BorderColor="#27232E">
+            <Grid RowDefinitions="*,*" Padding="0" ColumnDefinitions="*, *, *, *, *, *, *, *, *, *, *">
 
-                <Grid RowDefinitions="Auto" ColumnDefinitions="*, *, *, *">
-                    <!-- Elements in the second grid -->
-                    <HorizontalStackLayout Grid.Column="0" MaximumWidthRequest="400" MaximumHeightRequest="20">
-                        <Image Source="volume_up.png" Scale="2" Margin="4" MaximumHeightRequest="25" MaximumWidthRequest="25"/>
-                        <Slider Margin="2" Minimum="0" Maximum="100" Value="50" MaximumWidthRequest="200" VerticalOptions="Center"/>
-                    </HorizontalStackLayout>
+                <!-- First Row Elements -->
+                <ImageButton Source="favorite.png" x:Name="FavouriteTrack" Scale="0.5" Margin="0" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="2" BackgroundColor="#27232E" />
+                <ImageButton Source="repeat.png" x:Name="Repeat" Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="3" BackgroundColor="#27232E" />
+                <ImageButton Source="backward.png" x:Name="SkipToPrevious" Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="4" BackgroundColor="#27232E" />
+                <ImageButton Source="play.png" x:Name="Play" Scale="0.5"  Grid.Column="5" BackgroundColor="#27232E"/>
+                <ImageButton Source="forward.png" x:Name="SkipToForward" Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="6" BackgroundColor="#27232E"/>
+                <ImageButton Source="shuffle.png" x:Name="Shuffle" Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="7" BackgroundColor="#27232E" />
+                <ImageButton Source="add.png" x:Name="AddTrackToPlaylist"  Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="8" BackgroundColor="#27232E" />
+                <Label Text="This is the track name" TextColor="White" Margin="0" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="9"/>
 
-                    <Button Text="Second 1" FontSize="15" Margin="2" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="1"/>
-                    <Button Text="Second 2" FontSize="15" Margin="2" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="2"/>
-                    <Label Text="Track Artist" TextColor="White" Margin="2" HorizontalOptions="Center" Grid.Column="3"/>
-                </Grid>
-            </StackLayout>
+                <!-- Second Row Elements -->
+                <Image Source="volume.png" x:Name="Mute_Unmute" Scale="0.7" Grid.Column="0" Grid.Row="1" />
+                <Slider x:Name="volumeSlider" Margin="0" Minimum="0" Maximum="1" Value="0.5" ValueChanged="OnVolumeSliderValueChanged" MaximumWidthRequest="200" VerticalOptions="Center" Grid.Column="1" Grid.Row="1"/>
+                <Label Text="0:00" x:Name="LabelTrackPosition" Margin="0" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="3" Grid.Row="1" TextColor="White" />
+                <Slider x:Name="SliderTrackPosition"  Margin="2" Minimum="0" Maximum="0" Value="0.5" ValueChanged="OnVolumeSliderValueChanged" MaximumWidthRequest="400" VerticalOptions="Center" Grid.Column="4" Grid.ColumnSpan="3" Grid.Row="1"/>
+                <Label Text="4:70" x:Name="TrackLength" Margin="2" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="7" Grid.Row="1" TextColor="White"/>
+                <Label Text="This is the track artist" TextColor="White" Margin="0" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="9" Grid.Row="1"/>
+                <Image Source="question.png" Scale="1" Grid.Column="10" Grid.Row="0" Grid.RowSpan="2" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+            </Grid>
         </Frame>
     </Grid>
 </ContentPage>

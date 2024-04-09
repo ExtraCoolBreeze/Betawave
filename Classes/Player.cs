@@ -81,7 +81,7 @@ namespace Betawave
             }
         }
 
-        private void PlayNextTrack()
+        public void PlayNextTrack()
         {
             if (Playlist.Count > 0)
             {
@@ -91,7 +91,7 @@ namespace Betawave
             }
         }
 
-        private void PlayRandomTrack()
+        public void PlayRandomTrack()
         {
             if (Playlist.Count > 0)
             {

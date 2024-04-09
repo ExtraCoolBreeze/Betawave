@@ -1,7 +1,6 @@
 ﻿using Betawave;
 using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui;
-//using LibVLCSharp.Shared;
 
 
 namespace Betawave
@@ -10,7 +9,6 @@ namespace Betawave
     {
         public static MauiApp CreateMauiApp()
         {
-            //Core.Initialize();
 
             var builder = MauiApp.CreateBuilder();
             builder
@@ -28,6 +26,7 @@ namespace Betawave
 #if DEBUG
     		builder.Logging.AddDebug();
 
+            //This is part of the application builder and adding these content pages here allow for dependency injection
             builder.Services.AddTransient<LoginScreen>();
             builder.Services.AddTransient<CreateAccount>();
             builder.Services.AddTransient<MainMenu>();

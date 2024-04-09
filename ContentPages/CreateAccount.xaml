@@ -6,15 +6,12 @@
     
     <Frame CornerRadius="15" Margin="0" Padding="0" HeightRequest="400" WidthRequest="350">
         <VerticalStackLayout Margin="0" Background="#27232E">
+            <Image Source="betawave3.png" Margin="5" HeightRequest="80" WidthRequest="80"></Image>
             <Label 
             Text="Create Account" Background="#ffffff" Margin="5"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
-            <Label 
-            Text="A Passwork must be 8 characters long, contain the use of both upper-case and lower-case letters
-                  , include of one numerical digit a special character such as @, #, $  " Margin="5"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+
             <Entry Placeholder="type your username" Margin="5" Background="#ffffff" x:Name="usernameEntry"/>
             <Entry Placeholder="type your password" Margin="5" Background="#ffffff" x:Name="passwordEntry" IsPassword="True"/>
             <Button Text="Create Account" FontSize="20" Margin="5" x:Name="CACreateButton" Clicked="CACreateButton_Clicked"></Button>

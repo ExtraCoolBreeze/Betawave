@@ -1,15 +1,20 @@
 using Betawave;
 using Betawave.Classes;
 using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Core.Primitives;
+using CommunityToolkit.Maui.Views;
 
 namespace Betawave;
 
 public partial class MainMenu : ContentPage
 {
+    private Player player;
 
     public MainMenu()
 	{
 		InitializeComponent();
+        var mediaElement = new MediaElement(); // This is a dummy MediaElement for demonstration
+        player = new Player(mediaElement); // Initialize the Player instance
 
     }
 
@@ -38,10 +43,30 @@ public partial class MainMenu : ContentPage
         await Shell.Current.GoToAsync("///LoginScreen");
     }
 
+    private void PlayPauseButton_Clicked(object sender, EventArgs e)
+    {
+        // Toggle play/pause based on the player's state
+        if (player.MediaElement.CurrentState == MediaElementState.Playing)
+        {
+            player.PauseMusic();
+            // Update the Play button's icon to show "play"
+        }
+        else
+        {
+            player.PlayMusic();
+            // Update the Play button's icon to show "pause"
+        }
+    }
+
+    private void SkipToNextButton_Clicked(object sender, EventArgs e)
+    {
+        player.PlayNextTrack();
+        // Update UI as necessary, e.g., track name label
+    }
+
     // This is the new event handler for the volume control Slider's ValueChanged event.
     private void OnVolumeSliderValueChanged(object sender, ValueChangedEventArgs e)
     {
-        // Assuming your MediaElement has an x:Name of "musicPlayer" as per the XAML update.
-        return;
+        player.SetVolume(e.NewValue);
     }
 }

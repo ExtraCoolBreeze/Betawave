@@ -7,7 +7,7 @@
     Shell.FlyoutBehavior="Disabled"
     Title="Betawave">
 
-
+<!-- This is where all the navigation routes live for moving between pages -->
     <ShellContent
         Title="Login Screen"
         ContentTemplate="{DataTemplate local:LoginScreen}"
