@@ -1,0 +1,67 @@
+﻿Given the foreign key constraints identified in the SQL dump, adding data to the tables must be done in a way that respects these constraints. This means you should add data to parent tables before adding data to child tables that reference them. Based on the initial analysis and the foreign key constraints involving the `song` table, here's a suggested order for adding data:
+
+1. **`account`**: Since `song` references `account`, and there may be other tables referencing `account` as well, it's safe to start with this table.
+2. **`role`**: Given its reference from `song`, it's another foundational table likely used across various parts of the database.
+3. **`album`**: This table is referenced by `song`, suggesting that albums should exist before their associated songs.
+4. **`artist`**: Since `song` also references `artist`, and artists are likely central to the database schema, this table should be populated early on.
+5. **`playlist`**: Referenced by `song`, indicating that playlists can contain songs, but the playlist entity itself should exist beforehand.
+
+After setting up these foundational tables, you can proceed with:
+
+6. **`song`**: Now that the tables it references have data, you can safely add data to `song`.
+7. **`account_role`**: This likely associates accounts with roles, and since both `account` and `role` tables have data by now, this table can be populated.
+8. **`album_track`**: With `album` and `song` populated (assuming `album_track` relates these two), it's safe to add data here.
+9. **`featured_artists`**: If this table relates `artist` with songs or albums, it can be populated after `artist`, `song`, and `album`.
+10. **`playlist_track`**: This table likely associates songs with playlists, which can be done after `playlist` and `song` have data.
+
+Keep in mind that this order is based on the foreign key constraints observed and the typical patterns in music-related databases. If there are other foreign key constraints not discussed here, the order might need adjustments. Always ensure that a table's foreign key references have corresponding primary key entries in the related tables before adding data.
+
+    account
+
+        INSERT INTO account (account_id, username, userpassword) VALUES (1, 'user1', 'pass1');
+        INSERT INTO account (account_id, username, userpassword) VALUES (2, 'user2', 'pass2');
+
+    role
+
+        INSERT INTO role (role_id, admin) VALUES (1, 1);
+        INSERT INTO role (role_id, admin) VALUES (2, 0);
+
+    album
+
+        INSERT INTO album (album_id, title, image_location) VALUES (1, 'Album One', 'play.png');
+        INSERT INTO album (album_id, title, image_location) VALUES (2, 'Album Two', 'list.png');
+
+    artist
+
+        INSERT INTO artist (artist_id, name) VALUES (1, 'Artist One');
+        INSERT INTO artist (artist_id, name) VALUES (2, 'Artist Two');
+
+    playlist
+
+        INSERT INTO playlist (playlist_id, title, queue, favourite, account_id) VALUES (1, 'Playlist One', 1);
+        INSERT INTO playlist (playlist_id, title, queue, favourite, account_id) VALUES (2, 'Playlist Two', 2);
+
+    song
+
+        INSERT INTO song (song_id, name, duration, song_location) VALUES (1, 'Song One', 1, 1);
+        INSERT INTO song (song_id, name, duration, song_location) VALUES (2, 'Song Two', 2, 2);
+
+    account_role
+
+        INSERT INTO account_role (account_id, role_id) VALUES (1, 1);
+        INSERT INTO account_role (account_id, role_id) VALUES (2, 2);
+
+    album_track
+
+        INSERT INTO album_track (album_id, track_number, song_id) VALUES (1, 1);
+        INSERT INTO album_track (album_id, track_number, song_id) VALUES (2, 2);
+
+    featured_artists
+
+        INSERT INTO featured_artists (artist_id, song_id) VALUES (1, 2);
+        INSERT INTO featured_artists (artist_id, song_id) VALUES (2, 1);
+
+    playlist_track
+
+        INSERT INTO playlist_track (playlist_id, track_number, song_id) VALUES (1, 1);
+        INSERT INTO playlist_track (playlist_id, track_number, song_id) VALUES (2, 2);

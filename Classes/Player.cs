@@ -8,7 +8,7 @@ namespace Betawave
     public class Player
     {
         public MediaElement MediaElement { get; set; } // .NET MAUI MediaElement
-        public List<string> Playlist { get; set; } = new List<string>();
+        public BasePlaylist CurrentPlaylist { get; set; }
         private Random random = new Random();
         public bool Shuffle { get; set; } = false;
         private int currentTrackIndex = -1;

@@ -6,48 +6,39 @@ using System.Threading.Tasks;
 
 namespace Betawave.Classes
 {
-    public class Artist
+    using System;
+
+    public class Album
     {
-        // Fields to store the artist's ID and name
-        private int artistId;
-        private string name;
+        public int AlbumId { get; private set; }
+        public string Name { get; set; }
+        public List<Album_Track> Tracks { get; private set; }
 
-        // Constructor without parameters, initializes artistId to 0 and name to an empty string
-        public Artist()
+        public Album()
         {
-            artistId = 0;
-            name = "";
+            Tracks = new List<Album_Track>();
         }
 
-        // Method to increment and set the artist ID
-        public void SetArtistId()
+        public void AddTrack(Song song, int trackNumber)
         {
-            artistId += 1; // Increments the artistId by 1
+            var track = new Album_Track(song, trackNumber);
+            Tracks.Add(track);
         }
 
-        // Function to return the artist ID
-        public int GetArtistId()
+        public Album_Track FindTrackByNumber(int trackNumber)
         {
-            return artistId;
+            return Tracks.FirstOrDefault(t => t.TrackNumber == trackNumber);
         }
 
-        // Method to set the artist's name
-        public void SetName(string userInput)
+        public void PrintAlbumDetails()
         {
-            name = userInput; // Sets the name to user input
-        }
-
-        // Function to return the artist's name
-        public string GetName()
-        {
-            return name;
-        }
-
-        // Method to print the artist class details
-        public void PrintArtistDetails()
-        {
-            Console.WriteLine(GetArtistId()); // Prints the artist ID
-            Console.WriteLine(GetName()); // Prints the artist name
+            Console.WriteLine($"Album ID: {AlbumId}");
+            Console.WriteLine($"Album Name: {Name}");
+            Console.WriteLine("Tracks:");
+            foreach (var track in Tracks)
+            {
+                track.PrintAlbumTrackDetails();
+            }
         }
     }
 }

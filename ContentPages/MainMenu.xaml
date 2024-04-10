@@ -22,6 +22,7 @@
                     <Button Text="Favourites" FontSize="20" Margin="5" x:Name="MMFavouritesButton" Clicked="MMFavouritesButton_Clicked"/>
                     <Button Text="Play Queue" FontSize="20" Margin="5" x:Name="MMPlayQueueButton" Clicked="MMPlayQueueButton_Clicked"/>
                     <Button Text="Logout" FontSize="20" Margin="5" VerticalOptions="End" x:Name="MMLogoutButton" Clicked="MMLogoutButton_Clicked"/>
+                    <Button Text="test" FontSize="20" Margin="5" VerticalOptions="End" x:Name="MMtest" Clicked="MMtestButton_Clicked"/>
                 </VerticalStackLayout>
             </ScrollView>
         </Frame>

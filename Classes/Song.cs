@@ -6,40 +6,31 @@ using System.Threading.Tasks;
 
 namespace Betawave.Classes
 {
-    using System;
 
     public class Song
     {
         private static int _nextSongId = 1;
-        private int songId;
-        private string name;
-        private string duration;
-        private string songLocation;
+        public int SongId { get; private set; }
+        public string Name { get; set; }
+        public List<Featured_Artists> FeaturedArtists { get; set; } = new List<Featured_Artists>();
 
-        public Song()
+        public string duration;
+
+        public string songLocation;
+
+        public Song(string name)
         {
-            songId = _nextSongId++;
-            name = string.Empty;
-            duration = string.Empty;
-            songLocation = string.Empty;
+            this.SongId = _nextSongId++;
+            this.Name = name;
         }
 
         // Getter for SongId, no setter since SongId should be read-only after initialization
         public int GetSongId()
         {
-            return songId;
+            return SongId;
         }
 
         // Getter and Setter for Name
-        public string GetName()
-        {
-            return name;
-        }
-
-        public void SetName(string nameValue)
-        {
-            name = nameValue;
-        }
 
         // Getter and Setter for Duration
         public string GetDuration()
@@ -63,12 +54,20 @@ namespace Betawave.Classes
             songLocation = locationValue;
         }
 
+        public void AddFeaturedArtist(Artist artist)
+        {
+            var featuredArtist = new Featured_Artists(this, artist);
+            FeaturedArtists.Add(featuredArtist);
+            artist.FeaturedSongs.Add(featuredArtist);
+        }
+
         public void PrintSongDetails()
         {
-            Console.WriteLine($"Song ID: {songId}");
-            Console.WriteLine($"Name: {name}");
-            Console.WriteLine($"Duration: {duration}");
-            Console.WriteLine($"Location: {songLocation}");
+            Console.WriteLine($"Song: {Name}");
+            foreach (var featured in FeaturedArtists)
+            {
+                Console.WriteLine($"Featured Artist: {featured.Artist.Name}");
+            }
         }
     }
 

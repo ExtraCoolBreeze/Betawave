@@ -7,16 +7,10 @@
     <Frame CornerRadius="15" Margin="0" Padding="0" HeightRequest="400" WidthRequest="350">
         <VerticalStackLayout Margin="0" Background="#27232E">
             <Label 
-            Text="Name your playlist" Background="#ffffff"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" Margin="5" />
-            <Label 
-            Text=""
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" Margin="5" />
-            <Entry Placeholder="type new playlist name" Margin="5" Background="#ffffff"/>
-            <Button Text="Enter" FontSize="20" Margin="5"></Button>
-            <Button Text="Back" FontSize="20" Margin="5" x:Name="CPBackButton" Clicked="CPBackButton_Clicked"></Button>
+            Text="Name your new playlist" TextColor="#ffffff" VerticalOptions="Center" HorizontalOptions="Center" Margin="10" FontSize="20" />
+            <Entry Placeholder="type new playlist name" Margin="10" x:Name="PlaylistNameEntry" Background="#ffffff"/>
+            <Button Text="Create" FontSize="20" Margin="10" x:Name="CPCreate" Clicked="CPCreateButton_Clicked"></Button>
+            <Button Text="Back" FontSize="20" Margin="10" x:Name="CPBackButton" Clicked="CPBackButton_Clicked"></Button>
 
         </VerticalStackLayout>
     </Frame>

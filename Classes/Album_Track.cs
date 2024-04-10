@@ -10,32 +10,19 @@ namespace Betawave.Classes
 
     public class Album_Track
     {
-        // Field to store the track number
-        private int trackNumber;
+        public int TrackNumber { get; set; }
+        public Song Song { get; set; }
 
-        // Constructor without parameters, initializes trackNumber to 0
-        public Album_Track()
+        public Album_Track(Song song, int trackNumber)
         {
-            trackNumber = 0;
+            Song = song;
+            TrackNumber = trackNumber;
         }
 
-        // Method to set the track number
-        public void SetTrackNumber(int userInput)
-        {
-            trackNumber = userInput;
-        }
-
-        // Function to get the track number
-        public int GetTrackNumber()
-        {
-            return trackNumber;
-        }
-
-        // Method to print the details of the album track
         public void PrintAlbumTrackDetails()
         {
-            Console.WriteLine(GetTrackNumber());
+            Console.WriteLine($"Track Number: {TrackNumber}");
+            Console.WriteLine($"Song: {Song.GetName()}");
         }
     }
-
 }

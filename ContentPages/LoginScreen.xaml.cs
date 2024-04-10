@@ -24,6 +24,12 @@ public partial class LoginScreen : ContentPage
             return; // Exit the method early if validation fails
         }
 
+        //hard coded admin details for purpose of testing
+        if (enteredUsername == "4Dm1n42" && enteredPassword == "1t1s4test")
+        {
+            await Shell.Current.GoToAsync("///AdminDashboard");
+        }
+        
         // Proceed with the login attempt if validation passes
         if (dbAccess.ValidateUser(enteredUsername, enteredPassword))
         {

@@ -66,6 +66,11 @@ namespace Betawave.Classes
                 Console.WriteLine("Invalid input for checkQueued.");
             }
         }
+
+        public override void GetTrackLocations()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

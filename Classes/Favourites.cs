@@ -60,5 +60,11 @@ namespace Betawave.Classes
                 track.PrintPlaylistTrack();
             }
         }
+
+        public override List<string> GetTrackLocations()
+        {
+            return playlistTracks.Select(track => track.GetLocation()).ToList();
+        }
+
     }
 }

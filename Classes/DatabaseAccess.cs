@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System.Text;
 using System.Security.Cryptography;
+using System.Data;
 
 namespace Betawave.Classes
 {
@@ -87,5 +88,28 @@ namespace Betawave.Classes
                 return builder.ToString();
             }
         }
+
+
+        public DataTable ExecuteQuery(string query, Dictionary<string, object> parameters)
+        {
+            DataTable dataTable = new DataTable();
+
+            using (var connection = ConnectToMySql())
+            using (var cmd = new MySqlCommand(query, connection))
+            {
+                foreach (var param in parameters)
+                {
+                    cmd.Parameters.AddWithValue(param.Key, param.Value);
+                }
+
+                using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                {
+                    adapter.Fill(dataTable);
+                }
+            }
+
+            return dataTable;
+        }
+
     }
 }

@@ -40,6 +40,9 @@ public abstract class BasePlaylist
         return playlistId;
     }
 
+    //Abstract method to get the track locations for playing music
+    public abstract void GetTrackLocations();
+
     // Abstract method to add a Playlist_Track to the playlist
     public abstract void AddToPlaylist(Playlist_Track track);
 
@@ -48,4 +51,6 @@ public abstract class BasePlaylist
 
     // Abstract method to print playlist details
     public abstract void PrintPlaylistDetails();
+
+
 }

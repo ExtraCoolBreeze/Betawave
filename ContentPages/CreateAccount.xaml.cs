@@ -33,7 +33,7 @@ public partial class CreateAccount : ContentPage
         {
             dbAccess.CreateUser(enteredUsername, enteredPassword);
             await DisplayAlert("New User", "Account created successfully. Please take note of your password for later use.", "OK");
-            await Shell.Current.GoToAsync("///MainMenu");
+            await Shell.Current.GoToAsync("///LoginScreen");
         }
         else
         {

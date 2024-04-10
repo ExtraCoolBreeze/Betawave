@@ -42,6 +42,11 @@ public partial class MainMenu : ContentPage
     {
         await Shell.Current.GoToAsync("///LoginScreen");
     }
+    
+    async void MMtestButton_Clicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("///AddToPlaylist");
+    }
 
     private void PlayPauseButton_Clicked(object sender, EventArgs e)
     {
