@@ -1,56 +1,55 @@
-﻿using System;
-using System.Collections.Generic;
-using Betawave.Classes; // Assuming Playlist_Track is in this namespace
-
+﻿using Betawave.Classes;
 public abstract class BasePlaylist
 {
-    // Fields
-    private int playlistId = 0;
-    private string title = "";
-    protected List<Playlist_Track> playlistTracks = new List<Playlist_Track>(); // List to hold Playlist_Track objects
+    private string _title = "";
+    protected List<Playlist_Track> _playlistTracks = new List<Playlist_Track>(); // List to hold Playlist_Track objects
 
-    // Constructor
     protected BasePlaylist()
     {
-        playlistId = 0;
-        title = "";
+        _title = "";
     }
 
-    // Method to set the title
     public void SetTitle(string userInput)
     {
-        title = userInput;
+        _title = userInput;
     }
 
-    // Function to get the title
     public string GetTitle()
     {
-        return title;
+        return _title;
     }
 
-    // Method to increment and set the playlist ID
-    public void SetPlaylistId()
+    public virtual void AddToPlaylist(Playlist_Track track)
     {
-        playlistId += 1;
+        _playlistTracks.Add(track);
     }
 
-    // Function to get the playlist ID
-    public int GetPlaylistId()
+    public virtual void RemoveFromPlaylist(Playlist_Track track)
     {
-        return playlistId;
+        _playlistTracks.Remove(track);
     }
 
-    //Abstract method to get the track locations for playing music
-    public abstract void GetTrackLocations();
+    public List<Playlist_Track> GetTracks()
+    {
+        return new List<Playlist_Track>(_playlistTracks);
+    }
 
-    // Abstract method to add a Playlist_Track to the playlist
-    public abstract void AddToPlaylist(Playlist_Track track);
+    public virtual List<string> GetTrackLocations()
+    {
+        List<string> trackLocations = new List<string>();
+        foreach (var track in _playlistTracks)
+        {
+            trackLocations.Add(track.GetTrackUri());
+        }
+        return trackLocations;
+    }
 
-    // Abstract method to remove a Playlist_Track from the playlist
-    public abstract void RemoveFromPlaylist(Playlist_Track track);
-
-    // Abstract method to print playlist details
-    public abstract void PrintPlaylistDetails();
-
-
+    public virtual void PrintPlaylistDetails()
+    {
+        Console.WriteLine($"Playlist Title: {GetTitle()}");
+        foreach (var track in GetTracks())
+        {
+            track.PrintPlaylistTrack(); // Assuming Playlist_Track has a method to print its details
+        }
+    }
 }

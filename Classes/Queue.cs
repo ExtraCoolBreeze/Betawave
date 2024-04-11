@@ -1,62 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Betawave.Classes
 {
-    using System;
-
     public class Queue : BasePlaylist
     {
-        // Assuming there's a field to indicate if the queue has been checked
-        private bool checkQueued;
+        private bool checkQueued = false;
+        private Queue<PlayerState> playerStates; // Assuming PlayerState is a class or struct you define
 
-        public Queue() : base() // Calls the base constructor
+        public Queue() : base()
         {
-            checkQueued = false;
+            playerStates = new Queue<PlayerState>();
         }
 
-        // Simplified version of CreatePlaylist to set the playlist title
         public string CreatePlaylist(string userInput)
         {
-            // Placeholder for user input and database query logic
-            // Set playlist title to user input
             SetTitle(userInput);
-            // This is where you'd typically check if the playlist name exists in the database
-            // and handle user input accordingly
-
-            // For simplicity, just return the user input as the playlist name
             return userInput;
         }
 
-        // Adds a song to the playlist; overrides the abstract method from BasePlaylist
         public override void AddToPlaylist(Playlist_Track track)
         {
-            playlistTracks.Add(track); // Adds the track to the end of the playlist
+            base.AddToPlaylist(track);
         }
 
-        // Implementation not provided in your pseudocode; removing the track is not typical for queues, but here's a simple implementation
         public override void RemoveFromPlaylist(Playlist_Track track)
         {
-            playlistTracks.Remove(track); // Removes the track if it exists
+            base.RemoveFromPlaylist(track);
         }
 
-        // Prints details of each track in the playlist
         public override void PrintPlaylistDetails()
         {
-            Console.WriteLine($"Queue ID: {GetPlaylistId()}, Title: {GetTitle()}");
-            foreach (var track in playlistTracks)
-            {
-                track.PrintPlaylistTrack();
-            }
+            base.PrintPlaylistDetails();
         }
 
-        // Sets the checkQueued flag based on user input
         public void SetCheckQueued(string userInput)
         {
-            // Assuming userInput is expected to be "true" or "false"
             if (bool.TryParse(userInput, out bool result))
             {
                 checkQueued = result;
@@ -67,10 +46,33 @@ namespace Betawave.Classes
             }
         }
 
-        public override void GetTrackLocations()
+        public bool GetCheckQueued()
         {
-            throw new NotImplementedException();
+            return checkQueued;
+        }
+
+        // Enqueue a new player state
+        public void EnqueuePlayerState(PlayerState state)
+        {
+            playerStates.Enqueue(state);
+        }
+
+        // Dequeue the next player state
+        public PlayerState DequeuePlayerState()
+        {
+            return playerStates.Count > 0 ? playerStates.Dequeue() : default(PlayerState);
+        }
+
+        // Peek at the next player state without removing it
+        public PlayerState PeekNextPlayerState()
+        {
+            return playerStates.Count > 0 ? playerStates.Peek() : default(PlayerState);
         }
     }
 
+    // Define the PlayerState class or struct according to your needs
+    public class PlayerState
+    {
+        // Include properties like CurrentTrack, IsPlaying, Volume, etc.
+    }
 }

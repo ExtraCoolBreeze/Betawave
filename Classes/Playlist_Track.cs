@@ -1,36 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Betawave.Classes
-{
-    // YET TO COMPLETE THIS CLASS!!!
+﻿using Betawave.Classes;
 
     public class Playlist_Track
     {
-        // Fields to store the track's title, track number, artist, and duration
-        private string title;
-        private int trackNumber;
-        private string artist;
-        private TimeSpan duration;
+        private string _title;
+        private int _trackNumber;
+        private string _artist;
+        private string _trackUri;
+        private TimeSpan _duration;
 
-        // Constructor without parameters, initializes fields
-        public Playlist_Track()
+        public Playlist_Track(Song song)
         {
-            title = "";
-            trackNumber = 0;
-            artist = "";
-            duration = new TimeSpan(); // Initializes duration to 0
+            _title = "";
+            _trackNumber = 0;
+            _artist = "";
+            _trackUri = song.GetSongLocation();
+            _duration = TimeSpan.Zero; // Initializes duration to 0
         }
 
-        // Method to set the track number. Assumes trackNumber can be parsed from the string input
+        public void SetTitle(string title)
+        {
+            _title = title;
+        }
+
+        public void SetArtist(string artist)
+        {
+            _artist = artist;
+        }
+
+        public void SetDuration(TimeSpan duration)
+        {
+            _duration = duration;
+        }
+
         public void SetTrackNumber(string userInput)
         {
             if (int.TryParse(userInput, out int parsedTrackNumber))
             {
-                trackNumber = parsedTrackNumber; // Sets trackNumber if userInput is a valid integer
+                _trackNumber = parsedTrackNumber;
             }
             else
             {
@@ -38,17 +44,24 @@ namespace Betawave.Classes
             }
         }
 
-        // Function to return the track number
-        public int GetTrackNumber()
+        public void SetTrackUri(string _trackUri)
         {
-            return trackNumber;
+            _trackUri = _trackUri;
         }
 
-        // Method to print the details of the playlist track
+        public string GetTrackUri()
+        { 
+            return _trackUri;
+        }
+
+        public int GetTrackNumber()
+        {
+            return _trackNumber;
+        }
+
         public void PrintPlaylistTrack()
         {
-            Console.WriteLine($"Title: {title}, Track Number: {GetTrackNumber()}, Artist: {artist}, Duration: {duration}");
+            Console.WriteLine($"Title: {_title}, Track Number: {GetTrackNumber()}, Artist: {_artist}, Duration: {_duration}");
         }
     }
 
-}

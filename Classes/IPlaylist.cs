@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//This interface is complete. Method names may need changing
+
 namespace Betawave.Classes
 {
     public interface IPlaylist

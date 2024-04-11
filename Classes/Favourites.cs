@@ -4,16 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System;
+using System.Collections.Generic;
+
 namespace Betawave.Classes
 {
     public class Favourites : BasePlaylist
     {
         // Field to store a favourite attribute, such as a favourite song or artist
-        private string favourite;
+        private string _favourite;
 
         public Favourites() : base() // Calls the base constructor
         {
-            favourite = "";
+            _favourite = "";
         }
 
         // Simplified version of CreatePlaylist to set the playlist title
@@ -30,41 +33,47 @@ namespace Betawave.Classes
         // Sets the favourite attribute
         public void SetFavourite(string userInput)
         {
-            favourite = userInput;
+            _favourite = userInput;
         }
 
         // Returns the favourite attribute
         public string GetFavourite()
         {
-            return favourite;
+            return _favourite;
         }
 
         // Adds a song to the playlist; overrides the abstract method from BasePlaylist
         public override void AddToPlaylist(Playlist_Track track)
         {
-            playlistTracks.Add(track);
+            // Your subclass-specific logic here
+            base._playlistTracks.Add(track);
         }
 
-        // Implementation not provided in your pseudocode; removing the track is not typical for a favourites list, but here's a simple implementation
         public override void RemoveFromPlaylist(Playlist_Track track)
         {
-            playlistTracks.Remove(track);
+            // Your subclass-specific logic here
+            base._playlistTracks.Remove(track);
         }
 
         // Prints details of each track in the playlist, along with the favourite attribute
         public override void PrintPlaylistDetails()
         {
-            Console.WriteLine($"Favourites Playlist ID: {GetPlaylistId()}, Title: {GetTitle()}, Favourite: {GetFavourite()}");
-            foreach (var track in playlistTracks)
+            Console.WriteLine($"Favourites Playlist Title: {GetTitle()}, Favourite: {_favourite}");
+            foreach (var track in base._playlistTracks)
             {
                 track.PrintPlaylistTrack();
             }
         }
 
+        // Returns a list of locations of all tracks in the playlist
         public override List<string> GetTrackLocations()
         {
-            return playlistTracks.Select(track => track.GetLocation()).ToList();
+            List<string> trackLocations = new List<string>();
+            foreach (var track in base._playlistTracks)
+            {
+                trackLocations.Add(track.GetTrackUri());
+            }
+            return trackLocations;
         }
-
     }
 }

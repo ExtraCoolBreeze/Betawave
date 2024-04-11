@@ -4,18 +4,43 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//This class is functionally complete and acts as a join between artist and song
+
 namespace Betawave.Classes
 {
     public class Featured_Artists
     {
-        public Song Song { get; set; }
-        public Artist Artist { get; set; }
+        private Song _song;
+        private Artist _artist;
 
-        public Featured_Artists(Song song, Artist artist)
+        // Constructor
+        public Featured_Artists()
         {
-            this.Song = song;
-            this.Artist = artist;
+
+        }
+
+        // Getter method for Song
+        public Song GetSong()
+        {
+            return _song;
+        }
+
+        // Setter method for Song
+        public void SetSong(Song value)
+        {
+            _song = value;
+        }
+
+        // Getter method for Artist
+        public Artist GetArtist()
+        {
+            return _artist;
+        }
+
+        // Setter method for Artist
+        public void SetArtist(Artist value)
+        {
+            _artist = value;
         }
     }
 }
-

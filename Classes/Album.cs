@@ -1,41 +1,67 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Betawave.Classes
 {
-    using System;
-
     public class Album
     {
-        public int AlbumId { get; private set; }
-        public string Name { get; set; }
-        public List<Album_Track> Tracks { get; private set; }
+        private int _albumId;
+        private string _name;
+        private List<Album_Track> _tracks;
 
         public Album()
         {
-            Tracks = new List<Album_Track>();
+            _tracks = new List<Album_Track>();
         }
 
-        public void AddTrack(Song song, int trackNumber)
+        public int GetAlbumId()
         {
-            var track = new Album_Track(song, trackNumber);
-            Tracks.Add(track);
+            return _albumId;
+        }
+
+        public void SetAlbumId(int albumId)
+        {
+            _albumId = albumId;
+        }
+
+        public string GetName()
+        {
+            return _name;
+        }
+
+        public void SetName(string name)
+        {
+            _name = name;
+        }
+
+        public List<Album_Track> GetTracks()
+        {
+            return _tracks;
+        }
+
+        public void AddTrack(Album_Track track)
+        {
+            _tracks.Add(track);
         }
 
         public Album_Track FindTrackByNumber(int trackNumber)
         {
-            return Tracks.FirstOrDefault(t => t.TrackNumber == trackNumber);
+            foreach (var track in _tracks)
+            {
+                if (track.GetTrackNumber() == trackNumber) // Changed to use GetTrackNumber() method
+                {
+                    return track;
+                }
+            }
+            return null;
         }
 
         public void PrintAlbumDetails()
         {
-            Console.WriteLine($"Album ID: {AlbumId}");
-            Console.WriteLine($"Album Name: {Name}");
+            Console.WriteLine($"Album ID: {_albumId}");
+            Console.WriteLine($"Album Name: {_name}");
             Console.WriteLine("Tracks:");
-            foreach (var track in Tracks)
+            foreach (var track in _tracks)
             {
                 track.PrintAlbumTrackDetails();
             }

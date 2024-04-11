@@ -1,114 +1,132 @@
 ﻿using CommunityToolkit.Maui.Views;
-using Microsoft.Maui.Controls;
-using System;
-using System.Collections.Generic;
-namespace Betawave
+using Betawave.Classes;
+public class Player
 {
+    private MediaElement _mediaElement;
+    private BasePlaylist _currentPlaylist;
+    private Random _random = new Random();
+    private bool _shuffle = false;
+    private int _currentTrackIndex = -1;
 
-    public class Player
+    public void SetMediaElement(MediaElement element)
     {
-        public MediaElement MediaElement { get; set; } // .NET MAUI MediaElement
-        public BasePlaylist CurrentPlaylist { get; set; }
-        private Random random = new Random();
-        public bool Shuffle { get; set; } = false;
-        private int currentTrackIndex = -1;
+        _mediaElement = element;
+        _mediaElement.MediaEnded += OnMediaEnded; // Handle media ended event
+    }
 
-        public Player(MediaElement mediaElement)
-        {
-            MediaElement = mediaElement;
-            MediaElement.MediaEnded += OnMediaEnded; // Handle media ended event
-        }
+    public MediaElement GetMediaElement()
+    {
+        return _mediaElement;
+    }
 
-        private void OnMediaEnded(object sender, EventArgs e)
-        {
-            if (Shuffle)
-            {
-                PlayRandomTrack();
-            }
-            else
-            {
-                PlayNextTrack();
-            }
-        }
+    public void SetCurrentPlaylist(BasePlaylist playlist)
+    {
+        _currentPlaylist = playlist;
+    }
 
-        public void LoadMusic(string songLocation)
-        {
-            MediaElement.Source = new Uri(songLocation);
-        }
+    public BasePlaylist GetCurrentPlaylist()
+    {
+        return _currentPlaylist;
+    }
 
-        public void PlayMusic()
-        {
-            if (MediaElement.Source != null)
-            {
-                MediaElement.Play();
-            }
-        }
+    public void SetShuffle(bool value)
+    {
+        _shuffle = value;
+    }
 
-        public void PauseMusic()
-        {
-            MediaElement.Pause();
-        }
+    public bool GetShuffle()
+    {
+        return _shuffle;
+    }
 
-        public void StopMusic()
+    private void OnMediaEnded(object sender, EventArgs e)
+    {
+        if (_shuffle)
         {
-            MediaElement.Stop();
+            PlayRandomTrack();
         }
+        else
+        {
+            PlayNextTrack();
+        }
+    }
 
-        public void SetVolume(double volume)
-        {
-            MediaElement.Volume = volume; // Volume is a value between 0.0 and 1.0
-        }
+    public void LoadMusic(string songLocation)
+    {
+        _mediaElement.Source = new Uri(songLocation);
+    }
 
-        public double GetVolume()
+    public void PlayMusic()
+    {
+        if (_mediaElement.Source != null)
         {
-            return MediaElement.Volume;
+            _mediaElement.Play();
         }
+    }
 
-        public void SetShuffle(bool shuffle)
-        {
-            Shuffle = shuffle;
-        }
+    public void PauseMusic()
+    {
+        _mediaElement.Pause();
+    }
 
-        public void SkipMusic()
-        {
-            if (Shuffle)
-            {
-                PlayRandomTrack();
-            }
-            else
-            {
-                PlayNextTrack();
-            }
-        }
+    public void StopMusic()
+    {
+        _mediaElement.Stop();
+    }
 
-        public void PlayNextTrack()
-        {
-            if (Playlist.Count > 0)
-            {
-                currentTrackIndex = (currentTrackIndex + 1) % Playlist.Count;
-                LoadMusic(Playlist[currentTrackIndex]);
-                PlayMusic();
-            }
-        }
+    public void SetVolume(double volume)
+    {
+        _mediaElement.Volume = volume; // Volume is a value between 0.0 and 1.0
+    }
 
-        public void PlayRandomTrack()
-        {
-            if (Playlist.Count > 0)
-            {
-                int trackIndex = random.Next(Playlist.Count);
-                LoadMusic(Playlist[trackIndex]);
-                PlayMusic();
-            }
-        }
+    public double GetVolume()
+    {
+        return _mediaElement.Volume;
+    }
 
-        public void AddToPlaylist(string track)
+    public void SkipMusic()
+    {
+        if (_shuffle)
         {
-            Playlist.Add(track);
+            PlayRandomTrack();
         }
+        else
+        {
+            PlayNextTrack();
+        }
+    }
 
-        public void RemoveFromPlaylist(string track)
+    public void PlayNextTrack()
+    {
+        var tracks = _currentPlaylist.GetTracks();
+        if (tracks.Count > 0)
         {
-            Playlist.Remove(track);
+            _currentTrackIndex = (_currentTrackIndex + 1) % tracks.Count;
+            var trackUri = tracks[_currentTrackIndex].GetTrackUri(); // Assuming GetTrackUri() exists in Playlist_Track
+            LoadMusic(trackUri);
+            PlayMusic();
         }
+    }
+
+    public void PlayRandomTrack()
+    {
+        var tracks = _currentPlaylist.GetTracks();
+        if (tracks.Count > 0)
+        {
+            int trackIndex = _random.Next(tracks.Count);
+            var trackUri = tracks[trackIndex].GetTrackUri(); // Assuming GetTrackUri() exists in Playlist_Track
+            LoadMusic(trackUri);
+            PlayMusic();
+        }
+    }
+
+    public void AddToPlaylist(Playlist_Track track)
+    {
+        _currentPlaylist.AddToPlaylist(track);
+    }
+
+    public void RemoveFromPlaylist(Playlist_Track track)
+    {
+        _currentPlaylist.RemoveFromPlaylist(track);
     }
 }

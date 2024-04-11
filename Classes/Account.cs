@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System;
 
 namespace Betawave.Classes
 {
-    using System;
 
     public class Account
     {
+        private int account_id;
         private int role_id;
         private string username;
         private string password;
@@ -17,6 +18,7 @@ namespace Betawave.Classes
 
         public Account()
         {
+            account_id = 0;
             role_id = 1;
             username = "";
             password = "";
@@ -36,11 +38,8 @@ namespace Betawave.Classes
                 this.username = username;
                 return true;
             }
-            
-            
                 usernameError = "The username cannot be blank or contain spaces.";
                 return false;
-            
         }
 
         public bool SetPassword(string password, out string passwordError)
@@ -58,6 +57,16 @@ namespace Betawave.Classes
             }
         }
 
+        // need to complete this function, has to save the AccountId from the database 
+        public void SetAccountId()
+        {
+            account_id = account_id;
+        }
+
+        public int GetAccountId()
+        { 
+            return account_id;
+        }
 
         public string GetPassword()
         {

@@ -1,75 +1,79 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Betawave.Classes;
 
-namespace Betawave.Classes
+public class Song
 {
+    private int _songId;
+    private string _name;
+    private List<Featured_Artists> _featuredArtists = new List<Featured_Artists>();
+    private string _duration;
+    private string _songLocation;
 
-    public class Song
+    public Song()
     {
-        private static int _nextSongId = 1;
-        public int SongId { get; private set; }
-        public string Name { get; set; }
-        public List<Featured_Artists> FeaturedArtists { get; set; } = new List<Featured_Artists>();
-
-        public string duration;
-
-        public string songLocation;
-
-        public Song(string name)
-        {
-            this.SongId = _nextSongId++;
-            this.Name = name;
-        }
-
-        // Getter for SongId, no setter since SongId should be read-only after initialization
-        public int GetSongId()
-        {
-            return SongId;
-        }
-
-        // Getter and Setter for Name
-
-        // Getter and Setter for Duration
-        public string GetDuration()
-        {
-            return duration;
-        }
-
-        public void SetDuration(string durationValue)
-        {
-            duration = durationValue;
-        }
-
-        // Getter and Setter for SongLocation
-        public string GetSongLocation()
-        {
-            return songLocation;
-        }
-
-        public void SetSongLocation(string locationValue)
-        {
-            songLocation = locationValue;
-        }
-
-        public void AddFeaturedArtist(Artist artist)
-        {
-            var featuredArtist = new Featured_Artists(this, artist);
-            FeaturedArtists.Add(featuredArtist);
-            artist.FeaturedSongs.Add(featuredArtist);
-        }
-
-        public void PrintSongDetails()
-        {
-            Console.WriteLine($"Song: {Name}");
-            foreach (var featured in FeaturedArtists)
-            {
-                Console.WriteLine($"Featured Artist: {featured.Artist.Name}");
-            }
-        }
+        _songId = 0;
+        _name = "";
+        _duration = "";
+        _songLocation = "";
     }
 
+    public int GetSongId()
+    {
+        return _songId;
+    }
 
+    public void SetSongId(int songId)
+    {
+        _songId = songId;
+    }
+
+    public string GetName()
+    {
+        return _name;
+    }
+
+    public void SetName(string value)
+    {
+        _name = value;
+    }
+
+    public List<Featured_Artists> GetFeaturedArtists()
+    {
+        return _featuredArtists;
+    }
+
+    public string GetDuration()
+    {
+        return _duration;
+    }
+
+    public void SetDuration(string value)
+    {
+        _duration = value;
+    }
+
+    public string GetSongLocation()
+    {
+        return _songLocation;
+    }
+
+    public void SetSongLocation(string value)
+    {
+        _songLocation = value;
+    }
+
+    public void AddFeaturedArtist(Artist artist)
+    {
+        var featuredArtist = new Featured_Artists();
+        featuredArtist.SetSong(this);
+        featuredArtist.SetArtist(artist);
+
+        _featuredArtists.Add(featuredArtist);
+        artist.FeaturedSongs.Add(featuredArtist);
+    }
+
+    // Method to print the details of the song
+    public void PrintSong()
+    {
+        Console.WriteLine($"Name: {_name}, Duration: {_duration}, Location: {_songLocation}");
+    }
 }
