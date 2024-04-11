@@ -26,7 +26,7 @@
 
                     <!-- Action Buttons -->
                     <Button Text="Add to Playlist" Margin="1" FontSize="17" Clicked="OnAddToPlaylistClicked"/>
-                    <Button Text="Back" Margin="1" FontSize="17" Clicked="OnBackClicked"/>
+                    <Button Text="Back" Margin="1" FontSize="17" Clicked="OnBackButtonClicked"/>
                 </VerticalStackLayout>
             </ScrollView>
         </Frame>

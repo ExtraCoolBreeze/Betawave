@@ -45,13 +45,13 @@ public partial class MainMenu : ContentPage
     
     async void MMtestButton_Clicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync("///AddToPlaylist");
+        await Shell.Current.GoToAsync("///AddMediaScreen");
     }
 
     private void PlayPauseButton_Clicked(object sender, EventArgs e)
     {
         // Toggle play/pause based on the player's state
-        if (player.MediaElement.CurrentState == MediaElementState.Playing)
+        if (player.GetMediaElement().CurrentState == MediaElementState.Playing)
         {
             player.PauseMusic();
             // Update the Play button's icon to show "play"

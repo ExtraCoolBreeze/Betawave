@@ -8,11 +8,25 @@ public class Player
     private bool _shuffle = false;
     private int _currentTrackIndex = -1;
 
+    public Player(MediaElement mediaElement)
+    {
+        SetMediaElement(mediaElement);
+    }
+
     public void SetMediaElement(MediaElement element)
     {
+        if (_mediaElement != null)
+        {
+            _mediaElement.MediaEnded -= OnMediaEnded;
+        }
+
         _mediaElement = element;
-        _mediaElement.MediaEnded += OnMediaEnded; // Handle media ended event
+        if (_mediaElement != null)
+        {
+            _mediaElement.MediaEnded += OnMediaEnded;
+        }
     }
+
 
     public MediaElement GetMediaElement()
     {

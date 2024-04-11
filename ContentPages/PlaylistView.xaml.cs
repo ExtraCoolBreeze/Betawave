@@ -10,8 +10,8 @@ public partial class PlaylistView : ContentPage
     public PlaylistView()
 	{
 		InitializeComponent();
-        var mediaElement = new MediaElement(); // This is a dummy MediaElement for demonstration
-        player = new Player(mediaElement); // Initialize the Player instance
+        var mediaElement = new MediaElement();
+        player = new Player(mediaElement); 
     }
 
     async void PVCreatePlaylistButton_Clicked(object sender, EventArgs e)
@@ -42,7 +42,7 @@ public partial class PlaylistView : ContentPage
     private void PlayPauseButton_Clicked(object sender, EventArgs e)
     {
         // Toggle play/pause based on the player's state
-        if (player.MediaElement.CurrentState == MediaElementState.Playing)
+        if (player.GetMediaElement().CurrentState == MediaElementState.Playing)
         {
             player.PauseMusic();
             // Update the Play button's icon to show "play"

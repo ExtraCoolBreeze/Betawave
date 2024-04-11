@@ -3,8 +3,6 @@ namespace Betawave;
 
 public partial class AddToPlaylist : ContentPage
 {
-
-
     public AddToPlaylist()
     {
         InitializeComponent();
@@ -13,52 +11,53 @@ public partial class AddToPlaylist : ContentPage
 
     private void GeneratePlaylistButtons()
     {
-        // Assuming you have a method GetPlaylists that returns a list of playlists
-        // This is just an example. Replace with your actual method to fetch playlists
         var playlists = GetPlaylists();
 
         foreach (var playlist in playlists)
         {
             var button = new Button
             {
-                Text = playlist.GetTitle(), // Display the playlist title on the button
+                Text = playlist.GetTitle(),
                 Margin = new Thickness(5),
                 BackgroundColor = Color.FromArgb("#333333"),
                 TextColor = Color.FromArgb("#FFFFFF")
             };
 
-            // Set the event handler for the button click
-            button.Clicked += (sender, args) => PlaylistButtonClicked(playlist);
+            button.Clicked += Button_Clicked;
 
-            // Add the button to the stack layout
+            // Storing the playlist in the button's CommandParameter for retrieval in the click event handler
+            button.CommandParameter = playlist;
+
             PlaylistsStackLayout.Children.Add(button);
         }
     }
 
-    async void PlaylistButtonClicked(BasePlaylist selectedPlaylist)
+    private void Button_Clicked(object sender, EventArgs e)
     {
-        // Logic to handle playlist selection
-        // You might set the selected playlist to a property, navigate to another page, etc.
+        if (sender is Button button && button.CommandParameter is BasePlaylist selectedPlaylist)
+        {
+            PlaylistButtonClicked(selectedPlaylist);
+        }
+    }
+
+    private async void PlaylistButtonClicked(BasePlaylist selectedPlaylist)
+    {
         Console.WriteLine($"Playlist Selected: {selectedPlaylist.GetTitle()}");
         await Shell.Current.GoToAsync($"playlistdetails?playlistId={selectedPlaylist.GetPlaylistId()}");
     }
 
-    // Example method to fetch playlists
-    // Replace this with your actual implementation
     private List<BasePlaylist> GetPlaylists()
     {
-        // This should return a list of your playlists
-        // For demonstration, returning an empty list
         return new List<BasePlaylist>();
     }
 
-    async void OnAddToPlaylistClicked(object sender, EventArgs e)
+    private async void OnAddToPlaylistClicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync("///AddToPlaylist");
+        await Shell.Current.GoToAsync("///PlaylistView");
     }
 
-    async void OnBackClicked(object sender, EventArgs e)
+    private async void OnBackButtonClicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync("///AddToPlaylist");
+        await Shell.Current.GoToAsync("///MainMenu");
     }
 }

@@ -89,7 +89,7 @@ namespace Betawave.Classes
             }
         }
 
-
+        //uses 
         public DataTable ExecuteQuery(string query, Dictionary<string, object> parameters)
         {
             DataTable dataTable = new DataTable();
