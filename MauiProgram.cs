@@ -5,6 +5,7 @@ using CommunityToolkit.Maui;
 
 namespace Betawave
 {
+
     public static class MauiProgram
     {
         public static MauiApp CreateMauiApp()

@@ -67,5 +67,7 @@
         Title="Add Media"
         ContentTemplate="{DataTemplate local:AddMediaScreen}"
         Route="AddMediaScreen" />
+    
+    
 
 </Shell>

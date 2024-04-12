@@ -42,7 +42,7 @@ public partial class PlaylistView : ContentPage
     private void PlayPauseButton_Clicked(object sender, EventArgs e)
     {
         // Toggle play/pause based on the player's state
-        if (player.GetMediaElement().CurrentState == MediaElementState.Playing)
+        if (player.GetCurrentState() == MediaElementState.Playing)
         {
             player.PauseMusic();
             // Update the Play button's icon to show "play"

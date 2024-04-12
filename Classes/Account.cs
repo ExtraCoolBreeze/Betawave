@@ -58,9 +58,9 @@ namespace Betawave.Classes
         }
 
         // need to complete this function, has to save the AccountId from the database 
-        public void SetAccountId()
+        public void SetAccountId(int id)
         {
-            account_id = account_id;
+            account_id = id;
         }
 
         public int GetAccountId()

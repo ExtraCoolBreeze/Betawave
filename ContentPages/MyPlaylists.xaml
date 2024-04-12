@@ -2,22 +2,86 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:compat="clr-namespace:Microsoft.Maui.Controls.Compatibility;assembly=Microsoft.Maui.Controls.Compatibility"
+          
              x:Class="Betawave.MyPlaylists"
-             Title="MyPlaylists">
+             BackgroundColor="#151417"
+             Padding="0"
+             >
 
-    <Frame Grid.Row="0" Grid.Column="0" CornerRadius="15" Margin="5" Padding= "2" BackgroundColor="#27232E" BorderColor="#27232E">
+    <Grid RowDefinitions="9*, 1.5*" ColumnDefinitions="2*, 8*" Margin="2">
+        <!-- Left side VerticalStackLayout -->
+        <Frame Grid.Row="0" Grid.Column="0" CornerRadius="15" Margin="5" BackgroundColor="#27232E" BorderColor="#27232E">
             <ScrollView>
-                <VerticalStackLayout Margin="2">
+                <VerticalStackLayout  Margin="9" BackgroundColor="#27232E">
                     <!-- Your existing VerticalStackLayout content -->
-                    <Label Text="" Background="#ffffff" VerticalOptions="Start" HorizontalOptions="Center" />
-                    <Entry Placeholder="type your password" Margin="5" Background="#ffffff"/>
-                    <Button Text="Create Playlist" FontSize="20" Margin="5" x:Name="MPCreatePlaylistButton" Clicked="MPCreatePlaylistButton_Clicked"/>
-                    <Button Text="My Playlists" FontSize="20" Margin="5" x:Name="MPmyPlaylistsButton" Clicked="MPmyPlaylistsButton_Clicked"/>
-                    <Button Text="Favourites" FontSize="20" Margin="5" x:Name="MPFavouritesButton" Clicked="MPFavouritesButton_Clicked"/>
-                    <Button Text="Play Queue" FontSize="20" Margin="5" x:Name="MPPlayQueueButton" Clicked="MPPlayQueueButton_Clicked"/>
-                    <Button Text="Logout" FontSize="20" Margin="5" VerticalOptions="End" x:Name="MPBackButton" Clicked="MPBackButton_Clicked"/>
+                    <Label Text="Test test test" FontSize="20" TextColor="Red" Margin="5" VerticalOptions="Start" HorizontalOptions="Center"/>
+                    <Entry Placeholder="Search" Margin="5" Background="#ffffff"/>
+                    <Button Text="Create Playlist" FontSize="20" Margin="5" x:Name="CreatePlaylistButton" Clicked="CreatePlaylistButton_Clicked"/>
+                    <Button Text="My Playlists" FontSize="20" Margin="5" x:Name="myPlaylistsButton" Clicked="myPlaylistsButton_Clicked"/>
+                    <Button Text="Favourites" FontSize="20" Margin="5" x:Name="FavouritesButton" Clicked="FavouritesButton_Clicked"/>
+                    <Button Text="Play Queue" FontSize="20" Margin="5" x:Name="PlayQueueButton" Clicked="PlayQueueButton_Clicked"/>
+                    <Button Text="Logout" FontSize="20" Margin="5" VerticalOptions="End" x:Name="LogoutButton" Clicked="LogoutButton_Clicked"/>
                 </VerticalStackLayout>
             </ScrollView>
         </Frame>
 
+        <!-- Main content Grid -->
+        <Grid Grid.Row="0" Grid.Column="1" Margin="2" Padding="1">
+            <Frame Grid.Row="0" Grid.Column="0" CornerRadius="15" Margin="5" Padding= "2" BackgroundColor="#27232E" BorderColor="#27232E">
+                <VerticalStackLayout>
+                    <Label Text="MyPlaylists" FontSize="20" FontAttributes="Bold" TextColor="White"/>
+                    <HorizontalStackLayout Margin="9" Spacing="5">
+                         <Label Text="Playlist Name" FontSize="20" TextColor="White"/>
+                    </HorizontalStackLayout>
+                    <ScrollView>
+                        <VerticalStackLayout Margin="9" BackgroundColor="#27232E">
+                            <!-- Rows of side-by-side buttons -->
+                             <Button Text="Button 1" FontSize="20" Margin="5"/>
+                            <Button Text="Button 2" FontSize="20" Margin="5"/>
+                            <Button Text="Button 3" FontSize="20" Margin="5"/>
+                            <Button Text="Button 4" FontSize="20" Margin="5"/>
+                            <Button Text="Button 4" FontSize="20" Margin="5"/>
+                            <Button Text="Button 4" FontSize="20" Margin="5"/>
+                            <Button Text="Button 4" FontSize="20" Margin="5"/>
+                            <Button Text="Button 4" FontSize="20" Margin="5"/>
+                            <Button Text="Button 4" FontSize="20" Margin="5"/>
+                            <Button Text="Button 4" FontSize="20" Margin="5"/>
+                            <Button Text="Button 4" FontSize="20" Margin="5"/>
+                            <Button Text="Button 4" FontSize="20" Margin="5"/>
+                            <Button Text="Button 4" FontSize="20" Margin="5"/>
+                            <!-- Add more rows as needed -->
+                        </VerticalStackLayout>
+                    </ScrollView>
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+
+
+        <!-- This is the bottom layout grid and is used as the music player ui-->
+        <Frame Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" CornerRadius="15" Margin="0" Padding="1" BackgroundColor="#27232E" BorderColor="#27232E">
+            <Grid RowDefinitions="*,*" Padding="0" ColumnDefinitions="*, *, *, *, *, *, *, *, *, *, *">
+
+                <!-- First Row Elements -->
+                <ImageButton Source="favorite.png" x:Name="FavouriteTrack" Scale="0.5" Margin="0" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="2" BackgroundColor="#27232E" />
+                <ImageButton Source="repeat.png" x:Name="Repeat" Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="3" BackgroundColor="#27232E" />
+                <ImageButton Source="backward.png" x:Name="SkipToPrevious" Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="4" BackgroundColor="#27232E" />
+                <ImageButton Source="play.png" x:Name="Play" Scale="0.5"  Grid.Column="5" BackgroundColor="#27232E"/>
+                <ImageButton Source="forward.png" x:Name="SkipToForward" Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="6" BackgroundColor="#27232E"/>
+                <ImageButton Source="shuffle.png" x:Name="Shuffle" Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="7" BackgroundColor="#27232E" />
+                <ImageButton Source="add.png" x:Name="AddTrackToPlaylist"  Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="8" BackgroundColor="#27232E" />
+                <Label Text="This is the track name" TextColor="White" Margin="0" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="9"/>
+
+                <!-- Second Row Elements -->
+                <Image Source="volume.png" x:Name="Mute_Unmute" Scale="0.7" Grid.Column="0" Grid.Row="1" />
+                <Slider x:Name="volumeSlider" Margin="0" Minimum="0" Maximum="1" Value="0.5" ValueChanged="OnVolumeSliderValueChanged" MaximumWidthRequest="200" VerticalOptions="Center" Grid.Column="1" Grid.Row="1"/>
+                <Label Text="0:00" x:Name="LabelTrackPosition" Margin="0" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="3" Grid.Row="1" TextColor="White" />
+                <Slider x:Name="SliderTrackPosition"  Margin="2" Minimum="0" Maximum="0" Value="0.5" ValueChanged="OnVolumeSliderValueChanged" MaximumWidthRequest="400" VerticalOptions="Center" Grid.Column="4" Grid.ColumnSpan="3" Grid.Row="1"/>
+                <Label Text="4:70" x:Name="TrackLength" Margin="2" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="7" Grid.Row="1" TextColor="White"/>
+                <Label Text="This is the track artist" TextColor="White" Margin="0" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="9" Grid.Row="1"/>
+                <Image Source="question.png" Scale="1" Grid.Column="10" Grid.Row="0" Grid.RowSpan="2" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+            </Grid>
+        </Frame>
+
+    </Grid>
 </ContentPage>

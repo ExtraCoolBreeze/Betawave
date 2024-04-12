@@ -202,4 +202,16 @@
             }
         }
     }
+	
+	
+	
+	    <toolkit:MediaElement x:Name="mediaPlayer"
+                      Source="03dieonarope.m4a"
+                      HorizontalOptions="Center"
+                      VerticalOptions="Center"
+                      ShouldAutoPlay="False"
+                      ShouldShowPlaybackControls="False"
+                      Aspect="Center"/>
+	
+	
  -->

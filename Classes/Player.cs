@@ -1,5 +1,11 @@
 ﻿using CommunityToolkit.Maui.Views;
 using Betawave.Classes;
+using CommunityToolkit.Maui.Core.Primitives;
+using System.Reflection;
+using Microsoft.Maui.Controls;
+using System;
+using System.IO;
+
 public class Player
 {
     private MediaElement _mediaElement;
@@ -7,67 +13,54 @@ public class Player
     private Random _random = new Random();
     private bool _shuffle = false;
     private int _currentTrackIndex = -1;
+    private string _resourceName;
 
     public Player(MediaElement mediaElement)
     {
         SetMediaElement(mediaElement);
     }
 
+    public MediaElementState GetCurrentState()
+    {
+        return _mediaElement.CurrentState;
+    }
+
     public void SetMediaElement(MediaElement element)
     {
-        if (_mediaElement != null)
-        {
-            _mediaElement.MediaEnded -= OnMediaEnded;
-        }
-
         _mediaElement = element;
-        if (_mediaElement != null)
-        {
-            _mediaElement.MediaEnded += OnMediaEnded;
-        }
+        _mediaElement.MediaEnded += OnMediaEnded;
     }
 
-
-    public MediaElement GetMediaElement()
+    public bool IsPlaying()
     {
-        return _mediaElement;
+        return _mediaElement.CurrentState == MediaElementState.Playing;
     }
 
-    public void SetCurrentPlaylist(BasePlaylist playlist)
+    public void LoadAndPlayMusic(string relativePath)
     {
-        _currentPlaylist = playlist;
-    }
-
-    public BasePlaylist GetCurrentPlaylist()
-    {
-        return _currentPlaylist;
-    }
-
-    public void SetShuffle(bool value)
-    {
-        _shuffle = value;
-    }
-
-    public bool GetShuffle()
-    {
-        return _shuffle;
+        LoadMusic(relativePath);
+        PlayMusic();
     }
 
     private void OnMediaEnded(object sender, EventArgs e)
     {
         if (_shuffle)
-        {
             PlayRandomTrack();
-        }
         else
-        {
             PlayNextTrack();
-        }
     }
 
-    public void LoadMusic(string songLocation)
+    public void LoadMusic(string relativePath)
     {
-        _mediaElement.Source = new Uri(songLocation);
+        try
+        {
+            Uri fileUri = new Uri($"file:///{relativePath}", UriKind.Absolute);
+            _mediaElement.Source = fileUri;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading music: {ex.Message}");
+        }
     }
 
     public void PlayMusic()
@@ -75,6 +68,10 @@ public class Player
         if (_mediaElement.Source != null)
         {
             _mediaElement.Play();
+        }
+        else 
+        { 
+            Console.WriteLine("_mediaElement.Source is null");
         }
     }
 
@@ -112,23 +109,40 @@ public class Player
 
     public void PlayNextTrack()
     {
-        var tracks = _currentPlaylist.GetTracks();
-        if (tracks.Count > 0)
+        if (_currentPlaylist != null && _currentPlaylist.GetTracks().Count > 0)
         {
-            _currentTrackIndex = (_currentTrackIndex + 1) % tracks.Count;
-            var trackUri = tracks[_currentTrackIndex].GetTrackUri(); // Assuming GetTrackUri() exists in Playlist_Track
+            _currentTrackIndex = (_currentTrackIndex + 1) % _currentPlaylist.GetTracks().Count;
+            var trackUri = _currentPlaylist.GetTracks()[_currentTrackIndex].GetTrackUri(); // Assuming GetTrackUri() exists
             LoadMusic(trackUri);
             PlayMusic();
         }
     }
+    public void SetShuffle(bool shuffle)
+    {
+        _shuffle = shuffle;
+        Console.WriteLine($"Shuffle mode set to: {(_shuffle ? "Enabled" : "Disabled")}");
+    }
+
+
+    public bool GetShuffle()
+    {
+        return _shuffle;
+    }
+
+
+    public void ToggleShuffle()
+    {
+        _shuffle = !_shuffle;
+        Console.WriteLine($"Shuffle mode: {(_shuffle ? "Enabled" : "Disabled")}");
+    }
+
 
     public void PlayRandomTrack()
     {
-        var tracks = _currentPlaylist.GetTracks();
-        if (tracks.Count > 0)
+        if (_currentPlaylist != null && _currentPlaylist.GetTracks().Count > 0)
         {
-            int trackIndex = _random.Next(tracks.Count);
-            var trackUri = tracks[trackIndex].GetTrackUri(); // Assuming GetTrackUri() exists in Playlist_Track
+            int trackIndex = _random.Next(_currentPlaylist.GetTracks().Count);
+            var trackUri = _currentPlaylist.GetTracks()[trackIndex].GetTrackUri(); // Assuming GetTrackUri() exists
             LoadMusic(trackUri);
             PlayMusic();
         }
