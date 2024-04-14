@@ -7,22 +7,18 @@ using System;
 
 namespace Betawave.Classes
 {
-
     public class Account
     {
         private int account_id;
-        private int role_id;
         private string username;
-        private string password;
-        private int admin;
+        private string userpassword;
+
 
         public Account()
         {
             account_id = 0;
-            role_id = 1;
             username = "";
-            password = "";
-            admin = 0;
+            userpassword = "";
         }
 
         public string GetUsername()
@@ -47,7 +43,7 @@ namespace Betawave.Classes
             passwordError = "";
             if (IsValidPassword(password) == "pass")
             {
-                this.password = password;
+                this.userpassword = password;
                 return true;
             }
             else
@@ -70,37 +66,15 @@ namespace Betawave.Classes
 
         public string GetPassword()
         {
-            return password;
-        }
-
-        public void SetRoleId()
-        {
-            role_id += 1;
-        }
-
-        public int GetRoleId()
-        {
-            return role_id;
-        }
-
-        public void SetAdmin(int isAdmin)
-        {
-            admin = isAdmin;
-        }
-
-        public int GetAdmin()
-        {
-            return admin;
+            return userpassword;
         }
 
         public void PrintAccountDetails()
         {
             Console.WriteLine("Username: " + GetUsername());
             Console.WriteLine("Password: " + GetPassword()); // Note: Printing passwords can be a security risk
-            Console.WriteLine("Role ID: " + GetRoleId());
-            Console.WriteLine("Admin: " + GetAdmin());
-        }
 
+        }
 
         public string IsValidPassword(string password)
         {

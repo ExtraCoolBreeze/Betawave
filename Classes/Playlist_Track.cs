@@ -2,11 +2,12 @@
 
     public class Playlist_Track
     {
-        private string _title;
+        private int _playlist_id;
         private int _trackNumber;
         private string _artist;
-        private string _trackUri;
+        private string _title;
         private TimeSpan _duration;
+        private string _trackUri;
 
         public Playlist_Track(Song song)
         {
@@ -44,9 +45,9 @@
             }
         }
 
-        public void SetTrackUri(string _trackUri)
+        public void SetTrackUri(string trackuri)
         {
-            _trackUri = _trackUri;
+            _trackUri = trackuri;
         }
 
         public string GetTrackUri()

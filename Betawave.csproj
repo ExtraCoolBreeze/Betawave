@@ -57,25 +57,14 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\Music\CoralFang\01 Drain the Blood.m4a" />
-	  <None Remove="Resources\Music\CoralFang\01DraintheBlood.m4a" />
 	  <None Remove="Resources\Music\CoralFang\02 Dismantle Me.m4a" />
-	  <None Remove="Resources\Music\CoralFang\02DismantleMe.m4a" />
 	  <None Remove="Resources\Music\CoralFang\03 Die on a Rope.m4a" />
-	  <None Remove="Resources\Music\CoralFang\03DieonaRope.m4a" />
 	  <None Remove="Resources\Music\CoralFang\04 The Gallow Is God.m4a" />
-	  <None Remove="Resources\Music\CoralFang\04TheGallowIsGod.m4a" />
 	  <None Remove="Resources\Music\CoralFang\05 Coral Fang.m4a" />
-	  <None Remove="Resources\Music\CoralFang\05CoralFang.m4a" />
 	  <None Remove="Resources\Music\CoralFang\06 The Hunger.m4a" />
-	  <None Remove="Resources\Music\CoralFang\06TheHunger.m4a" />
 	  <None Remove="Resources\Music\CoralFang\07 Hall of Mirrors.m4a" />
-	  <None Remove="Resources\Music\CoralFang\07HallofMirrors.m4a" />
 	  <None Remove="Resources\Music\CoralFang\08 Beat Your Heart Out.m4a" />
-	  <None Remove="Resources\Music\CoralFang\08BeatYourHeartOut.m4a" />
 	  <None Remove="Resources\Music\CoralFang\09 Love Is Paranoid.m4a" />
-	  <None Remove="Resources\Music\CoralFang\09LoveIsParanoid.m4a" />
-	  <None Remove="Resources\Music\CoralFang\10ForTonightYou%27reOnlyHeretoKnow.m4a" />
-	  <None Remove="Resources\Music\CoralFang\11Deathsex.m4a" />
 	  <None Remove="Resources\Music\Emancipator\Dusk to Dawn\01 Minor Cause.m4a" />
 	  <None Remove="Resources\Music\Emancipator\Dusk to Dawn\02 Valhalla.m4a" />
 	  <None Remove="Resources\Music\Emancipator\Dusk to Dawn\03 Merlion.m4a" />
@@ -104,17 +93,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Include="Resources\Music\CoralFang\01DraintheBlood.m4a" />
-	  <EmbeddedResource Include="Resources\Music\CoralFang\02DismantleMe.m4a" />
-	  <EmbeddedResource Include="Resources\Music\CoralFang\03DieonaRope.m4a" />
-	  <EmbeddedResource Include="Resources\Music\CoralFang\04TheGallowIsGod.m4a" />
-	  <EmbeddedResource Include="Resources\Music\CoralFang\05CoralFang.m4a" />
-	  <EmbeddedResource Include="Resources\Music\CoralFang\06TheHunger.m4a" />
-	  <EmbeddedResource Include="Resources\Music\CoralFang\07HallofMirrors.m4a" />
-	  <EmbeddedResource Include="Resources\Music\CoralFang\08BeatYourHeartOut.m4a" />
-	  <EmbeddedResource Include="Resources\Music\CoralFang\09LoveIsParanoid.m4a" />
-	  <EmbeddedResource Include="Resources\Music\CoralFang\10ForTonightYou'reOnlyHeretoKnow.m4a" />
-	  <EmbeddedResource Include="Resources\Music\CoralFang\11Deathsex.m4a" />
 	  <MauiAsset Include="Resources\Music\Emancipator\Dusk to Dawn\01 Minor Cause.m4a" />
 	  <MauiAsset Include="Resources\Music\Emancipator\Dusk to Dawn\02 Valhalla.m4a" />
 	  <MauiAsset Include="Resources\Music\Emancipator\Dusk to Dawn\03 Merlion.m4a" />
@@ -152,6 +130,7 @@
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.14" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 		<PackageReference Include="MySql.Data" Version="8.3.0" />
+		<PackageReference Include="NAudio" Version="2.2.1" />
 		<PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
 		<PackageReference Include="System.Drawing.Common" Version="8.0.3" />
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />

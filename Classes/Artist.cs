@@ -49,6 +49,7 @@ namespace Betawave.Classes
         public void PrintArtistDetails()
         {
             Console.WriteLine($"Artist Name: {GetName()}");
+            Console.WriteLine(GetArtistId());
         }
     }
 }

@@ -9,27 +9,27 @@ public partial class PlayQueue : ContentPage
 
 
 
-    async void PQCreatePlaylistButton_Clicked(object sender, EventArgs e)
+    async void CreatePlaylistButton_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("///CreatePlaylist");
     }
 
-    async void PQmyPlaylistsButton_Clicked(object sender, EventArgs e)
+    async void myPlaylistsButton_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("///PlaylistView");
     }
 
-    async void PQFavouritesButton_Clicked(object sender, EventArgs e)
+    async void FavouritesButton_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("///FavouritesView");
     }
 
-    async void PQPlayQueueButton_Clicked(object sender, EventArgs e)
+    async void PlayQueueButton_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("///PlayQueue");
     }
 
-    async void PQBackButton_Clicked(object sender, EventArgs e)
+    async void BackButton_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("///LoginScreen");
     }

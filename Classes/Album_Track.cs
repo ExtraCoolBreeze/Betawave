@@ -5,13 +5,24 @@ namespace Betawave.Classes
 {
     public class Album_Track
     {
+        private int _album_id;
         private int _trackNumber;
-        private Song _song;
+        private Song _song_id;
 
-        public Album_Track(Song song, int trackNumber)
+        public Album_Track(Song songid, int trackNumber)
         {
-            _song = song;
+            _song_id = songid;
             _trackNumber = trackNumber;
+        }
+
+        public void SetAlbumId(int albumid)
+        {
+            _album_id = albumid;
+        }
+
+        public int GetAlbumId()
+        {   
+            return _album_id;
         }
 
         public int GetTrackNumber()
@@ -26,18 +37,19 @@ namespace Betawave.Classes
 
         public Song GetSong()
         {
-            return _song;
+            return _song_id;
         }
 
-        public void SetSong(Song song)
+        public void SetSong(Song songid)
         {
-            _song = song;
+            _song_id = songid;
         }
 
         public void PrintAlbumTrackDetails()
         {
+            Console.WriteLine(GetAlbumId());
             Console.WriteLine($"Track Number: {_trackNumber}");
-            Console.WriteLine($"Song: {_song.GetName()}");
+            Console.WriteLine($"Song: {_song_id.GetName()}");
         }
     }
 }

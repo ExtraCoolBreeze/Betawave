@@ -5,8 +5,9 @@ namespace Betawave.Classes
 {
     public class Album
     {
-        private int _albumId;
-        private string _name;
+        private int _album_id;
+        private string _album_title;
+        private string _image_location;
         private List<Album_Track> _tracks;
 
         public Album()
@@ -16,22 +17,32 @@ namespace Betawave.Classes
 
         public int GetAlbumId()
         {
-            return _albumId;
+            return _album_id;
         }
 
         public void SetAlbumId(int albumId)
         {
-            _albumId = albumId;
+            _album_id = albumId;
         }
 
-        public string GetName()
+        public string GetAlbumTitle()
         {
-            return _name;
+            return _album_title;
         }
 
-        public void SetName(string name)
+        public void SetAlbumTitle(string title)
         {
-            _name = name;
+            _album_title = title;
+        }
+
+        public void SetImageLocation(string imagelocation)
+        {
+            _image_location = imagelocation;
+        }
+
+        public string GetImageLocation()
+        {
+            return _image_location;
         }
 
         public List<Album_Track> GetTracks()
@@ -58,8 +69,8 @@ namespace Betawave.Classes
 
         public void PrintAlbumDetails()
         {
-            Console.WriteLine($"Album ID: {_albumId}");
-            Console.WriteLine($"Album Name: {_name}");
+            Console.WriteLine(GetAlbumId());
+            Console.WriteLine(GetAlbumTitle());
             Console.WriteLine("Tracks:");
             foreach (var track in _tracks)
             {

@@ -1,6 +1,7 @@
 ﻿using Betawave;
 using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui;
+using NAudio.Wave;
 
 
 namespace Betawave
@@ -17,6 +18,7 @@ namespace Betawave
                 .UseMauiCommunityToolkit()
                 .UseMauiCommunityToolkitMediaElement()
                 
+                
 
                 .ConfigureFonts(fonts =>
                 {
@@ -24,8 +26,11 @@ namespace Betawave
                     fonts.AddFont("Roboto-Bold.ttf", "RobotoBold");
                 });
 
+
+            builder.Services.AddSingleton<Player>();
+
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 
             //This is part of the application builder and adding these content pages here allow for dependency injection
             builder.Services.AddTransient<LoginScreen>();

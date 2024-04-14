@@ -214,4 +214,21 @@
                       Aspect="Center"/>
 	
 	
+	
+	
+	        private void PlayAudio()
+        {
+            string filePath = @"C:\Users\Craig\Desktop\Betawave8.0\Betawave\Resources\Music\FM\15 Tomorrow.mp3";
+            if (File.Exists(filePath))
+            {
+                audioPlayerService.LoadAndPlayMusic(filePath);
+            }
+            else
+            {
+                Console.WriteLine("File not found: " + filePath);
+            }
+        }
+	
+	
+	
  -->

@@ -1,61 +1,57 @@
-﻿using CommunityToolkit.Maui.Views;
-using Betawave.Classes;
-using CommunityToolkit.Maui.Core.Primitives;
-using System.Reflection;
-using Microsoft.Maui.Controls;
+﻿using NAudio.Wave;
 using System;
 using System.IO;
 
 public class Player
 {
-    private MediaElement _mediaElement;
+    private IWavePlayer _waveOutDevice;
+    private AudioFileReader _audioFileReader;
     private BasePlaylist _currentPlaylist;
     private Random _random = new Random();
     private bool _shuffle = false;
     private int _currentTrackIndex = -1;
-    private string _resourceName;
 
-    public Player(MediaElement mediaElement)
+    public Player()
     {
-        SetMediaElement(mediaElement);
+        _waveOutDevice = new WaveOutEvent();
     }
 
-    public MediaElementState GetCurrentState()
+    public bool IsPlaying
     {
-        return _mediaElement.CurrentState;
+        get { return _waveOutDevice.PlaybackState == PlaybackState.Playing; }
     }
 
-    public void SetMediaElement(MediaElement element)
-    {
-        _mediaElement = element;
-        _mediaElement.MediaEnded += OnMediaEnded;
-    }
 
-    public bool IsPlaying()
+    public void LoadAndPlayMusic(string filePath)
     {
-        return _mediaElement.CurrentState == MediaElementState.Playing;
-    }
-
-    public void LoadAndPlayMusic(string relativePath)
-    {
-        LoadMusic(relativePath);
+        LoadMusic(filePath);
         PlayMusic();
     }
 
-    private void OnMediaEnded(object sender, EventArgs e)
+    private void OnPlaybackStopped(object sender, StoppedEventArgs e)
     {
         if (_shuffle)
             PlayRandomTrack();
         else
             PlayNextTrack();
+
+        if (e.Exception != null)
+            Console.WriteLine($"Playback Stopped due to an error: {e.Exception.Message}");
     }
 
-    public void LoadMusic(string relativePath)
+    public void LoadMusic(string filePath)
     {
+        StopMusic(); // Stop current track before loading another
+
+        if (_audioFileReader != null)
+        {
+            _audioFileReader.Dispose(); // Dispose previous reader if exists
+        }
+
         try
         {
-            Uri fileUri = new Uri($"file:///{relativePath}", UriKind.Absolute);
-            _mediaElement.Source = fileUri;
+            _audioFileReader = new AudioFileReader(filePath);
+            _waveOutDevice.Init(_audioFileReader);
         }
         catch (Exception ex)
         {
@@ -65,46 +61,43 @@ public class Player
 
     public void PlayMusic()
     {
-        if (_mediaElement.Source != null)
+        if (_audioFileReader != null)
         {
-            _mediaElement.Play();
+            _waveOutDevice.Play();
         }
-        else 
-        { 
-            Console.WriteLine("_mediaElement.Source is null");
+        else
+        {
+            Console.WriteLine("Audio file is not loaded.");
         }
     }
 
     public void PauseMusic()
     {
-        _mediaElement.Pause();
+        _waveOutDevice.Pause();
     }
 
     public void StopMusic()
     {
-        _mediaElement.Stop();
+        _waveOutDevice.Stop();
     }
 
-    public void SetVolume(double volume)
+    public void SetVolume(float volume)
     {
-        _mediaElement.Volume = volume; // Volume is a value between 0.0 and 1.0
+        if (_audioFileReader != null)
+            _audioFileReader.Volume = volume; // Volume is a value between 0.0 (silent) and 1.0 (full volume)
     }
 
-    public double GetVolume()
+    public float GetVolume()
     {
-        return _mediaElement.Volume;
+        return _audioFileReader?.Volume ?? 0f;
     }
 
     public void SkipMusic()
     {
         if (_shuffle)
-        {
             PlayRandomTrack();
-        }
         else
-        {
             PlayNextTrack();
-        }
     }
 
     public void PlayNextTrack()
@@ -117,25 +110,23 @@ public class Player
             PlayMusic();
         }
     }
+
     public void SetShuffle(bool shuffle)
     {
         _shuffle = shuffle;
         Console.WriteLine($"Shuffle mode set to: {(_shuffle ? "Enabled" : "Disabled")}");
     }
 
-
     public bool GetShuffle()
     {
         return _shuffle;
     }
-
 
     public void ToggleShuffle()
     {
         _shuffle = !_shuffle;
         Console.WriteLine($"Shuffle mode: {(_shuffle ? "Enabled" : "Disabled")}");
     }
-
 
     public void PlayRandomTrack()
     {

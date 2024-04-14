@@ -2,17 +2,24 @@
 public abstract class BasePlaylist
 {
     private int _playlist_id;
-    private string _title = "";
+    private string _title;
+    private string _queue;
+    private int  _account_id;
+    private string _favourite;
     protected List<Playlist_Track> _playlistTracks = new List<Playlist_Track>(); // List to hold Playlist_Track objects
 
     protected BasePlaylist()
     {
         _title = "";
-    }
+        _playlist_id = 0;
+        _queue = "";
+        _favourite = "";
+        _account_id = 0;
+}
 
     public void SetPlayListId(int userinput)
     {
-        _playlist_id = _playlist_id;
+        _playlist_id = userinput;
     }
 
     public int GetPlaylistId()
