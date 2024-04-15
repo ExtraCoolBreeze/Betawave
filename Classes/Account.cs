@@ -9,14 +9,14 @@ namespace Betawave.Classes
 {
     public class Account
     {
-        private int account_id;
+        private int pkaccount_id;
         private string username;
         private string userpassword;
 
 
         public Account()
         {
-            account_id = 0;
+            pkaccount_id = 0;
             username = "";
             userpassword = "";
         }
@@ -56,12 +56,12 @@ namespace Betawave.Classes
         // need to complete this function, has to save the AccountId from the database 
         public void SetAccountId(int id)
         {
-            account_id = id;
+            pkaccount_id = id;
         }
 
         public int GetAccountId()
         { 
-            return account_id;
+            return pkaccount_id;
         }
 
         public string GetPassword()

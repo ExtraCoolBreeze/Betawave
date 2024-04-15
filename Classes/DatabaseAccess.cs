@@ -49,6 +49,25 @@ namespace Betawave.Classes
             }
         }
 
+        public int GetRoleForAccount(int accountId)
+        {
+            using (var connection = ConnectToMySql())
+            {
+                var command = new MySqlCommand("SELECT fkrole_id FROM account_role WHERE fkaccount_id = @AccountId", connection);
+                command.Parameters.AddWithValue("@AccountId", accountId);
+
+                var result = command.ExecuteScalar();
+                if (result != null)
+                {
+                    return Convert.ToInt32(result);
+                }
+                else
+                {
+                    throw new InvalidOperationException("No role found for the account.");
+                }
+            }
+        }
+
         public bool ValidateUser(string username, string password)
         {
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
@@ -74,8 +93,7 @@ namespace Betawave.Classes
             }
         }
 
-
-        private string HashPassword(string password)
+        public string HashPassword(string password)
         {
             using (SHA256 sha256Hash = SHA256.Create())
             {
@@ -88,28 +106,5 @@ namespace Betawave.Classes
                 return builder.ToString();
             }
         }
-
-        //uses 
-        public DataTable ExecuteQuery(string query, Dictionary<string, object> parameters)
-        {
-            DataTable dataTable = new DataTable();
-
-            using (var connection = ConnectToMySql())
-            using (var cmd = new MySqlCommand(query, connection))
-            {
-                foreach (var param in parameters)
-                {
-                    cmd.Parameters.AddWithValue(param.Key, param.Value);
-                }
-
-                using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
-                {
-                    adapter.Fill(dataTable);
-                }
-            }
-
-            return dataTable;
-        }
-
     }
 }
