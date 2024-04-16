@@ -10,27 +10,27 @@ namespace Betawave.Classes
 {
     public class Artist
     {
-        private int _artistId;
+        private int pkartistId;
         private string _name;
         public List<Featured_Artists> FeaturedSongs { get; set; } = new List<Featured_Artists>();
 
         // Constructor that takes 'name' as a parameter
         public Artist()
         {
-            _artistId = 0; // This ID should ideally be set uniquely, possibly managed by the database or a higher-level application logic
+            pkartistId = 0; // This ID should ideally be set uniquely, possibly managed by the database or a higher-level application logic
             _name = "";
         }
 
         // Getter method for artistId
         public int GetArtistId()
         {
-            return _artistId;
+            return pkartistId;
         }
 
         // Setter method for artistId
         public void SetArtistId(int id)
         {
-            _artistId = id;
+            pkartistId = id;
         }
 
         // Getter method for name
@@ -45,12 +45,18 @@ namespace Betawave.Classes
             _name = name;
         }
 
-        // PrintArtistDetails this likely needs changed and for testing.
         public void PrintArtistDetails()
         {
+            Console.WriteLine($"Artist ID: {GetArtistId()}");
             Console.WriteLine($"Artist Name: {GetName()}");
-            Console.WriteLine(GetArtistId());
+            // If you want to include featured songs:
+            Console.WriteLine("Featured Songs:");
+            foreach (var featured in FeaturedSongs)
+            {
+                Console.WriteLine($"- Song ID: {featured.GetSongId()} on Track: {featured.GetTrackNumber()}");
+            }
         }
+
     }
 }
 

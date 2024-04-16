@@ -19,5 +19,4 @@ namespace Betawave.Classes
         // Method to print the details of the playlist
         void PrintPlaylistDetails();
     }
-
 }

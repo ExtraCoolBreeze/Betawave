@@ -5,7 +5,7 @@ namespace Betawave.Classes
 {
     public class Album
     {
-        private int _album_id;
+        private int pkalbum_id;
         private string _album_title;
         private string _image_location;
         private List<Album_Track> _tracks;
@@ -13,16 +13,16 @@ namespace Betawave.Classes
         public Album()
         {
             _tracks = new List<Album_Track>();
-        }
+    }
 
         public int GetAlbumId()
         {
-            return _album_id;
+            return pkalbum_id;
         }
 
         public void SetAlbumId(int albumId)
         {
-            _album_id = albumId;
+            pkalbum_id = albumId;
         }
 
         public string GetAlbumTitle()
@@ -49,6 +49,7 @@ namespace Betawave.Classes
         {
             return _tracks;
         }
+
 
         public void AddTrack(Album_Track track)
         {

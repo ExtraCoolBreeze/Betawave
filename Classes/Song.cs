@@ -2,7 +2,7 @@
 
 public class Song
 {
-    private int _songId;
+    private int pksongId;
     private string _name;
     private List<Featured_Artists> _featuredArtists = new List<Featured_Artists>();
     private string _duration;
@@ -10,7 +10,7 @@ public class Song
 
     public Song()
     {
-        _songId = 0;
+        pksongId = 0;
         _name = "";
         _duration = "";
         _songLocation = "";
@@ -18,12 +18,12 @@ public class Song
 
     public int GetSongId()
     {
-        return _songId;
+        return pksongId;
     }
 
     public void SetSongId(int songId)
     {
-        _songId = songId;
+        pksongId = songId;
     }
 
     public string GetName()

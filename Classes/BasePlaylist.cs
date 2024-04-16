@@ -1,30 +1,31 @@
 ﻿using Betawave.Classes;
-public abstract class BasePlaylist
+using Windows.Web.AtomPub;
+public class BasePlaylist
 {
-    private int _playlist_id;
+    private int pkplaylist_id;
     private string _title;
     private string _queue;
-    private int  _account_id;
+    private int  fkaccount_id;
     private string _favourite;
     protected List<Playlist_Track> _playlistTracks = new List<Playlist_Track>(); // List to hold Playlist_Track objects
 
-    protected BasePlaylist()
+    public BasePlaylist()
     {
         _title = "";
-        _playlist_id = 0;
+        pkplaylist_id = 0;
         _queue = "";
         _favourite = "";
-        _account_id = 0;
+        _favourite = 0;
 }
 
     public void SetPlayListId(int userinput)
     {
-        _playlist_id = userinput;
+        pkplaylist_id = userinput;
     }
 
     public int GetPlaylistId()
     { 
-        return _playlist_id;
+        return pkplaylist_id;
     }
 
     public void SetTitle(string userInput)
@@ -35,6 +36,26 @@ public abstract class BasePlaylist
     public string GetTitle()
     {
         return _title;
+    }
+
+    public void SetQueue(string inputQueue)
+    {
+        _queue = inputQueue;
+    }
+
+    public string GetQueue()
+    {
+        return _queue;
+    }
+
+    public void SetFavourite()
+    { 
+    
+    }
+
+    public string GetFavourite()
+    {
+        return _favourite;
     }
 
     public virtual void AddToPlaylist(Playlist_Track track)

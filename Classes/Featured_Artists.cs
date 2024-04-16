@@ -10,8 +10,8 @@ namespace Betawave.Classes
 {
     public class Featured_Artists
     {
-        private Song _song;
-        private Artist _artist;
+        private Song fksong;
+        private Artist fkartist;
 
         // Constructor
         public Featured_Artists()
@@ -22,25 +22,25 @@ namespace Betawave.Classes
         // Getter method for Song
         public Song GetSong()
         {
-            return _song;
+            return fksong;
         }
 
         // Setter method for Song
         public void SetSong(Song value)
         {
-            _song = value;
+            fksong = value;
         }
 
         // Getter method for Artist
         public Artist GetArtist()
         {
-            return _artist;
+            return fkartist;
         }
 
         // Setter method for Artist
         public void SetArtist(Artist value)
         {
-            _artist = value;
+            fkartist = value;
         }
     }
 }
