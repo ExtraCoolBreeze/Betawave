@@ -64,8 +64,8 @@ public class Song
     public void AddFeaturedArtist(Artist artist)
     {
         var featuredArtist = new Featured_Artists();
-        featuredArtist.SetSong(this);
-        featuredArtist.SetArtist(artist);
+        featuredArtist.SetSongId(this);
+        featuredArtist.SetArtistId(artist);
 
         _featuredArtists.Add(featuredArtist);
         artist.FeaturedSongs.Add(featuredArtist);

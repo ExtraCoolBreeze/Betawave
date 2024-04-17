@@ -10,15 +10,23 @@ public class Player
     private Random _random = new Random();
     private bool _shuffle = false;
     private int _currentTrackIndex = -1;
+    public bool IsPlaying;
+    public event EventHandler<StoppedEventArgs> OnPlaybackStopped;
+
 
     public Player()
     {
         _waveOutDevice = new WaveOutEvent();
     }
 
-    public bool IsPlaying
+    public void SetIsPlaying()
     {
-        get { return _waveOutDevice.PlaybackState == PlaybackState.Playing; }
+        IsPlaying = _waveOutDevice.PlaybackState == PlaybackState.Playing;
+    }
+
+    public bool GetIsPlaying()
+    {
+        return IsPlaying;
     }
 
 
@@ -28,16 +36,6 @@ public class Player
         PlayMusic();
     }
 
-    private void OnPlaybackStopped(object sender, StoppedEventArgs e)
-    {
-        if (_shuffle)
-            PlayRandomTrack();
-        else
-            PlayNextTrack();
-
-        if (e.Exception != null)
-            Console.WriteLine($"Playback Stopped due to an error: {e.Exception.Message}");
-    }
 
     public void LoadMusic(string filePath)
     {
@@ -84,7 +82,10 @@ public class Player
     public void SetVolume(float volume)
     {
         if (_audioFileReader != null)
+        {
             _audioFileReader.Volume = volume; // Volume is a value between 0.0 (silent) and 1.0 (full volume)
+        }
+
     }
 
     public float GetVolume()
@@ -95,9 +96,14 @@ public class Player
     public void SkipMusic()
     {
         if (_shuffle)
+        {
             PlayRandomTrack();
+        }
         else
+        {
             PlayNextTrack();
+        }
+
     }
 
     public void PlayNextTrack()
@@ -105,7 +111,7 @@ public class Player
         if (_currentPlaylist != null && _currentPlaylist.GetTracks().Count > 0)
         {
             _currentTrackIndex = (_currentTrackIndex + 1) % _currentPlaylist.GetTracks().Count;
-            var trackUri = _currentPlaylist.GetTracks()[_currentTrackIndex].GetTrackUri(); // Assuming GetTrackUri() exists
+            var trackUri = _currentPlaylist.GetTracks()[_currentTrackIndex].GetTrackUri();
             LoadMusic(trackUri);
             PlayMusic();
         }
@@ -148,4 +154,5 @@ public class Player
     {
         _currentPlaylist.RemoveFromPlaylist(track);
     }
+
 }

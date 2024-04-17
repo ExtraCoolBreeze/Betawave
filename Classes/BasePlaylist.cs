@@ -1,5 +1,4 @@
 ﻿using Betawave.Classes;
-using Windows.Web.AtomPub;
 public class BasePlaylist
 {
     private int pkplaylist_id;
@@ -7,7 +6,7 @@ public class BasePlaylist
     private string _queue;
     private int  fkaccount_id;
     private string _favourite;
-    protected List<Playlist_Track> _playlistTracks = new List<Playlist_Track>(); // List to hold Playlist_Track objects
+    private List<Playlist_Track> _playlistTracks = new List<Playlist_Track>(); // List to hold Playlist_Track objects
 
     public BasePlaylist()
     {
@@ -15,7 +14,7 @@ public class BasePlaylist
         pkplaylist_id = 0;
         _queue = "";
         _favourite = "";
-        _favourite = 0;
+        _favourite = "";
 }
 
     public void SetPlayListId(int userinput)
@@ -48,9 +47,9 @@ public class BasePlaylist
         return _queue;
     }
 
-    public void SetFavourite()
-    { 
-    
+    public void SetFavourite(string fave)
+    {
+        _favourite = fave;
     }
 
     public string GetFavourite()
@@ -58,37 +57,43 @@ public class BasePlaylist
         return _favourite;
     }
 
-    public virtual void AddToPlaylist(Playlist_Track track)
+
+    public void SetAccountId(int accountid)
+    {
+        fkaccount_id = accountid;
+    }
+
+    public int GetAccountId()
+    { 
+        return fkaccount_id;
+    }
+
+    public void AddToPlaylist(Playlist_Track track)
     {
         _playlistTracks.Add(track);
     }
 
-    public virtual void RemoveFromPlaylist(Playlist_Track track)
+    public void RemoveFromPlaylist(Playlist_Track track)
     {
         _playlistTracks.Remove(track);
     }
 
     public List<Playlist_Track> GetTracks()
     {
-        return new List<Playlist_Track>(_playlistTracks);
+        return _playlistTracks;
     }
 
-    public virtual List<string> GetTrackLocations()
+    public List<string> GetTrackLocations()
     {
-        List<string> trackLocations = new List<string>();
-        foreach (var track in _playlistTracks)
-        {
-            trackLocations.Add(track.GetTrackUri());
-        }
-        return trackLocations;
+        return _playlistTracks.Select(track => track.GetTrackUri()).ToList();
     }
 
-    public virtual void PrintPlaylistDetails()
+    public void PrintPlaylistDetails()
     {
         Console.WriteLine($"Playlist Title: {GetTitle()}");
         foreach (var track in GetTracks())
         {
-            track.PrintPlaylistTrack(); // Assuming Playlist_Track has a method to print its details
+            track.PrintPlaylistTrack();
         }
     }
 }

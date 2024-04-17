@@ -12,8 +12,11 @@ namespace Betawave.Classes
 
         public Album()
         {
+            pkalbum_id = 0;
+            _album_title = "";
+            _image_location = "";
             _tracks = new List<Album_Track>();
-    }
+        }
 
         public int GetAlbumId()
         {

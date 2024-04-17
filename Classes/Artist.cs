@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-//I think this is functionally correct although needs double checking. Print functrion may need changing 
+//I think this is functionally correct although needs double checking. Print function may need changing 
 
 namespace Betawave.Classes
 {
@@ -14,10 +14,9 @@ namespace Betawave.Classes
         private string _name;
         public List<Featured_Artists> FeaturedSongs { get; set; } = new List<Featured_Artists>();
 
-        // Constructor that takes 'name' as a parameter
         public Artist()
         {
-            pkartistId = 0; // This ID should ideally be set uniquely, possibly managed by the database or a higher-level application logic
+            pkartistId = 0;
             _name = "";
         }
 
@@ -49,12 +48,6 @@ namespace Betawave.Classes
         {
             Console.WriteLine($"Artist ID: {GetArtistId()}");
             Console.WriteLine($"Artist Name: {GetName()}");
-            // If you want to include featured songs:
-            Console.WriteLine("Featured Songs:");
-            foreach (var featured in FeaturedSongs)
-            {
-                Console.WriteLine($"- Song ID: {featured.GetSongId()} on Track: {featured.GetTrackNumber()}");
-            }
         }
 
     }

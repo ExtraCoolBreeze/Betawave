@@ -1,5 +1,6 @@
-﻿using MySql.Data.MySqlClient;  // Assume this is where your Account class and others are defined
+﻿using MySql.Data.MySqlClient;
 using Betawave.Classes;
+using System.Data.SqlClient;
 
 public class DatabaseManager
 {
@@ -8,13 +9,113 @@ public class DatabaseManager
 
     public int CurrentUserRole { get; private set; }
 
+    private Dictionary<int, Album> albums = new Dictionary<int, Album>();
+    private Dictionary<int, Song> songs = new Dictionary<int, Song>();
+    private Dictionary<int, Artist> artists = new Dictionary<int, Artist>();
+    private Dictionary<int, BasePlaylist> playlists = new Dictionary<int, BasePlaylist>();
+
+
     public DatabaseManager(DatabaseAccess access)
     {
         dbAccess = access;
         CurrentUser = new Account();
     }
 
-    // Load user data at login
+    //--------------------------------------------- Below are methods & functions for reading information into the program from the database---------------------------------
+
+    public void LoadAllData()
+    {
+        LoadSongs();
+        LoadArtists();
+        LoadAlbums();
+        LoadPlaylists();
+    }
+    private void LoadSongs()
+    {
+        using (var connection = ConnectToMySql())
+        {
+            var command = new MySqlCommand("SELECT song_id, name, duration, song_location FROM song", connection);
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var song = new Song
+                    {
+                        SongId = reader.GetInt32("song_id"),
+                        Name = reader.GetString("name"),
+                        Duration = reader.GetString("duration"),
+                        SongLocation = reader.GetString("song_location")
+                    };
+                    songs[song.SongId] = song;
+                }
+            }
+        } // Connection is automatically closed here due to the using statement
+    }
+
+    private void LoadArtists()
+    {
+        using (var connection = ConnectToMySql())
+        {
+            var command = new MySqlCommand("SELECT artist_id, name FROM artist", connection);
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var artist = new Artist
+                    {
+                        ArtistId = reader.GetInt32("artist_id"),
+                        Name = reader.GetString("name")
+                    };
+                    artists[artist.ArtistId] = artist;
+                }
+            }
+        }
+    }
+
+    private void LoadAlbums()
+    {
+        using (var connection = ConnectToMySql())
+        {
+            var command = new MySqlCommand("SELECT album_id, title, image_location FROM album", connection);
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var album = new Album
+                    {
+                        AlbumId = reader.GetInt32("album_id"),
+                        AlbumTitle = reader.GetString("title"),
+                        ImageLocation = reader.GetString("image_location"),
+                        Tracks = new List<Song>() // Initialize an empty list of songs; load actual songs separately if needed
+                    };
+                    albums[album.AlbumId] = album;
+                }
+            }
+        }
+    }
+
+    private void LoadPlaylists()
+    {
+        using (var connection = ConnectToMySql())
+        {
+            var command = new MySqlCommand("SELECT playlist_id, title FROM playlist", connection);
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var playlist = new Playlist
+                    {
+                        PlaylistId = reader.GetInt32("playlist_id"),
+                        Title = reader.GetString("title"),
+                        Songs = new List<Song>() // Assuming you have a List<Song> in Playlist
+                    };
+                    playlists[playlist.PlaylistId] = playlist;
+                }
+            }
+        }
+    }
+
+
     public bool ReadInUserAccountTable(string username, string password)
     {
         if (dbAccess.ValidateUser(username, password))
@@ -229,7 +330,7 @@ public class DatabaseManager
 
                     // Assuming you have a method to fetch a Song by ID
                     Song song = GetSongById(songId);  // This method needs to be implemented or already exist
-                    var albumTrack = new Album_Track(song, trackNumber);
+                    var albumTrack = new Album_Track();
                     albumTrack.SetAlbumId(albumId);
 
                     tracks.Add(albumTrack);
@@ -347,8 +448,8 @@ public class DatabaseManager
                     Song song = GetSongById(songId);          // Assuming this function is already defined
 
                     Featured_Artists featured = new Featured_Artists();
-                    featured.SetArtist(artist);
-                    featured.SetSong(song);
+                    featured.SetArtistId(artist);
+                    featured.SetSongId(song);
                     featuredArtists.Add(featured);
                 }
             }
@@ -373,9 +474,9 @@ public class DatabaseManager
         {
             var command = new MySqlCommand("INSERT INTO playlist (title, queue, favourite, account_id) VALUES (@Title, @Queue, @Favourite, @AccountId)", connection);
             command.Parameters.AddWithValue("@Title", playlist.GetTitle());
-            command.Parameters.AddWithValue("@Queue", playlist.fkqueue); // Assuming fkqueue is now publicly accessible or has a getter method.
-            command.Parameters.AddWithValue("@Favourite", playlist.fkfavourite); // Similarly, assuming access to fkfavourite.
-            command.Parameters.AddWithValue("@AccountId", playlist.fkaccount_id); // Assuming access or getter method for fkaccount_id.
+            command.Parameters.AddWithValue("@Queue", playlist.GetQueue()); // Assuming fkqueue is now publicly accessible or has a getter method.
+            command.Parameters.AddWithValue("@Favourite", playlist.GetFavourite()); // Similarly, assuming access to fkfavourite.
+            command.Parameters.AddWithValue("@AccountId", playlist.GetAccountId()); // Assuming access or getter method for fkaccount_id.
             command.ExecuteNonQuery();
             int playlistId = (int)command.LastInsertedId;
 
@@ -398,9 +499,9 @@ public class DatabaseManager
                     playlist = new BasePlaylist();
                     playlist.SetPlayListId(playlistId);
                     playlist.SetTitle(reader.GetString("title"));
-                    playlist.fkqueue = reader.GetString("queue");
-                    playlist.fkfavourite = reader.GetString("favourite");
-                    playlist.fkaccount_id = reader.GetInt32("account_id");
+                    playlist.SetQueue(reader.GetString("queue"));
+                    playlist.SetFavourite(reader.GetString("favourite"));
+                    playlist.SetAccountId(reader.GetInt32("account_id"));
                 }
             }
         }
@@ -413,9 +514,9 @@ public class DatabaseManager
         {
             var command = new MySqlCommand("UPDATE playlist SET title = @Title, queue = @Queue, favourite = @Favourite, account_id = @AccountId WHERE playlist_id = @PlaylistId", connection);
             command.Parameters.AddWithValue("@Title", playlist.GetTitle());
-            command.Parameters.AddWithValue("@Queue", playlist.fkqueue);
-            command.Parameters.AddWithValue("@Favourite", playlist.fkfavourite);
-            command.Parameters.AddWithValue("@AccountId", playlist.fkaccount_id);
+            command.Parameters.AddWithValue("@Queue", playlist.GetQueue());
+            command.Parameters.AddWithValue("@Favourite", playlist.GetFavourite());
+            command.Parameters.AddWithValue("@AccountId", playlist.GetAccountId());
             command.Parameters.AddWithValue("@PlaylistId", playlist.GetPlaylistId());
             command.ExecuteNonQuery();
         }
@@ -453,7 +554,7 @@ public class DatabaseManager
             {
                 var featuredCommand = new MySqlCommand("INSERT INTO featured_artists (song_id, artist_id) VALUES (@SongId, @ArtistId)", connection);
                 featuredCommand.Parameters.AddWithValue("@SongId", songId);
-                featuredCommand.Parameters.AddWithValue("@ArtistId", featured.GetArtist().GetArtistId());
+                featuredCommand.Parameters.AddWithValue("@ArtistId", featured.GetArtistId());
                 featuredCommand.ExecuteNonQuery();
             }
         }
@@ -593,6 +694,62 @@ public class DatabaseManager
         }
     }
 
+    //-------------------------------------------------------------------------Below are method and functions that write information from the program to the database-----------------------------------------------------------------------------------
+
+    public void SaveAlbum(Album album)
+    {
+        using (var connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            using (var transaction = connection.BeginTransaction())
+            {
+                try
+                {
+                    // Check if the album already exists
+                    var checkAlbumCommand = new SqlCommand("SELECT COUNT(*) FROM album WHERE album_id = @AlbumId", connection, transaction);
+                    checkAlbumCommand.Parameters.AddWithValue("@AlbumId", album.AlbumId);
+                    int albumExists = (int)checkAlbumCommand.ExecuteScalar();
+
+                    if (albumExists == 0)
+                    {
+                        // Save the new Album
+                        var albumCommand = new SqlCommand("INSERT INTO album (album_id, title, image_location) VALUES (@Id, @Title, @Image)", connection, transaction);
+                        albumCommand.Parameters.AddWithValue("@Id", album.AlbumId);
+                        albumCommand.Parameters.AddWithValue("@Title", album.AlbumTitle);
+                        albumCommand.Parameters.AddWithValue("@Image", album.ImageLocation);
+                        albumCommand.ExecuteNonQuery();
+
+                        // Save each Song and its relationship in Album_Track
+                        foreach (var song in album.Tracks)
+                        {
+                            var songCommand = new SqlCommand("INSERT INTO song (song_id, name, duration, song_location) VALUES (@SongId, @Name, @Duration, @Location)", connection, transaction);
+                            songCommand.Parameters.AddWithValue("@SongId", song.SongId);
+                            songCommand.Parameters.AddWithValue("@Name", song.Name);
+                            songCommand.Parameters.AddWithValue("@Duration", song.Duration);
+                            songCommand.Parameters.AddWithValue("@Location", song.SongLocation);
+                            songCommand.ExecuteNonQuery();
+
+                            var trackCommand = new SqlCommand("INSERT INTO album_track (album_id, song_id) VALUES (@AlbumId, @SongId)", connection, transaction);
+                            trackCommand.Parameters.AddWithValue("@AlbumId", album.AlbumId);
+                            trackCommand.Parameters.AddWithValue("@SongId", song.SongId);
+                            trackCommand.ExecuteNonQuery();
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Album already exists. No new songs were added.");
+                    }
+
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw new Exception("Failed to save album", ex);
+                }
+            }
+        }
+    }
+
+
 }
-
-

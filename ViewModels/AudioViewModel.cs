@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+using NAudio.Wave;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -14,17 +16,19 @@ namespace Betawave.ViewModels
         private ICommand toggleShuffleCommand;
         private float volume = 1.0f;
         private bool shuffle;
+        private TimeSpan currentCount;
+        private string maxDuration;
 
         public AudioViewModel()
         {
-
-
             playPauseCommand = new Command(TogglePlayPause);
             stopCommand = new Command(StopAudio);
             skipCommand = new Command(SkipAudio);
             toggleShuffleCommand = new Command(ToggleShuffle);
 
             shuffle = audioPlayerService.GetShuffle(); // Initialize shuffle state from the player
+            audioPlayerService.OnPlaybackStopped -= HandlePlaybackStopped;
+
         }
 
         public ICommand PlayPauseCommand
@@ -93,13 +97,11 @@ namespace Betawave.ViewModels
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void HandlePlaybackStopped(object sender, StoppedEventArgs e)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            if (e.Exception != null)
+                Console.WriteLine($"Playback Stopped due to an error: {e.Exception.Message}");
         }
-
 
         private void StopAudio()
         {
@@ -115,5 +117,13 @@ namespace Betawave.ViewModels
         {
             audioPlayerService.ToggleShuffle();
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
     }
 }
