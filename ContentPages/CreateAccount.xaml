@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Betawave.ViewModels"
              x:Class="Betawave.CreateAccount"
              Title="CreateAccount">
-    
+
+    <ContentPage.BindingContext>
+        <vm:CreateAccountViewModel/>
+    </ContentPage.BindingContext>
+
     <Frame CornerRadius="15" Margin="0" Padding="0" HeightRequest="400" WidthRequest="350">
         <VerticalStackLayout Margin="0" Background="#27232E">
             <Image Source="betawave3.png" Margin="5" HeightRequest="80" WidthRequest="80"></Image>
 
-            <Entry Placeholder="type your username" Margin="5" Background="#ffffff" x:Name="usernameEntry"/>
-            <Entry Placeholder="type your password" Margin="5" Background="#ffffff" x:Name="passwordEntry" IsPassword="True"/>
-            <Button Text="Create Account" FontSize="20" Margin="5" x:Name="CACreateButton" Clicked="CACreateButton_Clicked"></Button>
+            <Entry Placeholder="type your username" Margin="5" Background="#ffffff" x:Name="usernameEntry" Text="{Binding Username}"/>
+            <Entry Placeholder="type your password" Margin="5" Background="#ffffff" x:Name="passwordEntry" Text="{Binding Password}" IsPassword="True"/>
+            <Button Text="Create Account" FontSize="20" Margin="5" x:Name="CACreateButton" Command="{Binding CreateAccountCommand}" ></Button>
             <Button Text="Back" FontSize="20" Margin="5" x:Name="CABackButton" Clicked="CABackButton_Clicked"></Button>
 
         </VerticalStackLayout>

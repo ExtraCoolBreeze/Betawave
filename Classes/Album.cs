@@ -9,6 +9,7 @@ namespace Betawave.Classes
         private string _album_title;
         private string _image_location;
         private List<Album_Track> _tracks;
+        private List<Song> AlbumSongs;
 
         public Album()
         {
@@ -16,6 +17,7 @@ namespace Betawave.Classes
             _album_title = "";
             _image_location = "";
             _tracks = new List<Album_Track>();
+            AlbumSongs = new List<Song>();
         }
 
         public int GetAlbumId()
@@ -48,6 +50,32 @@ namespace Betawave.Classes
             return _image_location;
         }
 
+        //------------------------------------------------------- functions to store list of album songs
+
+        public List<Song> GetAlbumSongs()
+        { 
+            return AlbumSongs;
+        }
+
+        public void SetAlbumSongs(List<Song> songData)
+        {
+            AlbumSongs = songData;
+        }
+
+        public void AddTrack(Song song)
+        {
+            if (song == null)
+            {
+                throw new ArgumentNullException(nameof(song), "Cannot add a null song to the album.");
+            }
+
+            AlbumSongs.Add(song);
+        }
+
+
+        //-------------------------------------------------------end of functions to store list of album songs
+
+
         public List<Album_Track> GetTracks()
         {
             return _tracks;
@@ -63,7 +91,7 @@ namespace Betawave.Classes
         {
             foreach (var track in _tracks)
             {
-                if (track.GetTrackNumber() == trackNumber) // Changed to use GetTrackNumber() method
+                if (track.GetTrackNumber() == trackNumber) 
                 {
                     return track;
                 }

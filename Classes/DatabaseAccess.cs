@@ -25,75 +25,63 @@ namespace Betawave.Classes
             }
         }
 
-        public bool CheckUserExists(string username)
+        public async Task<bool> CheckUserExists(string username)
         {
-            using (var connection = ConnectToMySql())
-            using (var cmd = new MySqlCommand("SELECT COUNT(*) FROM account WHERE username = @Username", connection))
+            using (var connection = new MySqlConnection(MySqlConnectionString))
             {
-                cmd.Parameters.AddWithValue("@Username", username);
-                int userCount = Convert.ToInt32(cmd.ExecuteScalar());
-                return userCount > 0;
-            }
-        }
-
-        public void CreateUser(string username, string password)
-        {
-            string hashedPassword = HashPassword(password);
-
-            using (var connection = ConnectToMySql())
-            using (var cmd = new MySqlCommand("INSERT INTO account (username, userpassword) VALUES (@Username, @UserPassword);", connection))
-            {
-                cmd.Parameters.AddWithValue("@Username", username);
-                cmd.Parameters.AddWithValue("@UserPassword", hashedPassword);
-                cmd.ExecuteNonQuery();
-            }
-        }
-
-        public int GetRoleForAccount(int accountId)
-        {
-            using (var connection = ConnectToMySql())
-            {
-                var command = new MySqlCommand("SELECT fkrole_id FROM account_role WHERE fkaccount_id = @AccountId", connection);
-                command.Parameters.AddWithValue("@AccountId", accountId);
-
-                var result = command.ExecuteScalar();
-                if (result != null)
+                await connection.OpenAsync();
+                using (var cmd = new MySqlCommand("SELECT COUNT(*) FROM account WHERE username = @Username", connection))
                 {
-                    return Convert.ToInt32(result);
-                }
-                else
-                {
-                    throw new InvalidOperationException("No role found for the account.");
+                    cmd.Parameters.AddWithValue("@Username", username);
+                    int userCount = Convert.ToInt32(await cmd.ExecuteScalarAsync());
+                    return userCount > 0;
                 }
             }
         }
 
-        public bool ValidateUser(string username, string password)
+        public async Task CreateUser(string username, string password)
         {
-            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            try
             {
-                return false;
+                string hashedPassword = HashPassword(password);
+                using (var connection = new MySqlConnection(MySqlConnectionString))
+                {
+                    await connection.OpenAsync();
+                    using (var cmd = new MySqlCommand("INSERT INTO account (username, userpassword) VALUES (@Username, @UserPassword);", connection))
+                    {
+                        cmd.Parameters.AddWithValue("@Username", username);
+                        cmd.Parameters.AddWithValue("@UserPassword", hashedPassword);
+                        await cmd.ExecuteNonQueryAsync();
+                    }
+                }
             }
-
-            string hashedPassword = HashPassword(password);
-
-            // Use ConnectToMySql method to establish the connection
-            using (var connection = ConnectToMySql())
+            catch (Exception e)
             {
-                // Use a parameterized query to prevent SQL injection
+                Console.WriteLine($"Error in CreateUser: {e.Message}");
+                throw;  // Or handle the exception appropriately
+            }
+        }
+
+
+        public async Task<bool> ValidateUser(string username, string password)
+        {
+            string hashedPassword = HashPassword(password);
+            using (var connection = new MySqlConnection(MySqlConnectionString))
+            {
+                await connection.OpenAsync();
                 string query = "SELECT COUNT(*) FROM account WHERE username = @Username AND userpassword = @UserPassword";
                 using (var cmd = new MySqlCommand(query, connection))
                 {
                     cmd.Parameters.AddWithValue("@Username", username);
                     cmd.Parameters.AddWithValue("@UserPassword", hashedPassword);
 
-                    int userCount = Convert.ToInt32(cmd.ExecuteScalar());
+                    int userCount = Convert.ToInt32(await cmd.ExecuteScalarAsync());
                     return userCount > 0;
                 }
             }
         }
 
-        public string HashPassword(string password)
+        private string HashPassword(string password)
         {
             using (SHA256 sha256Hash = SHA256.Create())
             {
@@ -106,5 +94,28 @@ namespace Betawave.Classes
                 return builder.ToString();
             }
         }
+
+        public bool IsAdmin(string username)
+        {
+            using (var connection = ConnectToMySql())
+            {
+                // SQL query to check admin status by joining the account, account_role, and role tables
+                string query = @" SELECT r.admin FROM role r INNER JOIN account_role ar ON r.role_id = ar.role_id INNER JOIN account a ON ar.account_id = a.account_id WHERE a.username = @Username";
+
+                using (var cmd = new MySqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@Username", username);
+                    var result = cmd.ExecuteScalar(); // Returns the 'admin' field value, expected to be 0 or 1
+
+                    // Check the result and return true if the user is an admin
+                    if (result != null && Convert.ToInt32(result) == 1)
+                    {
+                        return true; // User is an admin
+                    }
+                }
+            }
+            return false; // Default to false if no result or the user is not an admin
+        }
+
     }
 }

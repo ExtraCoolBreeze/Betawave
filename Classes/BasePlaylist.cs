@@ -1,4 +1,5 @@
 ﻿using Betawave.Classes;
+using Org.BouncyCastle.Utilities;
 public class BasePlaylist
 {
     private int pkplaylist_id;
@@ -7,6 +8,7 @@ public class BasePlaylist
     private int  fkaccount_id;
     private string _favourite;
     private List<Playlist_Track> _playlistTracks = new List<Playlist_Track>(); // List to hold Playlist_Track objects
+    private List<Song> PlaylistSongs;
 
     public BasePlaylist()
     {
@@ -15,9 +17,10 @@ public class BasePlaylist
         _queue = "";
         _favourite = "";
         _favourite = "";
+        PlaylistSongs = new List<Song>();
 }
 
-    public void SetPlayListId(int userinput)
+    public void SetPlaylistId(int userinput)
     {
         pkplaylist_id = userinput;
     }
@@ -67,6 +70,32 @@ public class BasePlaylist
     { 
         return fkaccount_id;
     }
+
+    //--------------------------------Start of functions to store the list of playlist songs
+
+    public List<Song> GetPlaylistSongs()
+    {
+        // You could add logic here to modify what is returned
+        return PlaylistSongs;
+    }
+
+    public void SetPlaylistSongs(List<Song> value)
+    {
+        // You could add logic here to modify what is set
+        PlaylistSongs = value;
+    }
+
+    public void AddPlaylistSong(Song song)
+    {
+        if (song == null)
+            throw new ArgumentNullException(nameof(song), "Cannot add a null song to the playlist.");
+        PlaylistSongs.Add(song);
+    }
+
+
+    //--------------------------------End of functions to store the list of playlist songs
+
+
 
     public void AddToPlaylist(Playlist_Track track)
     {

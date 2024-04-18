@@ -12,51 +12,95 @@ namespace Betawave.ViewModels
         private Player audioPlayerService = new Player();
         private ICommand playPauseCommand;
         private ICommand stopCommand;
-        private ICommand skipCommand;
+        private ICommand skipNextCommand;
+        private ICommand skipPreviousCommand;
         private ICommand toggleShuffleCommand;
         private float volume = 1.0f;
         private bool shuffle;
-        private TimeSpan currentCount;
-        private string maxDuration;
+        private string currentTrackName;
+        private string currentTrackArtist;
+        private double currentTrackPosition;
+        private double trackLength;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
 
         public AudioViewModel()
         {
             playPauseCommand = new Command(TogglePlayPause);
             stopCommand = new Command(StopAudio);
-            skipCommand = new Command(SkipAudio);
+            skipNextCommand = new Command(() => audioPlayerService.PlayNextTrack()); // Play next track
+            skipPreviousCommand = new Command(() => audioPlayerService.PlayPreviousTrack()); // Play previous track
             toggleShuffleCommand = new Command(ToggleShuffle);
 
             shuffle = audioPlayerService.GetShuffle(); // Initialize shuffle state from the player
-            audioPlayerService.OnPlaybackStopped -= HandlePlaybackStopped;
+            audioPlayerService.OnPlaybackStopped += HandlePlaybackStopped; // Correctly subscribe to the event
 
+            audioPlayerService.TrackChanged += UpdateTrackDetails;
         }
 
-        public ICommand PlayPauseCommand
+        public ICommand PlayPauseCommand => playPauseCommand;
+        public ICommand StopCommand => stopCommand;
+        public ICommand SkipNextCommand => skipNextCommand;
+        public ICommand SkipPreviousCommand => skipPreviousCommand;
+        public ICommand ToggleShuffleCommand => toggleShuffleCommand;
+
+
+        public string CurrentTrackName
         {
-            get { return playPauseCommand; }
+            get => currentTrackName;
+            set
+            {
+                if (currentTrackName != value)
+                {
+                    currentTrackName = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
-        public ICommand StopCommand
+        public string CurrentTrackArtist
         {
-            get { return stopCommand; }
-            set { stopCommand = value; }
+            get => currentTrackArtist;
+            set
+            {
+                if (currentTrackArtist != value)
+                {
+                    currentTrackArtist = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
-        public ICommand SkipCommand
+        public double CurrentTrackPosition
         {
-            get { return skipCommand; }
-            set { skipCommand = value; }
+            get => currentTrackPosition;
+            set
+            {
+                if (currentTrackPosition != value)
+                {
+                    currentTrackPosition = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
-        public ICommand ToggleShuffleCommand
+        public double TrackLength
         {
-            get { return toggleShuffleCommand; }
-            set { toggleShuffleCommand = value; }
+            get => trackLength;
+            set
+            {
+                if (trackLength != value)
+                {
+                    trackLength = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public float Volume
         {
-            get { return volume; }
+            get => volume;
             set
             {
                 if (Math.Abs(volume - value) > 0.01) // Adding a tolerance to prevent unnecessary updates
@@ -70,7 +114,7 @@ namespace Betawave.ViewModels
 
         public bool Shuffle
         {
-            get { return shuffle; }
+            get => shuffle;
             set
             {
                 if (shuffle != value)
@@ -82,48 +126,64 @@ namespace Betawave.ViewModels
             }
         }
 
-        private void TogglePlayPause()
+        public void TogglePlayPause()
         {
-            // Check the current playing state and toggle accordingly
             if (audioPlayerService.IsPlaying)
             {
                 audioPlayerService.PauseMusic();
-               // PlayPauseIcon = "play.png";
             }
             else
             {
                 audioPlayerService.PlayMusic();
-                //PlayPauseIcon = "pause.png";
             }
         }
 
-        private void HandlePlaybackStopped(object sender, StoppedEventArgs e)
+        public void HandlePlaybackStopped(object sender, StoppedEventArgs e)
         {
             if (e.Exception != null)
+            {
                 Console.WriteLine($"Playback Stopped due to an error: {e.Exception.Message}");
+            }
         }
 
-        private void StopAudio()
+
+        public void SkipNext()
+        {
+            audioPlayerService.PlayNextTrack();
+        }
+
+        public void SkipPrevious()
+        {
+            audioPlayerService.PlayPreviousTrack();
+        }
+
+
+        public void StopAudio()
         {
             audioPlayerService.StopMusic();
         }
 
-        private void SkipAudio()
+        public void SkipAudio()
         {
             audioPlayerService.SkipMusic();
         }
 
-        private void ToggleShuffle()
+        public void ToggleShuffle()
         {
             audioPlayerService.ToggleShuffle();
+            
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        private void UpdateTrackDetails(object sender, EventArgs e)
+        {
+            // Update the track name and artist from your player
+            CurrentTrackName = audioPlayerService.GetCurrentTrackName();
+            CurrentTrackArtist = audioPlayerService.GetCurrentTrackArtist(); 
+        }
 
         public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
     }
 }

@@ -11,18 +11,23 @@ public class Player
     private bool _shuffle = false;
     private int _currentTrackIndex = -1;
     public bool IsPlaying;
+
     public event EventHandler<StoppedEventArgs> OnPlaybackStopped;
+    public event EventHandler TrackChanged; // Event to notify when the track changes
+    public event EventHandler PlaybackPositionChanged;
 
 
     public Player()
     {
         _waveOutDevice = new WaveOutEvent();
+        _waveOutDevice.PlaybackStopped += OnPlaybackStoppedInternal;
     }
 
     public void SetIsPlaying()
     {
         IsPlaying = _waveOutDevice.PlaybackState == PlaybackState.Playing;
     }
+
 
     public bool GetIsPlaying()
     {
@@ -50,6 +55,7 @@ public class Player
         {
             _audioFileReader = new AudioFileReader(filePath);
             _waveOutDevice.Init(_audioFileReader);
+            TrackChanged?.Invoke(this, EventArgs.Empty); // Notify that track has changed
         }
         catch (Exception ex)
         {
@@ -62,6 +68,8 @@ public class Player
         if (_audioFileReader != null)
         {
             _waveOutDevice.Play();
+            // Start a timer or similar to update the playback position
+            StartPositionUpdateTimer();
         }
         else
         {
@@ -117,6 +125,18 @@ public class Player
         }
     }
 
+    public void PlayPreviousTrack()
+    {
+        if (_currentPlaylist != null && _currentPlaylist.GetTracks().Count > 0)
+        {
+            _currentTrackIndex = (_currentTrackIndex - 1 + _currentPlaylist.GetTracks().Count) % _currentPlaylist.GetTracks().Count;
+            var trackUri = _currentPlaylist.GetTracks()[_currentTrackIndex].GetTrackUri();
+            LoadMusic(trackUri);
+            PlayMusic();
+        }
+    }
+
+
     public void SetShuffle(bool shuffle)
     {
         _shuffle = shuffle;
@@ -153,6 +173,52 @@ public class Player
     public void RemoveFromPlaylist(Playlist_Track track)
     {
         _currentPlaylist.RemoveFromPlaylist(track);
+    }
+    private void OnPlaybackStoppedInternal(object sender, StoppedEventArgs e)
+    {
+        OnPlaybackStopped?.Invoke(this, e);
+    }
+
+    public double CurrentTrackPosition
+    {
+        get => _audioFileReader?.CurrentTime.TotalSeconds ?? 0;
+        set
+        {
+            if (_audioFileReader != null && _audioFileReader.TotalTime.TotalSeconds > value)
+            {
+                _audioFileReader.CurrentTime = TimeSpan.FromSeconds(value);
+                PlaybackPositionChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+    }
+
+    public string GetCurrentTrackName()
+    {
+        if (_currentPlaylist != null && _currentTrackIndex >= 0 && _currentTrackIndex < _currentPlaylist.GetTracks().Count)
+        {
+            return _currentPlaylist.GetTracks()[_currentTrackIndex].GetTitle();
+        }
+        return "Unknown Track";
+    }
+
+    public string GetCurrentTrackArtist()
+    {
+        if (_currentPlaylist != null && _currentTrackIndex >= 0 && _currentTrackIndex < _currentPlaylist.GetTracks().Count)
+        {
+            return _currentPlaylist.GetTracks()[_currentTrackIndex].GetArtist();
+        }
+        return "Unknown Artist";
+    }
+
+    public double TrackLength
+    {
+        get => _audioFileReader?.TotalTime.TotalSeconds ?? 0;
+    }
+
+    private void StartPositionUpdateTimer()
+    {
+        // Implement a timer or use event-driven updates that frequently checks the playback position
+        // and raises the PlaybackPositionChanged event if there is a significant change.
     }
 
 }

@@ -1,48 +1,26 @@
-using Betawave.Classes; // Ensure this using directive is added to access the Account and DatabaseAccess classes
+using Betawave.Classes;
+using Betawave.ViewModels;
 
 namespace Betawave;
 
 public partial class LoginScreen : ContentPage
 {
-    private readonly DatabaseAccess dbAccess = new DatabaseAccess(); // Assuming DatabaseAccess is needed for account operations
 
     public LoginScreen()
     {
         InitializeComponent();
+        this.Appearing += OnAppearingHandler;
     }
 
-    async void LoginButton_Clicked(object sender, EventArgs e)
+    private void OnAppearingHandler(object sender, EventArgs e)
     {
-        string enteredUsername = usernameEntry.Text;
-        string enteredPassword = passwordEntry.Text;
-
-        // Check if the username or password fields are empty or contain only whitespace
-        if (string.IsNullOrWhiteSpace(enteredUsername) || string.IsNullOrWhiteSpace(enteredPassword))
+        var viewModel = this.BindingContext as MainViewModel;
+        if (viewModel != null)
         {
-            // Inform the user that both fields are required
-            await DisplayAlert("Error", "Both username and password are required.", "OK");
-            return; // Exit the method early if validation fails
-        }
-
-        //hard coded admin details for purpose of testing
-        if (enteredUsername == "4Dm1n42" && enteredPassword == "1t1s4test")
-        {
-            await Shell.Current.GoToAsync("///AdminDashboard");
-        }
-        
-        // Proceed with the login attempt if validation passes
-        if (dbAccess.ValidateUser(enteredUsername, enteredPassword))
-        {
-            await Shell.Current.GoToAsync("///MainMenu"); // Adjust navigation as needed
-        }
-        else
-        {
-            // Inform the user about incorrect credentials
-            await DisplayAlert("Error", "Username or password incorrect.", "OK");
+            viewModel.Username = "";  // Clear the username
+            viewModel.Password = "";  // Clear the password
         }
     }
-
-
 
     async void CreateAccountButton_Clicked(object sender, EventArgs e)
     {

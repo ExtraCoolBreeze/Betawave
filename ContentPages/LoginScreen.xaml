@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Betawave.ViewModels"
              x:Class="Betawave.LoginScreen"
              Title="LoginScreen">
+
+    <ContentPage.BindingContext>
+        <vm:MainViewModel/>
+    </ContentPage.BindingContext>
 
     <Frame CornerRadius="15" Margin="0" Padding="0" HeightRequest="400" WidthRequest="350">
         <VerticalStackLayout Margin="0" Background="#27232E">
@@ -11,11 +16,11 @@
             Text="error"
             VerticalOptions="Center" 
             HorizontalOptions="Center" Margin="3" x:Name="LSErrorLabel" />
-            <Entry Placeholder="type your username" Margin="3" Background="#ffffff" x:Name="usernameEntry"/>
-            <Entry Placeholder="type your password" Margin="3" Background="#ffffff" x:Name="passwordEntry" IsPassword="True"/>
-            <Button Text="Login" FontSize="20" Margin="3" x:Name="LoginButton" Clicked="LoginButton_Clicked"></Button>
+            <Entry Placeholder="type your username" Margin="3" Background="#ffffff" x:Name="usernameEntry" Text="{Binding Username}" />
+            <Entry Placeholder="type your password" Margin="3" Background="#ffffff" x:Name="passwordEntry" Text="{Binding Password}" IsPassword="True"/>
+            <Button Text="Login" FontSize="20" Margin="3" x:Name="LoginButton" Command="{Binding LoginCommand}"> </Button>
             <Button Text="Create Account" FontSize="20" Margin="3" x:Name="CreateAccountButton" Clicked="CreateAccountButton_Clicked"></Button>
             <Button Text="Close" FontSize="20" Margin="3" x:Name="LSCloseButton" Clicked="LSCloseButton_Clicked"></Button>
         </VerticalStackLayout>
     </Frame>
-</ContentPage>
+</ContentPage> 

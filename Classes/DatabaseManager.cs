@@ -30,95 +30,92 @@ public class DatabaseManager
         LoadAlbums();
         LoadPlaylists();
     }
-    private void LoadSongs()
+    public void LoadSongs()
     {
-        using (var connection = ConnectToMySql())
+        using (var connection = dbAccess.ConnectToMySql())
         {
             var command = new MySqlCommand("SELECT song_id, name, duration, song_location FROM song", connection);
             using (var reader = command.ExecuteReader())
             {
                 while (reader.Read())
                 {
-                    var song = new Song
-                    {
-                        SongId = reader.GetInt32("song_id"),
-                        Name = reader.GetString("name"),
-                        Duration = reader.GetString("duration"),
-                        SongLocation = reader.GetString("song_location")
-                    };
-                    songs[song.SongId] = song;
+
+                    var song = new Song();
+                    song.SetSongId(reader.GetInt32("song_id"));
+                    song.SetName(reader.GetString("name"));
+                    song.SetDuration(reader.GetString("duration"));
+                    song.SetSongLocation(reader.GetString("song_location"));
+                    
+                    songs[song.GetSongId()] = song;
                 }
             }
         } // Connection is automatically closed here due to the using statement
     }
 
-    private void LoadArtists()
+    public void LoadArtists()
     {
-        using (var connection = ConnectToMySql())
+        using (var connection = dbAccess.ConnectToMySql())
         {
             var command = new MySqlCommand("SELECT artist_id, name FROM artist", connection);
             using (var reader = command.ExecuteReader())
             {
                 while (reader.Read())
                 {
-                    var artist = new Artist
-                    {
-                        ArtistId = reader.GetInt32("artist_id"),
-                        Name = reader.GetString("name")
-                    };
-                    artists[artist.ArtistId] = artist;
+                    var artist = new Artist();
+                    artist.SetArtistId(reader.GetInt32("artist_id"));
+                    artist.SetName(reader.GetString("name"));
+                    
+                    artists[artist.GetArtistId()] = artist;
                 }
             }
         }
     }
 
-    private void LoadAlbums()
+    public void LoadAlbums()
     {
-        using (var connection = ConnectToMySql())
+        using (var connection = dbAccess.ConnectToMySql())
         {
             var command = new MySqlCommand("SELECT album_id, title, image_location FROM album", connection);
             using (var reader = command.ExecuteReader())
             {
                 while (reader.Read())
                 {
-                    var album = new Album
-                    {
-                        AlbumId = reader.GetInt32("album_id"),
-                        AlbumTitle = reader.GetString("title"),
-                        ImageLocation = reader.GetString("image_location"),
-                        Tracks = new List<Song>() // Initialize an empty list of songs; load actual songs separately if needed
-                    };
-                    albums[album.AlbumId] = album;
+                    var album = new Album();
+                    album.SetAlbumId(reader.GetInt32("album_id"));
+                    album.SetAlbumTitle(reader.GetString("title"));
+                    album.SetImageLocation(reader.GetString("image_location"));
+                    var Track = new List<Song>(); // Initialize an empty list of songs; load actual songs separately if needed
+                    
+                    albums[album.GetAlbumId()] = album;
                 }
             }
         }
     }
 
-    private void LoadPlaylists()
+    public void LoadPlaylists()
     {
-        using (var connection = ConnectToMySql())
+        using (var connection = dbAccess.ConnectToMySql())
         {
             var command = new MySqlCommand("SELECT playlist_id, title FROM playlist", connection);
             using (var reader = command.ExecuteReader())
             {
                 while (reader.Read())
                 {
-                    var playlist = new Playlist
-                    {
-                        PlaylistId = reader.GetInt32("playlist_id"),
-                        Title = reader.GetString("title"),
-                        Songs = new List<Song>() // Assuming you have a List<Song> in Playlist
-                    };
-                    playlists[playlist.PlaylistId] = playlist;
+                    var playlist = new BasePlaylist();
+                    playlist.SetPlaylistId(reader.GetInt32("playlist_id"));
+                    playlist.SetTitle(reader.GetString("title"));
+                    var Songs = new List<Song>(); // Assuming you have a List<Song> in Playlist
+                    
+                    playlists[playlist.GetPlaylistId()] = playlist;
                 }
             }
         }
     }
 
 
-    public bool ReadInUserAccountTable(string username, string password)
+    public async Task<bool> ReadInUserAccountTable(string username, string password)
     {
-        if (dbAccess.ValidateUser(username, password))
+        if (await dbAccess.ValidateUser(username, password)) // Use await here as well
         {
             using (var connection = dbAccess.ConnectToMySql())
             {
@@ -163,9 +160,9 @@ public class DatabaseManager
         return roles;
     }
 
-    public bool LoadCurrentUser(string username, string password)
+    public async Task<bool> LoadCurrentUser(string username, string password)
     {
-        if (dbAccess.ValidateUser(username, password))
+        if (await dbAccess.ValidateUser(username, password)) // Use await to handle Task<bool>
         {
             using (var connection = dbAccess.ConnectToMySql())
             {
@@ -193,7 +190,7 @@ public class DatabaseManager
     }
 
     // Method to retrieve the role ID for a given account ID within DatabaseManager
-    private int GetRoleForAccount(int accountId)
+    public int GetRoleForAccount(int accountId)
     {
         using (var connection = dbAccess.ConnectToMySql())
         {
@@ -480,7 +477,7 @@ public class DatabaseManager
             command.ExecuteNonQuery();
             int playlistId = (int)command.LastInsertedId;
 
-            playlist.SetPlayListId(playlistId); // Update the playlist object with its new ID
+            playlist.SetPlaylistId(playlistId); // Update the playlist object with its new ID
         }
     }
 
@@ -497,7 +494,7 @@ public class DatabaseManager
                 if (reader.Read())
                 {
                     playlist = new BasePlaylist();
-                    playlist.SetPlayListId(playlistId);
+                    playlist.SetPlaylistId(playlistId);
                     playlist.SetTitle(reader.GetString("title"));
                     playlist.SetQueue(reader.GetString("queue"));
                     playlist.SetFavourite(reader.GetString("favourite"));
@@ -696,7 +693,7 @@ public class DatabaseManager
 
     //-------------------------------------------------------------------------Below are method and functions that write information from the program to the database-----------------------------------------------------------------------------------
 
-    public void SaveAlbum(Album album)
+/*    public void SaveAlbum(Album album)
     {
         using (var connection = new SqlConnection(connectionString))
         {
@@ -749,7 +746,7 @@ public class DatabaseManager
                 }
             }
         }
-    }
+    }*/
 
 
 }
