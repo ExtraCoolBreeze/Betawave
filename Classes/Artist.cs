@@ -10,44 +10,42 @@ namespace Betawave.Classes
 {
     public class Artist
     {
-        private int pkartistId;
-        private string _name;
-        public List<Featured_Artists> FeaturedSongs { get; set; } = new List<Featured_Artists>();
+        private int artistId;
+        private string ArtistName;
 
         public Artist()
         {
-            pkartistId = 0;
-            _name = "";
+            artistId = 0;
+            ArtistName = "";
         }
 
         // Getter method for artistId
         public int GetArtistId()
         {
-            return pkartistId;
+            return artistId;
         }
 
         // Setter method for artistId
         public void SetArtistId(int id)
         {
-            pkartistId = id;
+            artistId = id;
         }
 
         // Getter method for name
         public string GetName()
         {
-            return _name;
+            return ArtistName;
         }
 
         // Setter method for name
         public void SetName(string name)
         {
-            _name = name;
+            ArtistName = name;
         }
 
         public void PrintArtistDetails()
         {
-            Console.WriteLine($"Artist ID: {GetArtistId()}");
-            Console.WriteLine($"Artist Name: {GetName()}");
+            Console.WriteLine($"Artist ID: {GetArtistId()}, Artist Name: {GetName()}");
         }
 
     }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Betawave.Classes
+﻿namespace Betawave.Classes
 {
 
     // When an account is created always generate 2 playlists, one in this class that is a queue object with Queue with the queue indentifier set to yes to match the database,
@@ -11,36 +8,47 @@ namespace Betawave.Classes
     //VALUES('<playlist_id>', '<title>', '<queue>', '<favourite>', '<account_id>');
 
 
+
+
     public class Queue : BasePlaylist
     {
-        private bool checkQueued = false;
+        private Queue<Song> songQueue = new Queue<Song>();
 
         public Queue() : base()
         {
-         
         }
 
-        public string CreatePlaylist(string userInput)
+        public void EnqueueSong(Song song)
         {
-            SetTitle(userInput);
-            return userInput;
+            songQueue.Enqueue(song);
         }
 
-        public void SetCheckQueued(string userInput)
+        public Song DequeueSong()
         {
-            if (bool.TryParse(userInput, out bool result))
+            if (songQueue.Count > 0)
             {
-                checkQueued = result;
+                return songQueue.Dequeue();
             }
             else
             {
-                Console.WriteLine("Invalid input for checkQueued.");
+                return null;
             }
         }
 
-        public bool GetCheckQueued()
+
+        public void ClearQueue()
         {
-            return checkQueued;
+            songQueue.Clear();
+        }
+
+        public void PrintQueue()
+        {
+            Console.WriteLine($"Current Queue: {songQueue.Count} songs.");
+            foreach (Song song in songQueue)
+            {
+                Console.WriteLine($"Song: {song.GetName()}");
+            }
         }
     }
+
 }

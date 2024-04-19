@@ -117,5 +117,28 @@ namespace Betawave.Classes
             return false; // Default to false if no result or the user is not an admin
         }
 
+        public async Task<Account> GetUserByUsername(string username)
+        {
+            using (var connection = ConnectToMySql())
+            {
+                var command = new MySqlCommand("SELECT * FROM account WHERE username = @Username", connection);
+                command.Parameters.AddWithValue("@Username", username);
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    if (reader.Read())
+                    {
+                        Account user = new Account();
+                        user.SetAccountId(reader.GetInt32("account_id"));
+                        user.SetUsername(reader.GetString("username"), out string _); // Assuming you handle the output parameter within the setter.
+                        user.SetPassword(reader.GetString("userpassword"), out string _); // Assuming you handle password similarly.
+                        user.SetIsAdmin(reader.GetBoolean("is_admin")); // This assumes there's a field in your DB that indicates if the user is admin.
+                        return user;
+                    }
+                }
+            }
+            return null; // Return null if user is not found
+        }
+
+
     }
 }

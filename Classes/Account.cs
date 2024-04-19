@@ -12,6 +12,7 @@ namespace Betawave.Classes
         private int pkaccount_id;
         private string username;
         private string userpassword;
+        private bool IsAdmin;
 
 
         public Account()
@@ -19,6 +20,7 @@ namespace Betawave.Classes
             pkaccount_id = 0;
             username = "";
             userpassword = "";
+            IsAdmin = false;
         }
 
         public string GetUsername()
@@ -53,10 +55,9 @@ namespace Betawave.Classes
             }
         }
 
-        // need to complete this function, has to save the AccountId from the database 
-        public void SetAccountId(int id)
+        public void SetAccountId(int data)
         {
-            pkaccount_id = id;
+            pkaccount_id = data;
         }
 
         public int GetAccountId()
@@ -69,10 +70,23 @@ namespace Betawave.Classes
             return userpassword;
         }
 
+        public void SetIsAdmin(bool data)
+        { 
+            IsAdmin = data;
+        }
+
+        public bool GetIsAdmin()
+        { 
+            return IsAdmin;
+        }
+
         public void PrintAccountDetails()
         {
             Console.WriteLine("Username: " + GetUsername());
-            Console.WriteLine("Password: " + GetPassword()); // Note: Printing passwords can be a security risk
+            Console.WriteLine("Password: " + GetPassword());
+            Console.WriteLine("Username: " + GetAccountId());
+            Console.WriteLine("Password: " + GetIsAdmin());
+
 
         }
 

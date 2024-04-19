@@ -1,113 +1,90 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using System;
+
 namespace Betawave.Classes
 {
-    public class Album
+    public class Album : PlaylistControl
     {
-        private int pkalbum_id;
-        private string _album_title;
-        private string _image_location;
-        private List<Album_Track> _tracks;
-        private List<Song> AlbumSongs;
+        private int albumId;
+        private string albumTitle;
+        private string imageLocation;
+        private int artistId;
+        private Artist artist;
+        private ArtistManager artistManager;  // Reference to the ArtistManager
 
-        public Album()
+        public Album(ArtistManager artistManager)
         {
-            pkalbum_id = 0;
-            _album_title = "";
-            _image_location = "";
-            _tracks = new List<Album_Track>();
-            AlbumSongs = new List<Song>();
+            albumId = 0;
+            albumTitle = "";
+            imageLocation = "";
+            artistId = 0;
+            this.artistManager = artistManager;
         }
 
         public int GetAlbumId()
         {
-            return pkalbum_id;
+            return albumId;
         }
 
         public void SetAlbumId(int albumId)
         {
-            pkalbum_id = albumId;
+            this.albumId = albumId;
         }
 
         public string GetAlbumTitle()
         {
-            return _album_title;
+            return albumTitle;
         }
 
         public void SetAlbumTitle(string title)
         {
-            _album_title = title;
+            albumTitle = title;
         }
 
         public void SetImageLocation(string imagelocation)
         {
-            _image_location = imagelocation;
+            imageLocation = imagelocation;
         }
 
         public string GetImageLocation()
         {
-            return _image_location;
+            return imageLocation;
         }
 
-        //------------------------------------------------------- functions to store list of album songs
-
-        public List<Song> GetAlbumSongs()
-        { 
-            return AlbumSongs;
-        }
-
-        public void SetAlbumSongs(List<Song> songData)
+        public void SetArtistId(int id)
         {
-            AlbumSongs = songData;
+            artistId = id;
+            artist = null;  // Invalidate the cached artist when ID changes
         }
 
-        public void AddTrack(Song song)
+        public int GetArtistId()
         {
-            if (song == null)
+            return artistId;
+        }
+
+        public void SetArtist(Artist artist)
+        {
+            this.artist = artist;
+        }
+
+
+        public Artist GetArtist()
+        {
+            if (artist == null && artistManager != null)
             {
-                throw new ArgumentNullException(nameof(song), "Cannot add a null song to the album.");
+                artist = artistManager.GetArtistById(artistId);
             }
-
-            AlbumSongs.Add(song);
-        }
-
-
-        //-------------------------------------------------------end of functions to store list of album songs
-
-
-        public List<Album_Track> GetTracks()
-        {
-            return _tracks;
-        }
-
-
-        public void AddTrack(Album_Track track)
-        {
-            _tracks.Add(track);
-        }
-
-        public Album_Track FindTrackByNumber(int trackNumber)
-        {
-            foreach (var track in _tracks)
-            {
-                if (track.GetTrackNumber() == trackNumber) 
-                {
-                    return track;
-                }
-            }
-            return null;
+            return artist;
         }
 
         public void PrintAlbumDetails()
         {
-            Console.WriteLine(GetAlbumId());
-            Console.WriteLine(GetAlbumTitle());
-            Console.WriteLine("Tracks:");
-            foreach (var track in _tracks)
-            {
-                track.PrintAlbumTrackDetails();
-            }
+            Console.WriteLine("Album ID: " + GetAlbumId());
+            Console.WriteLine("Title: " + GetAlbumTitle());
+            Console.WriteLine("Artist ID: " + GetArtistId());
+            Console.WriteLine("Artist Name: " + GetArtist()?.GetName());
         }
     }
 }

@@ -8,38 +8,44 @@ using System.Collections.Generic;
 
 namespace Betawave.Classes
 {
+    using System.Collections.Generic;
+
     public class Favourites : BasePlaylist
     {
-        private string _favourite;
+        private List<Song> favouriteSongs = new List<Song>();
 
         public Favourites() : base()
         {
-            _favourite = "";
+            // Load favourites from the database
         }
 
-        public string CreatePlaylist(string userInput)
+        public void AddToFavourites(Song song)
         {
-            SetTitle(userInput);
-            return userInput;
-        }
-
-        public void SetFavourite(string userInput)
-        {
-            _favourite = userInput;
-        }
-
-        public string GetFavourite()
-        {
-            return _favourite;
-        }
-
-        public new void PrintPlaylistDetails()
-        {
-            Console.WriteLine($"Favourites Playlist Title: {GetTitle()}, Favourite: {_favourite}");
-            foreach (var track in GetTracks())
+            if (!favouriteSongs.Contains(song))
             {
-                track.PrintPlaylistTrack();
+                favouriteSongs.Add(song);
+                // Add to database
+            }
+        }
+
+        public bool RemoveFromFavourites(Song song)
+        {
+            bool removed = favouriteSongs.Remove(song);
+            if (removed)
+            {
+                // Remove from database
+            }
+            return removed;
+        }
+
+        public void PrintFavourites()
+        {
+            Console.WriteLine("Favourite Songs:");
+            foreach (Song song in favouriteSongs)
+            {
+                Console.WriteLine($"Song: {song.GetName()}");
             }
         }
     }
+
 }

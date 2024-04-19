@@ -52,6 +52,7 @@
                 <ImageButton Source="shuffle.png" x:Name="Shuffle" Command="{Binding ToggleShuffleCommand}" Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="7" BackgroundColor="#27232E" />
                 <ImageButton Source="add.png" x:Name="AddTrackToPlaylist" Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="8" BackgroundColor="#27232E" />
                 <Label Text="{Binding CurrentTrackName}" TextColor="White" Margin="0" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="9"/>
+                <Image Source="C:\Users\Craig\Desktop\Betawave8.0\Betawave\Resources\Images\default.png" x:Name="SongArt" Command="{Binding ImageUpdate}" Aspect="AspectFill" HorizontalOptions="Center"> </Image>
 
                 <!-- Second Row Elements -->
                 <Image Source="volume.png" x:Name="Mute_Unmute" Scale="0.7" Grid.Column="0" Grid.Row="1" />

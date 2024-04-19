@@ -17,12 +17,12 @@ namespace Betawave.Classes
             fkrole_id = 0;
         }
 
-        public void SetAccountRole(int accountid)
+        public void SetAccountId(int accountid)
         {
             fkaccount_id = accountid;
         }
 
-        public int GetAccountRole()
+        public int GetAccountId()
         {
             return fkaccount_id;
         }
@@ -39,7 +39,7 @@ namespace Betawave.Classes
 
         public void PrintAccountRole()
         {
-            Console.WriteLine(GetAccountRole());
+            Console.WriteLine(GetAccountId());
             Console.WriteLine(GetRoleId());
         }
     }

@@ -2,73 +2,73 @@
 using Org.BouncyCastle.Utilities;
 public class BasePlaylist
 {
-    private int pkplaylist_id;
-    private string _title;
-    private string _queue;
-    private int  fkaccount_id;
-    private string _favourite;
-    private List<Playlist_Track> _playlistTracks = new List<Playlist_Track>(); // List to hold Playlist_Track objects
+    private int pkplaylistId;
+    private string PlaylistTitle;
+    private string isQueue;
+    private int  fkaccountId;
+    private string isFavourite;
+    private List<Playlist_Track> PlaylistTracks = new List<Playlist_Track>();
     private List<Song> PlaylistSongs;
 
     public BasePlaylist()
     {
-        _title = "";
-        pkplaylist_id = 0;
-        _queue = "";
-        _favourite = "";
-        _favourite = "";
+        PlaylistTitle = "";
+        pkplaylistId = 0;
+        isQueue = "";
+        isFavourite = "";
+        isFavourite = "";
         PlaylistSongs = new List<Song>();
 }
 
     public void SetPlaylistId(int userinput)
     {
-        pkplaylist_id = userinput;
+        pkplaylistId = userinput;
     }
 
     public int GetPlaylistId()
     { 
-        return pkplaylist_id;
+        return pkplaylistId;
     }
 
     public void SetTitle(string userInput)
     {
-        _title = userInput;
+        PlaylistTitle = userInput;
     }
 
     public string GetTitle()
     {
-        return _title;
+        return PlaylistTitle;
     }
 
     public void SetQueue(string inputQueue)
     {
-        _queue = inputQueue;
+        isQueue = inputQueue;
     }
 
     public string GetQueue()
     {
-        return _queue;
+        return isQueue;
     }
 
     public void SetFavourite(string fave)
     {
-        _favourite = fave;
+        isFavourite = fave;
     }
 
     public string GetFavourite()
     {
-        return _favourite;
+        return isFavourite;
     }
 
 
     public void SetAccountId(int accountid)
     {
-        fkaccount_id = accountid;
+        fkaccountId = accountid;
     }
 
     public int GetAccountId()
     { 
-        return fkaccount_id;
+        return fkaccountId;
     }
 
     //--------------------------------Start of functions to store the list of playlist songs
@@ -81,14 +81,16 @@ public class BasePlaylist
 
     public void SetPlaylistSongs(List<Song> value)
     {
-        // You could add logic here to modify what is set
         PlaylistSongs = value;
     }
 
     public void AddPlaylistSong(Song song)
     {
         if (song == null)
+        {
             throw new ArgumentNullException(nameof(song), "Cannot add a null song to the playlist.");
+        }
+
         PlaylistSongs.Add(song);
     }
 
@@ -97,32 +99,32 @@ public class BasePlaylist
 
 
 
-    public void AddToPlaylist(Playlist_Track track)
+/*    public void AddToPlaylist(Playlist_Track track)
     {
-        _playlistTracks.Add(track);
+        PlaylistTracks.Add(track);
     }
 
     public void RemoveFromPlaylist(Playlist_Track track)
     {
-        _playlistTracks.Remove(track);
+        PlaylistTracks.Remove(track);
     }
 
     public List<Playlist_Track> GetTracks()
     {
-        return _playlistTracks;
+        return PlaylistTracks;
     }
 
     public List<string> GetTrackLocations()
     {
-        return _playlistTracks.Select(track => track.GetTrackUri()).ToList();
-    }
+        return PlaylistTracks.Select(track => track.GetTrackUri()).ToList();
+    }*/
 
     public void PrintPlaylistDetails()
     {
         Console.WriteLine($"Playlist Title: {GetTitle()}");
-        foreach (var track in GetTracks())
+        foreach (var song in GetPlaylistSongs())
         {
-            track.PrintPlaylistTrack();
+            Console.WriteLine($"Song: {song.GetName()}");
         }
     }
 }

@@ -210,6 +210,18 @@ public class Player
         return "Unknown Artist";
     }
 
+    //Need to complete this function.
+
+    public string GetCurrentTrackImageUrl()
+    {
+        if (_currentPlaylist != null && _currentTrackIndex >= 0 && _currentTrackIndex < _currentPlaylist.GetTracks().Count)
+        {
+            return ""; //_currentPlaylist.GetTracks()[_currentTrackIndex].GetImageUri();
+        }
+        return "default_album_cover.png";  // Return a default image if no track is loaded or if no image URL is set
+    }
+
+
     public double TrackLength
     {
         get => _audioFileReader?.TotalTime.TotalSeconds ?? 0;

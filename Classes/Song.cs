@@ -3,17 +3,19 @@
 public class Song
 {
     private int pksongId;
-    private string _name;
-    private List<Featured_Artists> _featuredArtists = new List<Featured_Artists>();
-    private string _duration;
-    private string _songLocation;
+    private string songName;
+    private int artistId;
+    private string songDuration;
+    private string songLocation;
+    private Artist artist;
 
     public Song()
     {
         pksongId = 0;
-        _name = "";
-        _duration = "";
-        _songLocation = "";
+        songName = "";
+        artistId = 0;
+        songDuration = "";
+        songLocation = "";
     }
 
     public int GetSongId()
@@ -28,52 +30,58 @@ public class Song
 
     public string GetName()
     {
-        return _name;
+        return songName;
     }
 
     public void SetName(string value)
     {
-        _name = value;
+        songName = value;
     }
 
-    public List<Featured_Artists> GetFeaturedArtists()
+    public int GetArtistId()
     {
-        return _featuredArtists;
+        return artistId;
+    }
+
+    public void SetArtistId(int value)
+    {
+        artistId = value;
     }
 
     public string GetDuration()
     {
-        return _duration;
+        return songDuration;
     }
 
     public void SetDuration(string value)
     {
-        _duration = value;
+        songDuration = value;
     }
 
     public string GetSongLocation()
     {
-        return _songLocation;
+        return songLocation;
     }
 
     public void SetSongLocation(string value)
     {
-        _songLocation = value;
+        songLocation = value;
     }
 
-    public void AddFeaturedArtist(Artist artist)
+    public void SetArtist(Artist data)
     {
-        var featuredArtist = new Featured_Artists();
-        featuredArtist.SetSongId(this);
-        featuredArtist.SetArtistId(artist);
-
-        _featuredArtists.Add(featuredArtist);
-        artist.FeaturedSongs.Add(featuredArtist);
+        artist = data;
     }
+
+    public Artist GetArtist()
+    {
+       return artist;
+    }
+
 
     // Method to print the details of the song
     public void PrintSong()
     {
-        Console.WriteLine($"Name: {_name}, Duration: {_duration}, Location: {_songLocation}");
+        Console.WriteLine($"Name: {songName}, Duration: {songDuration}, Location: {songLocation}");
     }
 }

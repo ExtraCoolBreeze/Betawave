@@ -3,39 +3,35 @@ using System.Drawing;
 
 public class Playlist_Track
 {
-    private int fkplaylist_id;
-    private int _trackNumber;
-    private string _artist;
-    private string _title;
-    private TimeSpan _duration;
-    private string _trackUri;
-    private int fksong_id;
+    private int fkplaylistId;
+    private int trackNumber;
+    private int fksongId;
+    private Song Song;
 
-    public Playlist_Track(Song song)
+    public Playlist_Track()
     {
-        _title = "";
-        _trackNumber = 0;
-        _artist = "";
-        _trackUri = song.GetSongLocation();
-        _duration = TimeSpan.Zero; // Initializes duration to 0
+        fkplaylistId = 0;
+        trackNumber = 0;
+        fksongId = 0;
+        Song = null;
     }
 
 
     public void SetPlaylistId(int id)
     {
-        fkplaylist_id = id;
+        fkplaylistId = id;
     }
 
     public int GetPlaylistId()
     {
-        return fkplaylist_id;
+        return fkplaylistId;
     }
 
     public void SetTrackNumber(string userInput)
     {
         if (int.TryParse(userInput, out int parsedTrackNumber))
         {
-            _trackNumber = parsedTrackNumber;
+            trackNumber = parsedTrackNumber;
         }
         else
         {
@@ -45,65 +41,37 @@ public class Playlist_Track
 
     public int GetTrackNumber()
     {
-        return _trackNumber;
-    }
-
-    public void SetTitle(string title)
-    {
-        _title = title;
-    }
-
-    public string GetTitle()
-    { 
-        return _title;
-    }
-
-    public void SetArtist(string artist)
-    {
-        _artist = artist;
-    }
-
-    public string GetArtist()
-    { 
-        return _artist;
-    }
-
-    public void SetDuration(TimeSpan duration)
-    {
-        _duration = duration;
-    }
-
-    public TimeSpan GetDuration()
-    { 
-        return _duration;
-    }
-
-
-
-    public void SetTrackUri(string trackuri)
-    {
-        _trackUri = trackuri;
-    }
-
-    public string GetTrackUri()
-    { 
-        return _trackUri;
+        return trackNumber;
     }
 
     public int GetSongId()
     {
-        return fksong_id;
+        return fksongId;
        
     }
 
     public void SetSongId( int songid)
     {
-        fksong_id = songid;
+        fksongId = songid;
     }
 
-    public void PrintPlaylistTrack()
+    public Song GetSong()
     {
-        Console.WriteLine($"Title: {_title}, Track Number: {GetTrackNumber()}, Artist: {_artist}, Duration: {_duration}");
+        return Song;
+    }
+
+    public void SetSong(Song value)
+    {
+        Song = value;
+    }
+
+    public void PrintPlaylistTrackDetails()
+    {
+        Console.WriteLine($"Playlist ID: {GetPlaylistId()}, Track Number: {GetTrackNumber()}, Song ID: {GetSongId()}");
+        if (Song != null)
+        {
+            Console.WriteLine($"Song Details: Name: {Song.GetName()}, Duration: {Song.GetDuration()}");
+        }
     }
 }
 

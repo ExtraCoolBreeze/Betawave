@@ -17,10 +17,11 @@ namespace Betawave.ViewModels
         private ICommand toggleShuffleCommand;
         private float volume = 1.0f;
         private bool shuffle;
-        private string currentTrackName;
-        private string currentTrackArtist;
-        private double currentTrackPosition;
-        private double trackLength;
+        private string currentTrackName = "Track Name: ";
+        private string currentTrackArtist = "Artist Name: ";
+        private double currentTrackPosition = 0.00;
+        private double trackLength = 0.00;
+        private string _currentTrackImageUrl = "C:\\Users\\Craig\\Desktop\\Betawave8.0\\Betawave\\Resources\\Images\\default.png"; // Default image
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -126,6 +127,20 @@ namespace Betawave.ViewModels
             }
         }
 
+        public string CurrentTrackImageUrl
+        {
+            get => _currentTrackImageUrl;
+            set
+            {
+                if (_currentTrackImageUrl != value)
+                {
+                    _currentTrackImageUrl = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+
         public void TogglePlayPause()
         {
             if (audioPlayerService.IsPlaying)
@@ -176,9 +191,10 @@ namespace Betawave.ViewModels
 
         private void UpdateTrackDetails(object sender, EventArgs e)
         {
-            // Update the track name and artist from your player
+            CurrentTrackImageUrl = audioPlayerService.GetCurrentTrackImageUrl();
             CurrentTrackName = audioPlayerService.GetCurrentTrackName();
-            CurrentTrackArtist = audioPlayerService.GetCurrentTrackArtist(); 
+            CurrentTrackArtist = audioPlayerService.GetCurrentTrackArtist();
+
         }
 
         public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

@@ -68,7 +68,7 @@
                 <ImageButton Source="favorite.png" x:Name="FavouriteTrack" Scale="0.5" Margin="0" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="2" BackgroundColor="#27232E" />
                 <ImageButton Source="repeat.png" x:Name="Repeat" Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="3" BackgroundColor="#27232E" />
                 <ImageButton Source="backward.png" x:Name="SkipToPrevious" Command="{Binding SkipPreviousCommand}" Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="4" BackgroundColor="#27232E" />
-                <ImageButton Source="play.png" x:Name="Play" Command="{Binding PlayCommand}" Scale="0.5" Grid.Column="5" BackgroundColor="#27232E"/>
+                <ImageButton Source="play.png" x:Name="Play" Command="{Binding PlayPauseCommand}" Scale="0.5" Grid.Column="5" BackgroundColor="#27232E"/>
                 <ImageButton Source="forward.png" x:Name="SkipToForward" Command="{Binding SkipNextCommand}" Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="6" BackgroundColor="#27232E"/>
                 <ImageButton Source="shuffle.png" x:Name="Shuffle" Command="{Binding ToggleShuffleCommand}" Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="7" BackgroundColor="#27232E" />
                 <ImageButton Source="add.png" x:Name="AddTrackToPlaylist" Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="8" BackgroundColor="#27232E" />

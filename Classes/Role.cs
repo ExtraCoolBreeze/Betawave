@@ -8,24 +8,23 @@ namespace Betawave.Classes
 {
     public class Role
     {
-        private int role_id;
+        private int roleId;
         private int admin;
 
         public Role()
         {
             admin = 0;
-            role_id = 0;
+            roleId = 0;
         }
 
-        public void SetRoleId(int role)
+        public void SetRoleId(int data)
         {
-            role_id = role;
-            role_id++;
+            roleId = data;
         }
 
         public int GetRoleId()
         {
-            return role_id;
+            return roleId;
         }
 
         public void SetAdmin(int isAdmin)
