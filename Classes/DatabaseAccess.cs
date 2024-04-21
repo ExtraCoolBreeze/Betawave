@@ -139,6 +139,17 @@ namespace Betawave.Classes
             return null; // Return null if user is not found
         }
 
+        public int GetRoleForAccountId(int accountId)
+        {
+            using (var connection = ConnectToMySql())
+            {
+                var command = new MySqlCommand("SELECT role_id FROM account_role WHERE account_id = @AccountId", connection);
+                command.Parameters.AddWithValue("@AccountId", accountId);
+                var result = command.ExecuteScalar();
+                return result != null ? Convert.ToInt32(result) : -1; // Return -1 or another appropriate value if no role found
+            }
+        }
+
 
     }
 }

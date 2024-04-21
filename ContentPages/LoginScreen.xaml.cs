@@ -14,7 +14,7 @@ public partial class LoginScreen : ContentPage
 
     private void OnAppearingHandler(object sender, EventArgs e)
     {
-        var viewModel = this.BindingContext as MainViewModel;
+        var viewModel = this.BindingContext as LoginViewModel;
         if (viewModel != null)
         {
             viewModel.Username = "";  // Clear the username

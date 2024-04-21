@@ -45,7 +45,7 @@ namespace Betawave
             builder.Services.AddTransient<AdminDashboard>();
             builder.Services.AddTransient<AddMediaScreen>();
             builder.Services.AddTransient<PlayQueue>();
-
+            builder.Services.AddTransient<AddAlbum>();
 #endif
 
             return builder.Build();

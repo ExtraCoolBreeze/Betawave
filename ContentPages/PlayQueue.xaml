@@ -16,7 +16,7 @@
                 <VerticalStackLayout Margin="9" BackgroundColor="#27232E">
                    
                     <!-- Your existing VerticalStackLayout content -->
-                    <Label Text="Test test test" FontSize="20" TextColor="Red" Margin="5" VerticalOptions="Start" HorizontalOptions="Center" />
+                    <Label Text="Type and press enter to search" FontSize="14" TextColor="White" Margin="5" VerticalOptions="Start" HorizontalOptions="Center"/>
                     <Entry Placeholder="type your password" Margin="5" Background="#ffffff"/>
                     <Button Text="Create Playlist" FontSize="20" Margin="5" x:Name="CreatePlaylistButton" Clicked="CreatePlaylistButton_Clicked"/>
                     <Button Text="My Playlists" FontSize="20" Margin="5" x:Name="myPlaylistsButton" Clicked="myPlaylistsButton_Clicked"/>
@@ -53,7 +53,8 @@
                 <ImageButton Source="forward.png" x:Name="SkipToForward" Command="{Binding SkipNextCommand}" Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="6" BackgroundColor="#27232E"/>
                 <ImageButton Source="shuffle.png" x:Name="Shuffle" Command="{Binding ToggleShuffleCommand}" Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="7" BackgroundColor="#27232E" />
                 <ImageButton Source="add.png" x:Name="AddTrackToPlaylist" Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="8" BackgroundColor="#27232E" />
-                <Label Text="{Binding CurrentTrackName}" TextColor="White" Margin="0" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="9"/>
+                <Label Text="{Binding CurrentTrackName}" TextColor="White" Margin="0" HorizontalOptions="Center" VerticalOptions="Fill" Grid.Column="9" />
+                <ImageButton Source="{Binding CurrentTrackImage}" x:Name="SongArt" Scale="1" Aspect="AspectFill" HorizontalOptions="Center" VerticalOptions="Center" Grid.Row="0" Grid.Column="10" Grid.RowSpan="2"></ImageButton>
 
                 <!-- Second Row Elements -->
                 <Image Source="volume.png" x:Name="Mute_Unmute" Scale="0.7" Grid.Column="0" Grid.Row="1" />
@@ -61,7 +62,7 @@
                 <Label Text="{Binding CurrentTrackPosition}" x:Name="LabelTrackPosition" Margin="0" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="3" Grid.Row="1" TextColor="White" />
                 <Slider x:Name="SliderTrackPosition" Margin="2" Minimum="0" Maximum="{Binding TrackLength}" Value="{Binding CurrentTrackPosition, Mode=TwoWay}" MaximumWidthRequest="400" VerticalOptions="Center" Grid.Column="4" Grid.ColumnSpan="3" Grid.Row="1"/>
                 <Label Text="{Binding TrackLength}" x:Name="TrackLength" Margin="2" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="7" Grid.Row="1" TextColor="White"/>
-                <Label Text="{Binding CurrentTrackArtist}" TextColor="White" Margin="0" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="9" Grid.Row="1"/>
+                <Label Text="{Binding CurrentTrackArtist}" TextColor="White" Margin="0" HorizontalOptions="Center" VerticalOptions="Fill" Grid.Column="9" Grid.Row="1"/>
             </Grid>
         </Frame>
     </Grid>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Betawave.ViewModels"
+             x:Class="Betawave.AddAlbum"
+             Title="AddAlbum">
+
+    <ContentPage.BindingContext>
+        <vm:AddAlbumViewModel/>
+    </ContentPage.BindingContext>
+
+    <Frame CornerRadius="15" Margin="1" HeightRequest="700" WidthRequest="800" BackgroundColor="#151417">
+        <Frame CornerRadius="15" Margin="0" BackgroundColor="#27232E" BorderColor="#27232E">
+            <ScrollView >
+                <VerticalStackLayout Margin="0" >
+
+                    <Label Text="Enter Album Details Below" FontAttributes="Bold" TextColor="white" FontSize="17" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Grid.Row="0" Grid.Column="0" />
+
+                    <Grid RowDefinitions="*,*,*,*" ColumnDefinitions="*, *" BackgroundColor="#312842"  >
+
+                        <Label Text="Enter Album Name" TextColor="white" FontSize="17" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Grid.Row="0" Grid.Column="0" />
+                        <Entry Placeholder="type Album Name" Text="{Binding AlbumName}" Margin="5" Background="#ffffff" Grid.Row="0" Grid.Column="1"/>
+
+
+                        <Label Text="Enter Artist Name" TextColor="white" FontSize="17" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Grid.Row="1" Grid.Column="0" />
+                        <Entry Placeholder="type Artist Name" Text="{Binding ArtistName}" Margin="5" Background="#ffffff" Grid.Row="1" Grid.Column="1"/>
+
+                        <Label Text="Add full file path to album art location" TextColor="white" FontSize="17" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Grid.Row="3" Grid.Column="0" />
+                        <Entry Placeholder="type Album art file path" Text="{Binding AlbumArtPath}" Margin="5" Background="#ffffff" Grid.Row="3" Grid.Column="1"/>
+
+                    </Grid>
+                    <BoxView HeightRequest="1" Color="white" HorizontalOptions="Fill" Margin="0,3"/>
+
+
+                    <Grid RowDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,* " ColumnDefinitions="Auto, *, *" BackgroundColor="#312842" Margin="0,0,0,0">
+
+                        <Label Text="Song 1:" TextColor="white" FontSize="15" Grid.Row="0" Grid.Column="0"/>
+                        <Entry Placeholder="Enter song 1 title" Text="{Binding Song1}" Margin="5" BackgroundColor="#ffffff" Grid.Row="0" Grid.Column="1"/>
+                        <Entry Placeholder="Enter song 1 file path" Text="{Binding Song1Location}" Margin="5" BackgroundColor="#ffffff" Grid.Row="0" Grid.Column="2"/>
+
+                        <Label Text="Song 2:" TextColor="white" FontSize="15" Grid.Row="1" Grid.Column="0"/>
+                        <Entry Placeholder="Enter song 2 title" Text="{Binding Song2}" Margin="5" BackgroundColor="#ffffff" Grid.Row="1" Grid.Column="1"/>
+                        <Entry Placeholder="Enter song 2 file path" Text="{Binding Song2Location}" Margin="5" BackgroundColor="#ffffff" Grid.Row="1" Grid.Column="2"/>
+
+                        <Label Text="Song 3:" TextColor="white" FontSize="15" Grid.Row="2" Grid.Column="0"/>
+                        <Entry Placeholder="Enter song 3 title" Text="{Binding Song3}" Margin="5" BackgroundColor="#ffffff" Grid.Row="2" Grid.Column="1"/>
+                        <Entry Placeholder="Enter song 3 file path" Text="{Binding Song3Location}" Margin="5" BackgroundColor="#ffffff" Grid.Row="2" Grid.Column="2"/>
+
+                        <Label Text="Song 4:" TextColor="white" FontSize="15" Grid.Row="3" Grid.Column="0"/>
+                        <Entry Placeholder="Enter song 4 title" Text="{Binding Song4}" Margin="5" BackgroundColor="#ffffff" Grid.Row="3" Grid.Column="1"/>
+                        <Entry Placeholder="Enter song 4 file path" Text="{Binding Song4Location}" Margin="5" BackgroundColor="#ffffff" Grid.Row="3" Grid.Column="2"/>
+
+                        <Label Text="Song 5:" TextColor="white" FontSize="15" Grid.Row="4" Grid.Column="0"/>
+                        <Entry Placeholder="Enter song 5 title" Text="{Binding Song5}" Margin="5" BackgroundColor="#ffffff" Grid.Row="4" Grid.Column="1"/>
+                        <Entry Placeholder="Enter song 5 file path" Text="{Binding Song5Location}" Margin="5" BackgroundColor="#ffffff" Grid.Row="4" Grid.Column="2"/>
+
+                        <Label Text="Song 6:" TextColor="white" FontSize="15" Grid.Row="5" Grid.Column="0"/>
+                        <Entry Placeholder="Enter song 6 title" Text="{Binding Song6}" Margin="5" BackgroundColor="#ffffff" Grid.Row="5" Grid.Column="1"/>
+                        <Entry Placeholder="Enter song 6 file path" Text="{Binding Song6Location}" Margin="5" BackgroundColor="#ffffff" Grid.Row="5" Grid.Column="2"/>
+
+                        <Label Text="Song 7:" TextColor="white" FontSize="15" Grid.Row="6" Grid.Column="0"/>
+                        <Entry Placeholder="Enter song 7 title" Text="{Binding Song7}" Margin="5" BackgroundColor="#ffffff" Grid.Row="6" Grid.Column="1"/>
+                        <Entry Placeholder="Enter song 7 file path" Text="{Binding Song7Location}" Margin="5" BackgroundColor="#ffffff" Grid.Row="6" Grid.Column="2"/>
+
+                        <Label Text="Song 8:" TextColor="white" FontSize="15" Grid.Row="7" Grid.Column="0"/>
+                        <Entry Placeholder="Enter song 8 title" Text="{Binding Song8}" Margin="5" BackgroundColor="#ffffff" Grid.Row="7" Grid.Column="1"/>
+                        <Entry Placeholder="Enter song 8 file path" Text="{Binding Song8Location}" Margin="5" BackgroundColor="#ffffff" Grid.Row="7" Grid.Column="2"/>
+
+                        <Label Text="Song 9:" TextColor="white" FontSize="15" Grid.Row="8" Grid.Column="0"/>
+                        <Entry Placeholder="Enter song 9 title" Text="{Binding Song9}" Margin="5" BackgroundColor="#ffffff" Grid.Row="8" Grid.Column="1"/>
+                        <Entry Placeholder="Enter song 9 file path" Text="{Binding Song9Location}" Margin="5" BackgroundColor="#ffffff" Grid.Row="8" Grid.Column="2"/>
+
+                        <Label Text="Song 10:" TextColor="white" FontSize="15" Grid.Row="9" Grid.Column="0"/>
+                        <Entry Placeholder="Enter song 10 title" Text="{Binding Song10}" Margin="5" BackgroundColor="#ffffff" Grid.Row="9" Grid.Column="1"/>
+                        <Entry Placeholder="Enter song 10 file path" Text="{Binding Song10Location}" Margin="5" BackgroundColor="#ffffff" Grid.Row="9" Grid.Column="2"/>
+
+                        <Label Text="Song 11:" TextColor="white" FontSize="15" Grid.Row="10" Grid.Column="0"/>
+                        <Entry Placeholder="Enter song 11 title" Text="{Binding Song11}" Margin="5" BackgroundColor="#ffffff" Grid.Row="10" Grid.Column="1"/>
+                        <Entry Placeholder="Enter song 11 file path" Text="{Binding Song11Location}" Margin="5" BackgroundColor="#ffffff" Grid.Row="10" Grid.Column="2"/>
+
+                    </Grid>
+
+                    <Button Text="Add Album" FontAttributes="Bold" Command="{Binding AddAlbumCommand}" />
+                    <Button Text="Back" Margin="1" FontSize="17" FontAttributes="Bold" Clicked="OnBackButton_Clicked"/>
+                </VerticalStackLayout>
+            </ScrollView>
+        </Frame>
+    </Frame>
+</ContentPage>

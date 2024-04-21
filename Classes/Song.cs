@@ -5,7 +5,6 @@ public class Song
     private int pksongId;
     private string songName;
     private int artistId;
-    private string songDuration;
     private string songLocation;
     private Artist artist;
 
@@ -14,7 +13,6 @@ public class Song
         pksongId = 0;
         songName = "";
         artistId = 0;
-        songDuration = "";
         songLocation = "";
     }
 
@@ -48,16 +46,6 @@ public class Song
         artistId = value;
     }
 
-    public string GetDuration()
-    {
-        return songDuration;
-    }
-
-    public void SetDuration(string value)
-    {
-        songDuration = value;
-    }
-
     public string GetSongLocation()
     {
         return songLocation;
@@ -82,6 +70,6 @@ public class Song
     // Method to print the details of the song
     public void PrintSong()
     {
-        Console.WriteLine($"Name: {songName}, Duration: {songDuration}, Location: {songLocation}");
+        Console.WriteLine($"Name: {songName}, Location: {songLocation}");
     }
 }

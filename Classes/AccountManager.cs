@@ -9,7 +9,7 @@ namespace Betawave.Classes
     public class AccountManager
     {
         private List<Account> accounts = new List<Account>();
-        private readonly DatabaseAccess dbAccess;
+        private DatabaseAccess dbAccess;
 
         public AccountManager(DatabaseAccess dbAccess)
         {

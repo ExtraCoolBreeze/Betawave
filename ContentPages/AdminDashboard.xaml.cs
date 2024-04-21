@@ -12,9 +12,9 @@ public partial class AdminDashboard : ContentPage
         await Shell.Current.GoToAsync("///AdminDashboard");
     }
 
-    async void ADmyPlaylistsButton_Clicked(object sender, EventArgs e)
+    async void ADmyAddMediaButton_Clicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync("///PlaylistView");
+        await Shell.Current.GoToAsync("///AddMediaScreen");
     }
 
     async void ADCreatePlaylistButton_Clicked(object sender, EventArgs e)

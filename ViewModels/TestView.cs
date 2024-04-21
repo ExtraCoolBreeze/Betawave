@@ -24,7 +24,7 @@ namespace Betawave.ViewModels
             playCommand = new Command(PlayAudio);
             pauseCommand = new Command(PauseAudio);
             stopCommand = new Command(StopAudio);
-            skipCommand = new Command(SkipAudio);
+         //   skipCommand = new Command(SkipAudio);
             toggleShuffleCommand = new Command(ToggleShuffle);
 
             shuffle = audioPlayerService.GetShuffle(); // Initialize shuffle state from the player
@@ -95,10 +95,10 @@ namespace Betawave.ViewModels
             audioPlayerService.StopMusic();
         }
 
-        private void SkipAudio()
+/*        private void SkipAudio()
         {
             audioPlayerService.SkipMusic();
-        }
+        }*/
 
         private void ToggleShuffle()
         {

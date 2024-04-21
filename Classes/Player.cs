@@ -1,39 +1,33 @@
 ﻿using NAudio.Wave;
 using System;
-using System.IO;
+using Betawave.Classes; // Ensure this is correctly referencing your classes
 
 public class Player
 {
-    private IWavePlayer _waveOutDevice;
-    private AudioFileReader _audioFileReader;
-    private BasePlaylist _currentPlaylist;
-    private Random _random = new Random();
-    private bool _shuffle = false;
-    private int _currentTrackIndex = -1;
+    private IWavePlayer waveOutDevice;
+    private AudioFileReader audioFileReader;
+    private BasePlaylist currentPlaylist;
+    private Random random = new Random();
+    private bool shuffle = false;
+    private int currentTrackIndex = -1;
     public bool IsPlaying;
 
-    public event EventHandler<StoppedEventArgs> OnPlaybackStopped;
-    public event EventHandler TrackChanged; // Event to notify when the track changes
-    public event EventHandler PlaybackPositionChanged;
-
+    public event EventHandler<StoppedEventArgs> PlaybackStopped;
+    public event EventHandler TrackChanged;
 
     public Player()
     {
-        _waveOutDevice = new WaveOutEvent();
-        _waveOutDevice.PlaybackStopped += OnPlaybackStoppedInternal;
+        waveOutDevice = new WaveOutEvent();
+        waveOutDevice.PlaybackStopped += OnPlaybackStoppedInternal;
     }
 
-    public void SetIsPlaying()
+    private void OnPlaybackStoppedInternal(object sender, StoppedEventArgs e)
     {
-        IsPlaying = _waveOutDevice.PlaybackState == PlaybackState.Playing;
+        if (PlaybackStopped != null)
+        {
+            PlaybackStopped(this, e);
+        }
     }
-
-
-    public bool GetIsPlaying()
-    {
-        return IsPlaying;
-    }
-
 
     public void LoadAndPlayMusic(string filePath)
     {
@@ -41,21 +35,21 @@ public class Player
         PlayMusic();
     }
 
-
     public void LoadMusic(string filePath)
     {
-        StopMusic(); // Stop current track before loading another
-
-        if (_audioFileReader != null)
+        if (audioFileReader != null)
         {
-            _audioFileReader.Dispose(); // Dispose previous reader if exists
+            audioFileReader.Dispose(); // Dispose previous reader
         }
 
         try
         {
-            _audioFileReader = new AudioFileReader(filePath);
-            _waveOutDevice.Init(_audioFileReader);
-            TrackChanged?.Invoke(this, EventArgs.Empty); // Notify that track has changed
+            audioFileReader = new AudioFileReader(filePath);
+            waveOutDevice.Init(audioFileReader);
+            if (TrackChanged != null)
+            {
+                TrackChanged(this, EventArgs.Empty);
+            }
         }
         catch (Exception ex)
         {
@@ -65,11 +59,9 @@ public class Player
 
     public void PlayMusic()
     {
-        if (_audioFileReader != null)
+        if (audioFileReader != null)
         {
-            _waveOutDevice.Play();
-            // Start a timer or similar to update the playback position
-            StartPositionUpdateTimer();
+            waveOutDevice.Play();
         }
         else
         {
@@ -79,31 +71,30 @@ public class Player
 
     public void PauseMusic()
     {
-        _waveOutDevice.Pause();
+        waveOutDevice.Pause();
     }
 
     public void StopMusic()
     {
-        _waveOutDevice.Stop();
+        waveOutDevice.Stop();
     }
 
     public void SetVolume(float volume)
     {
-        if (_audioFileReader != null)
+        if (audioFileReader != null)
         {
-            _audioFileReader.Volume = volume; // Volume is a value between 0.0 (silent) and 1.0 (full volume)
+            audioFileReader.Volume = volume; // Volume between 0.0 and 1.0
         }
-
     }
 
     public float GetVolume()
     {
-        return _audioFileReader?.Volume ?? 0f;
+        return audioFileReader != null ? audioFileReader.Volume : 0f;
     }
 
-    public void SkipMusic()
+    public void SkipNextTrack()
     {
-        if (_shuffle)
+        if (shuffle)
         {
             PlayRandomTrack();
         }
@@ -111,126 +102,94 @@ public class Player
         {
             PlayNextTrack();
         }
+    }
 
+    public void ToggleShuffle()
+    {
+        shuffle = !shuffle;
+        Console.WriteLine($"Shuffle mode: {(shuffle ? "Enabled" : "Disabled")}");
     }
 
     public void PlayNextTrack()
     {
-        if (_currentPlaylist != null && _currentPlaylist.GetTracks().Count > 0)
+        if (currentPlaylist != null && currentPlaylist.GetPlaylistSongs().Count > 0)
         {
-            _currentTrackIndex = (_currentTrackIndex + 1) % _currentPlaylist.GetTracks().Count;
-            var trackUri = _currentPlaylist.GetTracks()[_currentTrackIndex].GetTrackUri();
-            LoadMusic(trackUri);
+            currentTrackIndex = (currentTrackIndex + 1) % currentPlaylist.GetPlaylistSongs().Count;
+            var track = currentPlaylist.GetPlaylistSongs()[currentTrackIndex];
+            LoadMusic(track.GetSongLocation());
             PlayMusic();
         }
     }
 
     public void PlayPreviousTrack()
     {
-        if (_currentPlaylist != null && _currentPlaylist.GetTracks().Count > 0)
+        if (currentPlaylist != null && currentPlaylist.GetPlaylistSongs().Count > 0)
         {
-            _currentTrackIndex = (_currentTrackIndex - 1 + _currentPlaylist.GetTracks().Count) % _currentPlaylist.GetTracks().Count;
-            var trackUri = _currentPlaylist.GetTracks()[_currentTrackIndex].GetTrackUri();
-            LoadMusic(trackUri);
+            currentTrackIndex = (currentTrackIndex - 1 + currentPlaylist.GetPlaylistSongs().Count) % currentPlaylist.GetPlaylistSongs().Count;
+            var track = currentPlaylist.GetPlaylistSongs()[currentTrackIndex];
+            LoadMusic(track.GetSongLocation());
             PlayMusic();
         }
     }
 
-
-    public void SetShuffle(bool shuffle)
+    public void SetShuffle(bool enable)
     {
-        _shuffle = shuffle;
-        Console.WriteLine($"Shuffle mode set to: {(_shuffle ? "Enabled" : "Disabled")}");
+        shuffle = enable;
+        Console.WriteLine($"Shuffle mode: {(shuffle ? "Enabled" : "Disabled")}");
     }
 
     public bool GetShuffle()
     {
-        return _shuffle;
-    }
-
-    public void ToggleShuffle()
-    {
-        _shuffle = !_shuffle;
-        Console.WriteLine($"Shuffle mode: {(_shuffle ? "Enabled" : "Disabled")}");
+        return shuffle;
     }
 
     public void PlayRandomTrack()
     {
-        if (_currentPlaylist != null && _currentPlaylist.GetTracks().Count > 0)
+        if (currentPlaylist != null && currentPlaylist.GetPlaylistSongs().Count > 0)
         {
-            int trackIndex = _random.Next(_currentPlaylist.GetTracks().Count);
-            var trackUri = _currentPlaylist.GetTracks()[trackIndex].GetTrackUri(); // Assuming GetTrackUri() exists
-            LoadMusic(trackUri);
+            int index = random.Next(currentPlaylist.GetPlaylistSongs().Count);
+            var track = currentPlaylist.GetPlaylistSongs()[index];
+            LoadMusic(track.GetSongLocation());
             PlayMusic();
-        }
-    }
-
-    public void AddToPlaylist(Playlist_Track track)
-    {
-        _currentPlaylist.AddToPlaylist(track);
-    }
-
-    public void RemoveFromPlaylist(Playlist_Track track)
-    {
-        _currentPlaylist.RemoveFromPlaylist(track);
-    }
-    private void OnPlaybackStoppedInternal(object sender, StoppedEventArgs e)
-    {
-        OnPlaybackStopped?.Invoke(this, e);
-    }
-
-    public double CurrentTrackPosition
-    {
-        get => _audioFileReader?.CurrentTime.TotalSeconds ?? 0;
-        set
-        {
-            if (_audioFileReader != null && _audioFileReader.TotalTime.TotalSeconds > value)
-            {
-                _audioFileReader.CurrentTime = TimeSpan.FromSeconds(value);
-                PlaybackPositionChanged?.Invoke(this, EventArgs.Empty);
-            }
         }
     }
 
     public string GetCurrentTrackName()
     {
-        if (_currentPlaylist != null && _currentTrackIndex >= 0 && _currentTrackIndex < _currentPlaylist.GetTracks().Count)
+        if (currentPlaylist != null && currentTrackIndex >= 0 && currentTrackIndex < currentPlaylist.GetPlaylistSongs().Count)
         {
-            return _currentPlaylist.GetTracks()[_currentTrackIndex].GetTitle();
+            return currentPlaylist.GetPlaylistSongs()[currentTrackIndex].GetName();
         }
-        return "Unknown Track";
+        else
+        {
+            return "Unknown Track";
+        }
     }
 
     public string GetCurrentTrackArtist()
     {
-        if (_currentPlaylist != null && _currentTrackIndex >= 0 && _currentTrackIndex < _currentPlaylist.GetTracks().Count)
+        if (currentPlaylist != null && currentTrackIndex >= 0 && currentTrackIndex < currentPlaylist.GetPlaylistSongs().Count)
         {
-            return _currentPlaylist.GetTracks()[_currentTrackIndex].GetArtist();
+            return currentPlaylist.GetPlaylistSongs()[currentTrackIndex].GetArtist().GetName();
         }
-        return "Unknown Artist";
-    }
-
-    //Need to complete this function.
-
-    public string GetCurrentTrackImageUrl()
-    {
-        if (_currentPlaylist != null && _currentTrackIndex >= 0 && _currentTrackIndex < _currentPlaylist.GetTracks().Count)
+        else
         {
-            return ""; //_currentPlaylist.GetTracks()[_currentTrackIndex].GetImageUri();
+            return "Unknown Artist";
         }
-        return "default_album_cover.png";  // Return a default image if no track is loaded or if no image URL is set
     }
 
-
-    public double TrackLength
+    public string GetCurrentTrackImage()
     {
-        get => _audioFileReader?.TotalTime.TotalSeconds ?? 0;
+        if (currentPlaylist != null && currentTrackIndex >= 0 && currentTrackIndex < currentPlaylist.GetPlaylistSongs().Count)
+        {
+            Song currentSong = currentPlaylist.GetPlaylistSongs()[currentTrackIndex];
+            return currentSong.GetSongLocation();  // Ensure songs have an image location set
+        }
+        else
+        {
+            return "default_album_cover.png";  // Return a default image if no track is loaded or if no image URL is set
+        }
     }
 
-    private void StartPositionUpdateTimer()
-    {
-        // Implement a timer or use event-driven updates that frequently checks the playback position
-        // and raises the PlaybackPositionChanged event if there is a significant change.
-    }
 
 }

@@ -7,16 +7,20 @@ public partial class AddMediaScreen : ContentPage
 {
 
     public AddMediaScreen()
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
     }
+
+
+
+
 
     async void DashboardButton_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("///AdminDashboard");
     }
 
-    async void AddMediButton_Clicked(object sender, EventArgs e)
+    async void AddMediaScreenButton_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("///AddMediaScreen");
     }
@@ -30,4 +34,10 @@ public partial class AddMediaScreen : ContentPage
     {
         await Shell.Current.GoToAsync("///LoginScreen");
     }
+
+    async void AddMediaButton_Clicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("///AddAlbum");
+    }
+
 }

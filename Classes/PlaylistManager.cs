@@ -9,9 +9,10 @@ namespace Betawave.Classes
     public class PlaylistManager
     {
         private List<BasePlaylist> playlists = new List<BasePlaylist>();
-        private readonly DatabaseAccess dbAccess;
+        private DatabaseAccess dbAccess;
+        private ArtistManager artistManager;
 
-        public PlaylistManager(DatabaseAccess dbAccess, SongManager songManager)
+        public PlaylistManager(DatabaseAccess dbAccess, ArtistManager artistManager)
         {
             this.dbAccess = dbAccess;
         }
@@ -43,9 +44,33 @@ namespace Betawave.Classes
 
         private void LoadSongsForPlaylist(BasePlaylist playlist)
         {
-            // Placeholder for loading songs into a playlist
-            // This would typically involve a query to fetch songs based on the playlist_id
+            using (var connection = dbAccess.ConnectToMySql())
+            {
+                var command = new MySqlCommand("SELECT s.song_id, s.name, s.artist_id, s.song_location FROM playlist_song ps INNER JOIN song s ON ps.song_id = s.song_id WHERE ps.playlist_id = @PlaylistId", connection);
+                command.Parameters.AddWithValue("@PlaylistId", playlist.GetPlaylistId());
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var song = new Song();
+                        song.SetSongId(reader.GetInt32("song_id"));
+                        song.SetName(reader.GetString("name"));
+                        song.SetArtistId(reader.GetInt32("artist_id"));
+                        song.SetSongLocation(reader.GetString("song_location"));
+
+                        Artist artist = artistManager.GetArtistById(song.GetArtistId());
+                        if (artist != null)
+                        {
+                            song.SetArtist(artist);
+                        }
+
+                        playlist.AddSong(song);
+                    }
+                }
+            }
         }
+
 
         public void AddPlaylist(BasePlaylist playlist)
         {

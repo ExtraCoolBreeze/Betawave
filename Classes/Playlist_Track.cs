@@ -70,7 +70,7 @@ public class Playlist_Track
         Console.WriteLine($"Playlist ID: {GetPlaylistId()}, Track Number: {GetTrackNumber()}, Song ID: {GetSongId()}");
         if (Song != null)
         {
-            Console.WriteLine($"Song Details: Name: {Song.GetName()}, Duration: {Song.GetDuration()}");
+            Console.WriteLine($"Song Details: Name: {Song.GetName()}, Artist: {Song.GetArtist().GetName()}");
         }
     }
 }

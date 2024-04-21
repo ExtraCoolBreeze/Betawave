@@ -7,7 +7,6 @@ public class BasePlaylist
     private string isQueue;
     private int  fkaccountId;
     private string isFavourite;
-    private List<Playlist_Track> PlaylistTracks = new List<Playlist_Track>();
     private List<Song> PlaylistSongs;
 
     public BasePlaylist()
@@ -15,7 +14,6 @@ public class BasePlaylist
         PlaylistTitle = "";
         pkplaylistId = 0;
         isQueue = "";
-        isFavourite = "";
         isFavourite = "";
         PlaylistSongs = new List<Song>();
 }
@@ -75,16 +73,10 @@ public class BasePlaylist
 
     public List<Song> GetPlaylistSongs()
     {
-        // You could add logic here to modify what is returned
         return PlaylistSongs;
     }
 
-    public void SetPlaylistSongs(List<Song> value)
-    {
-        PlaylistSongs = value;
-    }
-
-    public void AddPlaylistSong(Song song)
+    public void AddSong(Song song)
     {
         if (song == null)
         {
@@ -94,30 +86,15 @@ public class BasePlaylist
         PlaylistSongs.Add(song);
     }
 
-
-    //--------------------------------End of functions to store the list of playlist songs
-
-
-
-/*    public void AddToPlaylist(Playlist_Track track)
+    public void RemoveSong(Song song)
     {
-        PlaylistTracks.Add(track);
+        if (song == null)
+        {
+            throw new ArgumentNullException(nameof(song), "Cannot remove a null song from the playlist.");
+        }
+
+        PlaylistSongs.Remove(song);
     }
-
-    public void RemoveFromPlaylist(Playlist_Track track)
-    {
-        PlaylistTracks.Remove(track);
-    }
-
-    public List<Playlist_Track> GetTracks()
-    {
-        return PlaylistTracks;
-    }
-
-    public List<string> GetTrackLocations()
-    {
-        return PlaylistTracks.Select(track => track.GetTrackUri()).ToList();
-    }*/
 
     public void PrintPlaylistDetails()
     {

@@ -9,6 +9,7 @@ public class DatabaseManager
     public int CurrentUserRole { get; private set; }
 
     // Manager instances
+
     private SongManager songManager;
     private AlbumManager albumManager;
     private ArtistManager artistManager;
@@ -20,7 +21,7 @@ public class DatabaseManager
         songManager = new SongManager(dbAccess, artistManager);
         albumManager = new AlbumManager(dbAccess, artistManager);
         artistManager = new ArtistManager(dbAccess);
-        playlistManager = new PlaylistManager(dbAccess, songManager);
+        playlistManager = new PlaylistManager(dbAccess, artistManager);
     }
 
     // Initialize all data from database
@@ -38,21 +39,35 @@ public class DatabaseManager
         if (await dbAccess.ValidateUser(username, password))
         {
             CurrentUser = await dbAccess.GetUserByUsername(username);
-            CurrentUserRole = GetRoleForAccount(CurrentUser.GetAccountId());
-            return true;
+            if (CurrentUser != null)
+            {
+                CurrentUserRole = dbAccess.GetRoleForAccountId(CurrentUser.GetAccountId());
+                return true;
+            }
         }
         return false;
     }
 
-    // Helper method to fetch user role
     private int GetRoleForAccount(int accountId)
     {
         return dbAccess.GetRoleForAccountId(accountId); // Adjust this to fetch directly or process in the manager
+    }
+
+    public async Task<bool> ValidateUser(string username, string password)
+    {
+        return await dbAccess.ValidateUser(username, password);
+    }
+
+    public async Task<bool> IsAdmin(string username)
+    {
+        return dbAccess.IsAdmin(username);
     }
 
     public void PrintUserDetails()
     {
         Console.WriteLine($"User: {CurrentUser.GetUsername()}, Role ID: {CurrentUserRole}");
     }
+
+
 }
 

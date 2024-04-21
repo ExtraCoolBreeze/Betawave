@@ -6,7 +6,7 @@
              Title="LoginScreen">
 
     <ContentPage.BindingContext>
-        <vm:MainViewModel/>
+        <vm:LoginViewModel/>
     </ContentPage.BindingContext>
 
     <Frame CornerRadius="15" Margin="0" Padding="0" HeightRequest="400" WidthRequest="350">

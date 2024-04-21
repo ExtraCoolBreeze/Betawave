@@ -8,8 +8,6 @@
     //VALUES('<playlist_id>', '<title>', '<queue>', '<favourite>', '<account_id>');
 
 
-
-
     public class Queue : BasePlaylist
     {
         private Queue<Song> songQueue = new Queue<Song>();

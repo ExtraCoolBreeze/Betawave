@@ -9,7 +9,7 @@ namespace Betawave.Classes
     public class RoleManager
     {
         private List<Role> roles = new List<Role>();
-        private readonly DatabaseAccess dbAccess;
+        private DatabaseAccess dbAccess;
 
         public RoleManager(DatabaseAccess dbAccess)
         {

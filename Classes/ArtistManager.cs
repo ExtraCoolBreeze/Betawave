@@ -9,7 +9,7 @@ namespace Betawave.Classes
     public class ArtistManager
     {
         private List<Artist> artists = new List<Artist>();
-        private readonly DatabaseAccess dbAccess;
+        private DatabaseAccess dbAccess;
 
         public ArtistManager(DatabaseAccess dbAccess)
         {
@@ -100,5 +100,12 @@ namespace Betawave.Classes
             }
             return null;  // Return null if no artist is found
         }
+
+        public Artist GetArtistByName(string name)
+        {
+            // Assuming `artists` is a List<Artist> containing all artist records
+            return artists.FirstOrDefault(a => a.GetName().Equals(name, StringComparison.OrdinalIgnoreCase));
+        }
+
     }
 }

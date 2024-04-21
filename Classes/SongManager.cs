@@ -23,7 +23,7 @@ namespace Betawave.Classes
         {
             using (var connection = dbAccess.ConnectToMySql())
             {
-                var command = new MySqlCommand("SELECT song_id, name, artist_id, duration, song_location FROM song", connection);
+                var command = new MySqlCommand("SELECT song_id, name, artist_id, song_location FROM song", connection);
                 using (var reader = await command.ExecuteReaderAsync())
                 {
                     while (await reader.ReadAsync())
@@ -32,7 +32,6 @@ namespace Betawave.Classes
                         song.SetSongId(reader.GetInt32("song_id"));
                         song.SetName(reader.GetString("name"));
                         song.SetArtistId(reader.GetInt32("artist_id"));
-                        song.SetDuration(reader.GetString("duration"));
                         song.SetSongLocation(reader.GetString("song_location"));
 
                         // Assuming ArtistManager can resolve an artist by ID synchronously
@@ -53,10 +52,9 @@ namespace Betawave.Classes
             songs.Add(song);
             using (var connection = dbAccess.ConnectToMySql())
             {
-                var command = new MySqlCommand("INSERT INTO song (name, artist_id, duration, song_location) VALUES (@Name, @ArtistId, @Duration, @SongLocation)", connection);
+                var command = new MySqlCommand("INSERT INTO song (name, artist_id, song_location) VALUES (@Name, @ArtistId, @SongLocation)", connection);
                 command.Parameters.AddWithValue("@Name", song.GetName());
                 command.Parameters.AddWithValue("@ArtistId", song.GetArtistId());
-                command.Parameters.AddWithValue("@Duration", song.GetDuration());
                 command.Parameters.AddWithValue("@SongLocation", song.GetSongLocation());
                 command.ExecuteNonQuery();
             }
@@ -69,7 +67,6 @@ namespace Betawave.Classes
                 if (existingSong.GetSongId() == song.GetSongId())
                 {
                     existingSong.SetName(song.GetName());
-                    existingSong.SetDuration(song.GetDuration());
                     existingSong.SetSongLocation(song.GetSongLocation());
                     break;
                 }
@@ -77,11 +74,10 @@ namespace Betawave.Classes
 
             using (var connection = dbAccess.ConnectToMySql())
             {
-                var command = new MySqlCommand("UPDATE song SET name = @Name, artist_id = @ArtistId, duration = @Duration, song_location = @SongLocation WHERE song_id = @SongId", connection);
+                var command = new MySqlCommand("UPDATE song SET name = @Name, artist_id = @ArtistId, song_location = @SongLocation WHERE song_id = @SongId", connection);
                 command.Parameters.AddWithValue("@SongId", song.GetSongId());
                 command.Parameters.AddWithValue("@Name", song.GetName());
                 command.Parameters.AddWithValue("@ArtistId", song.GetArtistId());
-                command.Parameters.AddWithValue("@Duration", song.GetDuration());
                 command.Parameters.AddWithValue("@SongLocation", song.GetSongLocation());
                 command.ExecuteNonQuery();
             }

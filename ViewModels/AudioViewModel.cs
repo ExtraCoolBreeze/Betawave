@@ -1,5 +1,4 @@
-﻿
-using NAudio.Wave;
+﻿using NAudio.Wave;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -21,22 +20,20 @@ namespace Betawave.ViewModels
         private string currentTrackArtist = "Artist Name: ";
         private double currentTrackPosition = 0.00;
         private double trackLength = 0.00;
-        private string _currentTrackImageUrl = "C:\\Users\\Craig\\Desktop\\Betawave8.0\\Betawave\\Resources\\Images\\default.png"; // Default image
+        private string currentTrackImage = "C:\\Users\\Craig\\Desktop\\Betawave8.0\\Betawave\\Resources\\Images\\default.png"; // Default image
 
         public event PropertyChangedEventHandler PropertyChanged;
-
 
         public AudioViewModel()
         {
             playPauseCommand = new Command(TogglePlayPause);
             stopCommand = new Command(StopAudio);
-            skipNextCommand = new Command(() => audioPlayerService.PlayNextTrack()); // Play next track
-            skipPreviousCommand = new Command(() => audioPlayerService.PlayPreviousTrack()); // Play previous track
+            skipNextCommand = new Command(SkipNext);
+            skipPreviousCommand = new Command(SkipPrevious);
             toggleShuffleCommand = new Command(ToggleShuffle);
 
-            shuffle = audioPlayerService.GetShuffle(); // Initialize shuffle state from the player
-            audioPlayerService.OnPlaybackStopped += HandlePlaybackStopped; // Correctly subscribe to the event
-
+            shuffle = audioPlayerService.GetShuffle();
+            audioPlayerService.PlaybackStopped += HandlePlaybackStopped;
             audioPlayerService.TrackChanged += UpdateTrackDetails;
         }
 
@@ -45,7 +42,6 @@ namespace Betawave.ViewModels
         public ICommand SkipNextCommand => skipNextCommand;
         public ICommand SkipPreviousCommand => skipPreviousCommand;
         public ICommand ToggleShuffleCommand => toggleShuffleCommand;
-
 
         public string CurrentTrackName
         {
@@ -104,7 +100,7 @@ namespace Betawave.ViewModels
             get => volume;
             set
             {
-                if (Math.Abs(volume - value) > 0.01) // Adding a tolerance to prevent unnecessary updates
+                if (Math.Abs(volume - value) > 0.01)
                 {
                     volume = value;
                     OnPropertyChanged();
@@ -127,19 +123,18 @@ namespace Betawave.ViewModels
             }
         }
 
-        public string CurrentTrackImageUrl
+        public string CurrentTrackImage
         {
-            get => _currentTrackImageUrl;
+            get => currentTrackImage;
             set
             {
-                if (_currentTrackImageUrl != value)
+                if (currentTrackImage != value)
                 {
-                    _currentTrackImageUrl = value;
+                    currentTrackImage = value;
                     OnPropertyChanged();
                 }
             }
         }
-
 
         public void TogglePlayPause()
         {
@@ -161,7 +156,6 @@ namespace Betawave.ViewModels
             }
         }
 
-
         public void SkipNext()
         {
             audioPlayerService.PlayNextTrack();
@@ -172,30 +166,23 @@ namespace Betawave.ViewModels
             audioPlayerService.PlayPreviousTrack();
         }
 
-
         public void StopAudio()
         {
             audioPlayerService.StopMusic();
         }
 
-        public void SkipAudio()
-        {
-            audioPlayerService.SkipMusic();
-        }
-
         public void ToggleShuffle()
         {
             audioPlayerService.ToggleShuffle();
-            
         }
 
         private void UpdateTrackDetails(object sender, EventArgs e)
         {
-            CurrentTrackImageUrl = audioPlayerService.GetCurrentTrackImageUrl();
+            CurrentTrackImage = audioPlayerService.GetCurrentTrackImage(); 
             CurrentTrackName = audioPlayerService.GetCurrentTrackName();
             CurrentTrackArtist = audioPlayerService.GetCurrentTrackArtist();
-
         }
+
 
         public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

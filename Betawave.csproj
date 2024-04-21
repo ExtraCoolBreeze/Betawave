@@ -56,6 +56,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Resources\Music\Emancipator\**" />
+	  <EmbeddedResource Remove="Resources\Music\Emancipator\**" />
+	  <MauiCss Remove="Resources\Music\Emancipator\**" />
+	  <MauiXaml Remove="Resources\Music\Emancipator\**" />
+	  <None Remove="Resources\Music\Emancipator\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Remove="Resources\Music\CoralFang\01 Drain the Blood.m4a" />
 	  <None Remove="Resources\Music\CoralFang\02 Dismantle Me.m4a" />
 	  <None Remove="Resources\Music\CoralFang\03 Die on a Rope.m4a" />
@@ -65,59 +73,6 @@
 	  <None Remove="Resources\Music\CoralFang\07 Hall of Mirrors.m4a" />
 	  <None Remove="Resources\Music\CoralFang\08 Beat Your Heart Out.m4a" />
 	  <None Remove="Resources\Music\CoralFang\09 Love Is Paranoid.m4a" />
-	  <None Remove="Resources\Music\Emancipator\Dusk to Dawn\01 Minor Cause.m4a" />
-	  <None Remove="Resources\Music\Emancipator\Dusk to Dawn\02 Valhalla.m4a" />
-	  <None Remove="Resources\Music\Emancipator\Dusk to Dawn\03 Merlion.m4a" />
-	  <None Remove="Resources\Music\Emancipator\Dusk to Dawn\04 Outlaw.m4a" />
-	  <None Remove="Resources\Music\Emancipator\Dusk to Dawn\05 Dusk to Dawn.m4a" />
-	  <None Remove="Resources\Music\Emancipator\Dusk to Dawn\06 The Way.m4a" />
-	  <None Remove="Resources\Music\Emancipator\Dusk to Dawn\07 Afterglow.m4a" />
-	  <None Remove="Resources\Music\Emancipator\Dusk to Dawn\08 Eve II.m4a" />
-	  <None Remove="Resources\Music\Emancipator\Dusk to Dawn\09 Natural Cause.m4a" />
-	  <None Remove="Resources\Music\Emancipator\Dusk to Dawn\10 Galapagos.m4a" />
-	  <None Remove="Resources\Music\FM\01 Fm_ DJ Mr. Versatile Breakfast Sh.mp3" />
-	  <None Remove="Resources\Music\FM\02 This Town %28Featuring Tippa Irie &amp;.mp3" />
-	  <None Remove="Resources\Music\FM\03 In The Night %28Featuring Horseman%29.mp3" />
-	  <None Remove="Resources\Music\FM\04 Come To You.mp3" />
-	  <None Remove="Resources\Music\FM\05 My War.mp3" />
-	  <None Remove="Resources\Music\FM\06 Fm_ Dancehall Dilemmas With Dr. R.mp3" />
-	  <None Remove="Resources\Music\FM\07 Friends &amp; Business.mp3" />
-	  <None Remove="Resources\Music\FM\08 Where Did You Go_.mp3" />
-	  <None Remove="Resources\Music\FM\09 Tazer Beam %28Featuring Tippa Irie%29.mp3" />
-	  <None Remove="Resources\Music\FM\10 The Forest For The Trees.mp3" />
-	  <None Remove="Resources\Music\FM\11 Fm_ Grime Hour With Rivz.mp3" />
-	  <None Remove="Resources\Music\FM\12 Eyes In The Back Of My Head %28Feat.mp3" />
-	  <None Remove="Resources\Music\FM\13 Got No Say.mp3" />
-	  <None Remove="Resources\Music\FM\14 Fm_ DJ Mr. Versatile Evening Sess.mp3" />
-	  <None Remove="Resources\Music\FM\15 Tomorrow.mp3" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <MauiAsset Include="Resources\Music\Emancipator\Dusk to Dawn\01 Minor Cause.m4a" />
-	  <MauiAsset Include="Resources\Music\Emancipator\Dusk to Dawn\02 Valhalla.m4a" />
-	  <MauiAsset Include="Resources\Music\Emancipator\Dusk to Dawn\03 Merlion.m4a" />
-	  <MauiAsset Include="Resources\Music\Emancipator\Dusk to Dawn\04 Outlaw.m4a" />
-	  <MauiAsset Include="Resources\Music\Emancipator\Dusk to Dawn\05 Dusk to Dawn.m4a" />
-	  <MauiAsset Include="Resources\Music\Emancipator\Dusk to Dawn\06 The Way.m4a" />
-	  <MauiAsset Include="Resources\Music\Emancipator\Dusk to Dawn\07 Afterglow.m4a" />
-	  <MauiAsset Include="Resources\Music\Emancipator\Dusk to Dawn\08 Eve II.m4a" />
-	  <MauiAsset Include="Resources\Music\Emancipator\Dusk to Dawn\09 Natural Cause.m4a" />
-	  <MauiAsset Include="Resources\Music\Emancipator\Dusk to Dawn\10 Galapagos.m4a" />
-	  <MauiAsset Include="Resources\Music\FM\01 Fm_ DJ Mr. Versatile Breakfast Sh.mp3" />
-	  <MauiAsset Include="Resources\Music\FM\02 This Town (Featuring Tippa Irie &amp;.mp3" />
-	  <MauiAsset Include="Resources\Music\FM\03 In The Night (Featuring Horseman).mp3" />
-	  <MauiAsset Include="Resources\Music\FM\04 Come To You.mp3" />
-	  <MauiAsset Include="Resources\Music\FM\05 My War.mp3" />
-	  <MauiAsset Include="Resources\Music\FM\06 Fm_ Dancehall Dilemmas With Dr. R.mp3" />
-	  <MauiAsset Include="Resources\Music\FM\07 Friends &amp; Business.mp3" />
-	  <MauiAsset Include="Resources\Music\FM\08 Where Did You Go_.mp3" />
-	  <MauiAsset Include="Resources\Music\FM\09 Tazer Beam (Featuring Tippa Irie).mp3" />
-	  <MauiAsset Include="Resources\Music\FM\10 The Forest For The Trees.mp3" />
-	  <MauiAsset Include="Resources\Music\FM\11 Fm_ Grime Hour With Rivz.mp3" />
-	  <MauiAsset Include="Resources\Music\FM\12 Eyes In The Back Of My Head (Feat.mp3" />
-	  <MauiAsset Include="Resources\Music\FM\13 Got No Say.mp3" />
-	  <MauiAsset Include="Resources\Music\FM\14 Fm_ DJ Mr. Versatile Evening Sess.mp3" />
-	  <MauiAsset Include="Resources\Music\FM\15 Tomorrow.mp3" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -140,6 +95,9 @@
 
 
 	<ItemGroup>
+	  <MauiXaml Update="ContentPages\AddAlbum.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="ContentPages\AddMediaScreen.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
