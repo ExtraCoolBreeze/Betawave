@@ -101,10 +101,24 @@ namespace Betawave.Classes
             return null;  // Return null if no artist is found
         }
 
-        public Artist GetArtistByName(string name)
+        public async Task<Artist> GetArtistByName(string name)
         {
-            // Assuming `artists` is a List<Artist> containing all artist records
-            return artists.FirstOrDefault(a => a.GetName().Equals(name, StringComparison.OrdinalIgnoreCase));
+            using (var connection = dbAccess.ConnectToMySql())
+            {
+                var command = new MySqlCommand("SELECT artist_id, name FROM artist WHERE name = @Name", connection);
+                command.Parameters.AddWithValue("@Name", name);
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    if (await reader.ReadAsync())
+                    {
+                        var artist = new Artist();
+                        artist.SetArtistId(reader.GetInt32("artist_id"));
+                        artist.SetName(reader.GetString("name"));
+                        return artist;
+                    }
+                }
+            }
+            return null;
         }
 
     }

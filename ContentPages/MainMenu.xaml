@@ -38,7 +38,7 @@
                     <FlexLayout Wrap="Wrap" Direction="Row" AlignItems="Center" AlignContent="SpaceEvenly" JustifyContent="SpaceEvenly" Padding="10" Margin="10">
                         
                         <!-- Dynamically generated content -->
-                        <Frame CornerRadius="10" BackgroundColor="#333" WidthRequest="200" HeightRequest="300" Margin="10">
+                        <Frame CornerRadius="10" BackgroundColor="#312842" WidthRequest="200" HeightRequest="300" Margin="10"  BorderColor="#27232E">
                             <StackLayout>
                                 
                                 <Image Source="{Binding AlbumImagePath1}" Aspect="AspectFill"/>
@@ -48,7 +48,7 @@
                             </StackLayout>
                         </Frame>
 
-                        <Frame CornerRadius="10" BackgroundColor="#333" WidthRequest="200" HeightRequest="300" Margin="10">
+                        <Frame CornerRadius="10" BackgroundColor="#312842" WidthRequest="200" HeightRequest="300" Margin="10" BorderColor="#27232E">
                             <StackLayout>
 
                                 <Image Source="{Binding AlbumImagePath2}" Aspect="AspectFill"/>
@@ -58,7 +58,7 @@
                             </StackLayout>
                         </Frame>
 
-                        <Frame CornerRadius="10" BackgroundColor="#333" WidthRequest="200" HeightRequest="300" Margin="10">
+                        <Frame CornerRadius="10" BackgroundColor="#312842" WidthRequest="200" HeightRequest="300" Margin="10" BorderColor="#27232E">
                             <StackLayout>
 
                                 <Image Source="{Binding AlbumImagePath3}" Aspect="AspectFill"/>

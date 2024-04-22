@@ -63,6 +63,7 @@ public class DatabaseManager
         return dbAccess.IsAdmin(username);
     }
 
+
     public void PrintUserDetails()
     {
         Console.WriteLine($"User: {CurrentUser.GetUsername()}, Role ID: {CurrentUserRole}");

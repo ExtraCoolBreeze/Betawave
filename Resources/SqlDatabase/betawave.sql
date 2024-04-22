@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 21, 2024 at 03:55 PM
+-- Generation Time: Apr 22, 2024 at 12:33 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -72,6 +72,13 @@ CREATE TABLE `album` (
   `image_location` varchar(60) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `album`
+--
+
+INSERT INTO `album` (`album_id`, `title`, `image_location`) VALUES
+(5, 'Coral Fang', 'C:\\Users\\Craig\\Desktop\\Betawave8.0\\Betawave\\Resources\\Music\\');
+
 -- --------------------------------------------------------
 
 --
@@ -83,6 +90,23 @@ CREATE TABLE `album_track` (
   `track_number` int(11) NOT NULL,
   `song_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `album_track`
+--
+
+INSERT INTO `album_track` (`album_id`, `track_number`, `song_id`) VALUES
+(5, 1, 101),
+(5, 2, 102),
+(5, 3, 103),
+(5, 4, 104),
+(5, 5, 105),
+(5, 6, 106),
+(5, 7, 107),
+(5, 8, 108),
+(5, 9, 109),
+(5, 10, 110),
+(5, 11, 111);
 
 -- --------------------------------------------------------
 
@@ -101,7 +125,8 @@ CREATE TABLE `artist` (
 
 INSERT INTO `artist` (`artist_id`, `name`) VALUES
 (5, 'Da Octopuss'),
-(6, '111');
+(6, '111'),
+(7, 'The Distillers');
 
 -- --------------------------------------------------------
 
@@ -177,9 +202,25 @@ INSERT INTO `role` (`role_id`, `admin`) VALUES
 CREATE TABLE `song` (
   `song_id` int(11) NOT NULL,
   `name` varchar(60) NOT NULL,
-  `duration` varchar(60) NOT NULL,
-  `song_location` varchar(60) NOT NULL
+  `song_location` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `song`
+--
+
+INSERT INTO `song` (`song_id`, `name`, `song_location`) VALUES
+(101, 'Drain The Blood', 'C:\\Users\\Craig\\Desktop\\Betawave8.0\\Betawave\\Resources\\Music\\CoralFang\\01DraintheBlood.m4a'),
+(102, 'Dismantle Me', 'C:\\Users\\Craig\\Desktop\\Betawave8.0\\Betawave\\Resources\\Music\\CoralFang\\02DismantleMe.m4a'),
+(103, 'Die on a Rope', 'C:\\Users\\Craig\\Desktop\\Betawave8.0\\Betawave\\Resources\\Music\\CoralFang\\03DieonaRope.m4a'),
+(104, 'The Gallows is God', 'C:\\Users\\Craig\\Desktop\\Betawave8.0\\Betawave\\Resources\\Music\\CoralFang\\04TheGallowIsGod.m4a'),
+(105, 'Coral Fang', 'C:\\Users\\Craig\\Desktop\\Betawave8.0\\Betawave\\Resources\\Music\\CoralFang\\05CoralFang.m4a'),
+(106, 'The Hunger', 'C:\\Users\\Craig\\Desktop\\Betawave8.0\\Betawave\\Resources\\Music\\CoralFang\\06TheHunger.m4a'),
+(107, 'Hall of Mirrors', 'C:\\Users\\Craig\\Desktop\\Betawave8.0\\Betawave\\Resources\\Music\\CoralFang\\07HallofMirrors.m4a'),
+(108, 'Beat Your Heart Out', 'C:\\Users\\Craig\\Desktop\\Betawave8.0\\Betawave\\Resources\\Music\\CoralFang\\08BeatYourHeartOut.m4a'),
+(109, 'Love is Paranoid', 'C:\\Users\\Craig\\Desktop\\Betawave8.0\\Betawave\\Resources\\Music\\CoralFang\\09LoveIsParanoid.m4a'),
+(110, 'For Tonight Youre Only Here to Know', 'C:\\Users\\Craig\\Desktop\\Betawave8.0\\Betawave\\Resources\\Music\\CoralFang\\10ForTonightYoureOnlyHeretoKnow.m4a'),
+(111, 'Deathsex', 'C:\\Users\\Craig\\Desktop\\Betawave8.0\\Betawave\\Resources\\Music\\CoralFang\\11Deathsex.m4a');
 
 --
 -- Indexes for dumped tables
@@ -264,13 +305,13 @@ ALTER TABLE `account`
 -- AUTO_INCREMENT for table `album`
 --
 ALTER TABLE `album`
-  MODIFY `album_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `album_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `artist`
 --
 ALTER TABLE `artist`
-  MODIFY `artist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `artist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `playlist`
@@ -288,7 +329,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `song`
 --
 ALTER TABLE `song`
-  MODIFY `song_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
+  MODIFY `song_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
 
 --
 -- Constraints for dumped tables

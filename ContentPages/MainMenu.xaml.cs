@@ -18,7 +18,7 @@ namespace Betawave
 
         async void MMCreatePlaylistButton_Clicked(object sender, EventArgs e)
         {
-            await Shell.Current.GoToAsync("///CreatePlaylist");
+            await Shell.Current.GoToAsync("///UserCreatePlaylist");
         }
 
         async void MMmyPlaylistsButton_Clicked(object sender, EventArgs e)

@@ -9,6 +9,15 @@ namespace Betawave.Classes
     {
         private string MySqlConnectionString = "server=localhost;userid=root;password=;database=betawave";
 
+
+        // Constructor that accepts a connection string
+        public DatabaseAccess()
+        {
+
+        }
+
+
+
         public MySqlConnection ConnectToMySql()
         {
             MySqlConnection mySqlConnection = new MySqlConnection(MySqlConnectionString);

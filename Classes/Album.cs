@@ -72,12 +72,18 @@ namespace Betawave.Classes
 
         public Artist GetArtist()
         {
-            if (artist == null && artistManager != null)
+            // Fetch the artist from the artist manager if the local reference is null
+            if (artist == null && artistManager != null && artistId > 0)
             {
                 artist = artistManager.GetArtistById(artistId);
+                if (artist == null)
+                {
+                    Console.WriteLine($"No artist found with ID {artistId}");
+                }
             }
             return artist;
         }
+
 
         public void PrintAlbumDetails()
         {

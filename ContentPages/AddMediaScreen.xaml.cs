@@ -27,7 +27,7 @@ public partial class AddMediaScreen : ContentPage
 
     async void CreatePlaylistButton_Clicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync("///CreatePlaylist");
+        await Shell.Current.GoToAsync("///CreatePlaylistAdmin");
     }
 
     async void LogoutButton_Clicked(object sender, EventArgs e)

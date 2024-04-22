@@ -64,7 +64,7 @@ namespace Betawave.ViewModels
 
             await dbAccess.CreateUser(Username, Password);
             await Application.Current.MainPage.DisplayAlert("New User", "Account created successfully. Please take note of your password for later use.", "OK");
-            await Shell.Current.GoToAsync("//LoginScreen");
+            await Shell.Current.GoToAsync("///LoginScreen");
         }
 
 

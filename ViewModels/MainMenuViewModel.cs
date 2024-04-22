@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.DirectoryServices.ActiveDirectory;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using Betawave.Classes;
@@ -13,6 +12,9 @@ namespace Betawave.ViewModels
     public class MainMenuViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public AlbumManager albumManager;
+
 
         private string albumImagePath1;
         private string albumName1;
@@ -83,24 +85,41 @@ namespace Betawave.ViewModels
 
         public MainMenuViewModel()
         {
+
+            var dbAccess = new DatabaseAccess();
+            var artistManager = new ArtistManager(dbAccess);
+            albumManager = new AlbumManager(dbAccess, artistManager);
+
             LoadData();
         }
 
-        public void LoadData()
+        public async void LoadData()
         {
-            // This is where you would load your data
-            AlbumImagePath1 = "path_to_album_image_1.jpg";
-            AlbumName1 = "Album One";
-            ArtistName1 = "Artist One";
+            await albumManager.LoadAlbumsAsync();
+            var albums = albumManager.GetAllAlbums();
 
-            AlbumImagePath2 = "path_to_album_image_2.jpg";
-            AlbumName2 = "Album Two";
-            ArtistName2 = "Artist Two";
+            if (albums.Count > 0)
+            {
+                AlbumImagePath1 = albums[0].GetImageLocation();
+                AlbumName1 = albums[0].GetAlbumTitle();
+                ArtistName1 = albums[0].GetArtist().GetName();
+            }
 
-            AlbumImagePath3 = "path_to_album_image_3.jpg";
-            AlbumName3 = "Album Three";
-            ArtistName3 = "Artist Three";
+            if (albums.Count > 1)
+            {
+                AlbumImagePath2 = albums[1].GetImageLocation();
+                AlbumName2 = albums[1].GetAlbumTitle();
+                ArtistName2 = albums[1].GetArtist()?.GetName();
+            }
+
+            if (albums.Count > 2)
+            {
+                AlbumImagePath3 = albums[2].GetImageLocation();
+                AlbumName3 = albums[2].GetAlbumTitle();
+                ArtistName3 = albums[2].GetArtist()?.GetName();
+            }
         }
+
 
         // also this   SELECT COUNT(*) FROM your_table; Control the number of rows inserted by checking the current count of rows before inserting new data. 
         // use this to limit how many accounts or items that can be input into a table. MUST USE!

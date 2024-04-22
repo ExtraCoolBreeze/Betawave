@@ -19,7 +19,7 @@ public partial class AdminDashboard : ContentPage
 
     async void ADCreatePlaylistButton_Clicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync("///PlayQueue");
+        await Shell.Current.GoToAsync("///CreatePlaylistAdmin");
     }
 
     async void ADBackButton_Clicked(object sender, EventArgs e)

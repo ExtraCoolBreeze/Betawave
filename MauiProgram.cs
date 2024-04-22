@@ -36,7 +36,7 @@ namespace Betawave
             builder.Services.AddTransient<LoginScreen>();
             builder.Services.AddTransient<CreateAccount>();
             builder.Services.AddTransient<MainMenu>();
-            builder.Services.AddTransient<CreatePlaylist>();
+            builder.Services.AddTransient<CreatePlaylistAdmin>();
             builder.Services.AddTransient<AddToPlaylist>();
             builder.Services.AddTransient<MyPlaylists>();
             builder.Services.AddTransient<PlaylistView>();
@@ -46,6 +46,7 @@ namespace Betawave
             builder.Services.AddTransient<AddMediaScreen>();
             builder.Services.AddTransient<PlayQueue>();
             builder.Services.AddTransient<AddAlbum>();
+            builder.Services.AddTransient<UserCreatePlaylist>();
 #endif
 
             return builder.Build();

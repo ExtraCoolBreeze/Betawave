@@ -11,7 +11,7 @@ public partial class PlayQueue : ContentPage
 
     async void CreatePlaylistButton_Clicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync("///CreatePlaylist");
+        await Shell.Current.GoToAsync("///UserCreatePlaylist");
     }
 
     async void myPlaylistsButton_Clicked(object sender, EventArgs e)

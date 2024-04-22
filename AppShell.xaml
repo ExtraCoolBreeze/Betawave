@@ -24,9 +24,15 @@
         Route="CreateAccount" />
 
     <ShellContent
-        Title="Create Playlist"
-        ContentTemplate="{DataTemplate local:CreatePlaylist}"
-        Route="CreatePlaylist" />
+        Title="Create Playlist Admin"
+        ContentTemplate="{DataTemplate local:CreatePlaylistAdmin}"
+        Route="CreatePlaylistAdmin" />
+
+
+    <ShellContent
+        Title="User Create Playlist"
+        ContentTemplate="{DataTemplate local:UserCreatePlaylist}"
+        Route="UserCreatePlaylist" />
 
     <ShellContent
         Title="Add to Playlist"

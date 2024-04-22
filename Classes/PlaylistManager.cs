@@ -46,7 +46,7 @@ namespace Betawave.Classes
         {
             using (var connection = dbAccess.ConnectToMySql())
             {
-                var command = new MySqlCommand("SELECT s.song_id, s.name, s.artist_id, s.song_location FROM playlist_song ps INNER JOIN song s ON ps.song_id = s.song_id WHERE ps.playlist_id = @PlaylistId", connection);
+                var command = new MySqlCommand("SELECT s.song_id, s.name, s.song_location FROM playlist_track pt INNER JOIN song s ON pt.song_id = s.song_id WHERE pt.playlist_id = @PlaylistId", connection);
                 command.Parameters.AddWithValue("@PlaylistId", playlist.GetPlaylistId());
 
                 using (var reader = command.ExecuteReader())
@@ -56,10 +56,11 @@ namespace Betawave.Classes
                         var song = new Song();
                         song.SetSongId(reader.GetInt32("song_id"));
                         song.SetName(reader.GetString("name"));
-                        song.SetArtistId(reader.GetInt32("artist_id"));
                         song.SetSongLocation(reader.GetString("song_location"));
 
-                        Artist artist = artistManager.GetArtistById(song.GetArtistId());
+                        // Assuming there is a method to get the artist ID from the song data
+                        int artistId = reader.GetInt32("artist_id"); // Make sure you have artist_id in your song data
+                        Artist artist = artistManager.GetArtistById(artistId);
                         if (artist != null)
                         {
                             song.SetArtist(artist);
@@ -70,6 +71,8 @@ namespace Betawave.Classes
                 }
             }
         }
+
+
 
 
         public void AddPlaylist(BasePlaylist playlist)
@@ -145,7 +148,7 @@ namespace Betawave.Classes
                     return playlists[i];
                 }
             }
-            return null; // Return null if no playlist is found
+            return null;
         }
     }
 }

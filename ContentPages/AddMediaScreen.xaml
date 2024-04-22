@@ -35,8 +35,13 @@
                     <ScrollView>
                         <VerticalStackLayout Margin="9" BackgroundColor="#27232E">
                             <!-- Here I need to generate buttons that  -->
-                            <Button Text="List of Albums On Betawave" FontSize="20" Margin="5"/>
+                            <Button Text="List of Albums" FontSize="20" Margin="5"/>
                         </VerticalStackLayout>
+
+                     <!--   <VerticalStackLayout Margin="9" BackgroundColor="#27232E"> -->
+                            <!-- Here I need to generate buttons that  -->
+                            <!--    <Button Text="List of playlists" FontSize="20" Margin="5"/> -->
+                     <!--   </VerticalStackLayout> -->
                     </ScrollView>
                 </VerticalStackLayout>
             </Frame>

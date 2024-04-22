@@ -9,8 +9,8 @@ namespace Betawave.Classes
     public class AlbumManager
     {
         private List<Album> albums = new List<Album>();
-        private  DatabaseAccess dbAccess;
-        private  ArtistManager artistManager;
+        private DatabaseAccess dbAccess;
+        private ArtistManager artistManager;
 
         public AlbumManager(DatabaseAccess dbAccess, ArtistManager artistManager)
         {
@@ -22,24 +22,20 @@ namespace Betawave.Classes
         {
             using (var connection = dbAccess.ConnectToMySql())
             {
-                var command = new MySqlCommand("SELECT album_id, title, image_location, artist_id FROM album ORDER BY album_id ASC LIMIT 3", connection);
+                // Remove artist_id from the SQL query
+                var command = new MySqlCommand("SELECT album_id, title, image_location FROM album ORDER BY album_id ASC LIMIT 3", connection);
                 using (var reader = await command.ExecuteReaderAsync())
                 {
-                    albums.Clear();
+                    //albums.Clear();
                     while (await reader.ReadAsync())
                     {
                         var album = new Album(artistManager);
                         album.SetAlbumId(reader.GetInt32("album_id"));
                         album.SetAlbumTitle(reader.GetString("title"));
                         album.SetImageLocation(reader.GetString("image_location"));
-                        album.SetArtistId(reader.GetInt32("artist_id"));
 
-                        // Set the artist using the method
-                        Artist artist = artistManager.GetArtistById(album.GetArtistId());
-                        if (artist != null)
-                        {
-                            album.SetArtist(artist);
-                        }
+                        // Assuming artist_id handling here, if artist logic is necessary
+                        // You would need another method to associate artist if required
 
                         albums.Add(album);
                     }
@@ -47,23 +43,20 @@ namespace Betawave.Classes
             }
         }
 
-
         public async Task<bool> AddAlbum(Album album)
         {
             if (await CountAlbums() >= 3)
             {
-                // Return false if the limit of 3 albums is reached
-                return false;
+                return false; // Return false if the limit of 3 albums is reached
             }
 
-            // Proceed to add the album if the limit is not reached
+            // Add the album if the limit is not reached
             albums.Add(album);
             using (var connection = dbAccess.ConnectToMySql())
             {
-                var command = new MySqlCommand("INSERT INTO album (title, image_location, artist_id) VALUES (@Title, @ImageLocation, @ArtistId)", connection);
+                var command = new MySqlCommand("INSERT INTO album (title, image_location) VALUES (@Title, @ImageLocation)", connection);
                 command.Parameters.AddWithValue("@Title", album.GetAlbumTitle());
                 command.Parameters.AddWithValue("@ImageLocation", album.GetImageLocation());
-                command.Parameters.AddWithValue("@ArtistId", album.GetArtistId());
                 await command.ExecuteNonQueryAsync();
             }
             return true;
@@ -77,18 +70,16 @@ namespace Betawave.Classes
                 {
                     albums[i].SetAlbumTitle(album.GetAlbumTitle());
                     albums[i].SetImageLocation(album.GetImageLocation());
-                    albums[i].SetArtistId(album.GetArtistId());
                     break;
                 }
             }
 
             using (var connection = dbAccess.ConnectToMySql())
             {
-                var command = new MySqlCommand("UPDATE album SET title = @Title, image_location = @ImageLocation, artist_id = @ArtistId WHERE album_id = @AlbumId", connection);
+                var command = new MySqlCommand("UPDATE album SET title = @Title, image_location = @ImageLocation WHERE album_id = @AlbumId", connection);
                 command.Parameters.AddWithValue("@AlbumId", album.GetAlbumId());
                 command.Parameters.AddWithValue("@Title", album.GetAlbumTitle());
                 command.Parameters.AddWithValue("@ImageLocation", album.GetImageLocation());
-                command.Parameters.AddWithValue("@ArtistId", album.GetArtistId());
                 command.ExecuteNonQuery();
             }
         }
