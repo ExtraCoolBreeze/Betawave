@@ -1,10 +1,13 @@
+using Betawave.ViewModels;
+
 namespace Betawave;
 
 public partial class AdminDashboard : ContentPage
 {
-	public AdminDashboard()
+	public AdminDashboard(AudioViewModel audioViewModel)
 	{
         InitializeComponent();
+        BindingContext=audioViewModel;
 	}
 
     async void ADDashboardButton_Clicked(object sender, EventArgs e)

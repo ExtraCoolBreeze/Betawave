@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui;
 using NAudio.Wave;
+using Betawave.ViewModels;
 
 
 namespace Betawave
@@ -27,25 +28,44 @@ namespace Betawave
                 });
 
 
-            builder.Services.AddSingleton<Player>();
-
 #if DEBUG
             builder.Logging.AddDebug();
 
             //This is part of the application builder and adding these content pages here allow for dependency injection
+            builder.Services.AddSingleton<Player>();
+            builder.Services.AddSingleton<AudioViewModel>();
+
             builder.Services.AddTransient<LoginScreen>();
+            builder.Services.AddTransient<LoginViewModel>();
+
             builder.Services.AddTransient<CreateAccount>();
+            builder.Services.AddTransient<CreateAccountViewModel>();
+
             builder.Services.AddTransient<MainMenu>();
+            builder.Services.AddTransient<MainMenuViewModel>();
+
             builder.Services.AddTransient<CreatePlaylistAdmin>();
+
             builder.Services.AddTransient<AddToPlaylist>();
+
             builder.Services.AddTransient<MyPlaylists>();
+
             builder.Services.AddTransient<PlaylistView>();
+
             builder.Services.AddTransient<FavouritesView>();
+
             builder.Services.AddTransient<AlbumView>();
+
+
             builder.Services.AddTransient<AdminDashboard>();
+
             builder.Services.AddTransient<AddMediaScreen>();
+
             builder.Services.AddTransient<PlayQueue>();
+
             builder.Services.AddTransient<AddAlbum>();
+            builder.Services.AddTransient<AddAlbumViewModel>();
+
             builder.Services.AddTransient<UserCreatePlaylist>();
 #endif
 

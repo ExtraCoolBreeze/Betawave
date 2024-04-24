@@ -11,8 +11,9 @@ namespace Betawave.Classes
         private string albumTitle;
         private string imageLocation;
         private int artistId;
-        private Artist artist;
-        private ArtistManager artistManager;  // Reference to the ArtistManager
+        public Artist Artist;
+        private ArtistManager artistManager
+         { get; set; }
 
         public Album(ArtistManager artistManager)
         {
@@ -53,10 +54,9 @@ namespace Betawave.Classes
             return imageLocation;
         }
 
-        public void SetArtistId(int id)
+        public void SetArtistId(int value)
         {
-            artistId = id;
-            artist = null;  // Invalidate the cached artist when ID changes
+            artistId = value;
         }
 
         public int GetArtistId()
@@ -66,23 +66,19 @@ namespace Betawave.Classes
 
         public void SetArtist(Artist artist)
         {
-            this.artist = artist;
+            this.Artist = artist;
+            this.artistId = artist.GetArtistId();
         }
-
 
         public Artist GetArtist()
         {
-            // Fetch the artist from the artist manager if the local reference is null
-            if (artist == null && artistManager != null && artistId > 0)
+            if (this.Artist == null && this.artistId > 0)
             {
-                artist = artistManager.GetArtistById(artistId);
-                if (artist == null)
-                {
-                    Console.WriteLine($"No artist found with ID {artistId}");
-                }
+                this.Artist = artistManager.GetArtistById(this.artistId);
             }
-            return artist;
+            return this.Artist;
         }
+
 
 
         public void PrintAlbumDetails()

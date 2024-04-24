@@ -6,10 +6,6 @@
              BackgroundColor="#151417"
              Title="PlayQueue">
 
-    <ContentPage.BindingContext>
-        <vm:AudioViewModel/>
-    </ContentPage.BindingContext>
-
     <Grid RowDefinitions="9*, 1.5*" ColumnDefinitions="2*, 8*" Margin="2">
         <Frame Grid.Row="0" Grid.Column="0" CornerRadius="15" Margin="5" BackgroundColor="#27232E" BorderColor="#27232E">
             <ScrollView>

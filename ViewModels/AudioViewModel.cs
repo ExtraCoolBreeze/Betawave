@@ -8,7 +8,7 @@ namespace Betawave.ViewModels
 {
     public class AudioViewModel : INotifyPropertyChanged
     {
-        private Player audioPlayerService = new Player();
+        private Player audioPlayerService;
         private ICommand playPauseCommand;
         private ICommand stopCommand;
         private ICommand skipNextCommand;
@@ -24,13 +24,14 @@ namespace Betawave.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public AudioViewModel()
+        public AudioViewModel(Player player)
         {
             playPauseCommand = new Command(TogglePlayPause);
             stopCommand = new Command(StopAudio);
             skipNextCommand = new Command(SkipNext);
             skipPreviousCommand = new Command(SkipPrevious);
             toggleShuffleCommand = new Command(ToggleShuffle);
+            this.audioPlayerService = new Player();
 
             shuffle = audioPlayerService.GetShuffle();
             audioPlayerService.PlaybackStopped += HandlePlaybackStopped;
@@ -82,19 +83,6 @@ namespace Betawave.ViewModels
             }
         }
 
-        public double TrackLength
-        {
-            get => trackLength;
-            set
-            {
-                if (trackLength != value)
-                {
-                    trackLength = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
         public float Volume
         {
             get => volume;
@@ -138,7 +126,7 @@ namespace Betawave.ViewModels
 
         public void TogglePlayPause()
         {
-            if (audioPlayerService.IsPlaying)
+            if (audioPlayerService.IsPlaying())
             {
                 audioPlayerService.PauseMusic();
             }
@@ -148,12 +136,34 @@ namespace Betawave.ViewModels
             }
         }
 
-        public void HandlePlaybackStopped(object sender, StoppedEventArgs e)
+        public double TrackLength
         {
-            if (e.Exception != null)
+            get
             {
-                Console.WriteLine($"Playback Stopped due to an error: {e.Exception.Message}");
+                if (audioPlayerService != null && audioPlayerService.GetCurrentTrackLength() != TimeSpan.Zero)
+                {
+                    return audioPlayerService.GetCurrentTrackLength().TotalSeconds;
+                }
+                else
+                {
+                    return 0; // Or appropriate default value
+                }
             }
+            set
+            {
+                if (trackLength != value)
+                {
+                    trackLength = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+
+        public void SetPlaylistAndPlay(BasePlaylist playlist)
+        {
+            audioPlayerService.SetPlaylist(playlist);
+            audioPlayerService.PlayMusic();
         }
 
         public void SkipNext()
@@ -178,11 +188,22 @@ namespace Betawave.ViewModels
 
         private void UpdateTrackDetails(object sender, EventArgs e)
         {
-            CurrentTrackImage = audioPlayerService.GetCurrentTrackImage(); 
+            CurrentTrackImage = audioPlayerService.GetCurrentTrackImage();
             CurrentTrackName = audioPlayerService.GetCurrentTrackName();
             CurrentTrackArtist = audioPlayerService.GetCurrentTrackArtist();
+            CurrentTrackPosition = 0; // Reset or update according to actual progress
+            TrackLength = audioPlayerService.GetCurrentTrackLength().TotalSeconds;  // Update length when track changes
+            OnPropertyChanged(nameof(TrackLength));
         }
 
+
+        public void HandlePlaybackStopped(object sender, StoppedEventArgs e)
+        {
+            if (e.Exception != null)
+            {
+                Console.WriteLine($"Playback Stopped due to an error: {e.Exception.Message}");
+            }
+        }
 
         public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

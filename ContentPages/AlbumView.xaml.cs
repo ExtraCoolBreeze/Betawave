@@ -1,10 +1,13 @@
+using Betawave.ViewModels;
+
 namespace Betawave;
 
 public partial class AlbumView : ContentPage
 {
-	public AlbumView()
+	public AlbumView(AudioViewModel audioViewModel)
 	{
 		InitializeComponent();
+        BindingContext = audioViewModel;
 	}
 
     async void AVCreatePlaylistButton_Clicked(object sender, EventArgs e)

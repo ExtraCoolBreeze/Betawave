@@ -34,6 +34,7 @@ namespace Betawave.Classes
             }
         }
 
+
         public void AddArtist(Artist artist)
         {
             artists.Add(artist);

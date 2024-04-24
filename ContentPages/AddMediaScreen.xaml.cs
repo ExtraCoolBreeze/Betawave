@@ -1,3 +1,4 @@
+using Betawave.ViewModels;
 using CommunityToolkit.Maui.Core.Primitives;
 using CommunityToolkit.Maui.Views;
 
@@ -6,9 +7,10 @@ namespace Betawave;
 public partial class AddMediaScreen : ContentPage
 {
 
-    public AddMediaScreen()
+    public AddMediaScreen(AudioViewModel audioViewModel)
     {
         InitializeComponent();
+        BindingContext = audioViewModel;
     }
 
 

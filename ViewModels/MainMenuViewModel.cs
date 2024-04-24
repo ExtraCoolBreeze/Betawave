@@ -3,7 +3,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
+using System.Windows.Input;
 using Betawave.Classes;
+using Microsoft.Maui;
 using Microsoft.Maui.Controls;
 using Org.BouncyCastle.Utilities.Zlib;
 
@@ -14,7 +16,50 @@ namespace Betawave.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
 
         public AlbumManager albumManager;
+        public SongManager songManager;
+        private AudioViewModel audioViewModel;
 
+        public ICommand PlayAlbum1Command { get; private set; }
+        public ICommand PlayAlbum2Command { get; private set; }
+        public ICommand PlayAlbum3Command { get; private set; }
+
+        public ICommand PlayPauseCommand { get; private set; }
+        public ICommand StopCommand { get; private set; }
+        public ICommand SkipNextCommand { get; private set; }
+        public ICommand SkipPreviousCommand { get; private set; }
+        public ICommand ToggleShuffleCommand { get; private set; }
+
+        public string CurrentTrackName => audioViewModel.CurrentTrackName;
+        public string CurrentTrackArtist => audioViewModel.CurrentTrackArtist;
+        public string CurrentTrackImage => audioViewModel.CurrentTrackImage;
+        public double CurrentTrackPosition => audioViewModel.CurrentTrackPosition;
+        public double TrackLength => audioViewModel.TrackLength;
+
+        public float Volume
+        {
+            get => audioViewModel.Volume;
+            set
+            {
+                if (audioViewModel.Volume != value)
+                {
+                    audioViewModel.Volume = value;
+                    OnPropertyChanged(nameof(Volume));
+                }
+            }
+        }
+
+        public bool Shuffle
+        {
+            get => audioViewModel.Shuffle;
+            set
+            {
+                if (audioViewModel.Shuffle != value)
+                {
+                    audioViewModel.Shuffle = value;
+                    OnPropertyChanged(nameof(Shuffle));
+                }
+            }
+        }
 
         private string albumImagePath1;
         private string albumName1;
@@ -83,12 +128,27 @@ namespace Betawave.ViewModels
         }
 
 
-        public MainMenuViewModel()
+        public MainMenuViewModel(AudioViewModel audioViewModel)
         {
+            
+            PlayAlbum1Command = new Command(() => PlayAlbum(0));
+            PlayAlbum2Command = new Command(() => PlayAlbum(1));
+            PlayAlbum3Command = new Command(() => PlayAlbum(2));
 
+            PlayPauseCommand = new Command(() => audioViewModel.TogglePlayPause());
+            StopCommand = new Command(() => audioViewModel.StopAudio());
+            SkipNextCommand = new Command(() => audioViewModel.SkipNext());
+            SkipPreviousCommand = new Command(() => audioViewModel.SkipPrevious());
+            ToggleShuffleCommand = new Command(() => audioViewModel.ToggleShuffle());
+
+            this.audioViewModel = audioViewModel;
             var dbAccess = new DatabaseAccess();
+            var manager = new DatabaseManager(dbAccess);
+            manager.LoadAllDataAsync();
+
             var artistManager = new ArtistManager(dbAccess);
             albumManager = new AlbumManager(dbAccess, artistManager);
+            songManager = new SongManager(dbAccess, artistManager);
 
             LoadData();
         }
@@ -102,21 +162,18 @@ namespace Betawave.ViewModels
             {
                 AlbumImagePath1 = albums[0].GetImageLocation();
                 AlbumName1 = albums[0].GetAlbumTitle();
-                ArtistName1 = albums[0].GetArtist().GetName();
             }
 
             if (albums.Count > 1)
             {
                 AlbumImagePath2 = albums[1].GetImageLocation();
                 AlbumName2 = albums[1].GetAlbumTitle();
-                ArtistName2 = albums[1].GetArtist()?.GetName();
             }
 
             if (albums.Count > 2)
             {
                 AlbumImagePath3 = albums[2].GetImageLocation();
                 AlbumName3 = albums[2].GetAlbumTitle();
-                ArtistName3 = albums[2].GetArtist()?.GetName();
             }
         }
 
@@ -137,6 +194,24 @@ namespace Betawave.ViewModels
         END;
     //
     DELIMITER ;*/
+
+        private async void PlayAlbum(int albumIndex)
+        {
+            var albums = albumManager.GetAllAlbums();
+            if (albumIndex < albums.Count)
+            {
+                Album album = albums[albumIndex];
+                var songsForAlbum = await songManager.GetSongsForAlbum(album.GetAlbumId());
+                BasePlaylist playlist = new BasePlaylist();
+                foreach (var song in songsForAlbum)
+                {
+                    playlist.AddSong(song);
+                }
+
+                audioViewModel.SetPlaylistAndPlay(playlist);
+            }
+        }
+
 
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

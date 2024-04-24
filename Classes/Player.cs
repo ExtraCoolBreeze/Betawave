@@ -10,7 +10,6 @@ public class Player
     private Random random = new Random();
     private bool shuffle = false;
     private int currentTrackIndex = -1;
-    public bool IsPlaying;
 
     public event EventHandler<StoppedEventArgs> PlaybackStopped;
     public event EventHandler TrackChanged;
@@ -18,10 +17,10 @@ public class Player
     public Player()
     {
         waveOutDevice = new WaveOutEvent();
-        waveOutDevice.PlaybackStopped += OnPlaybackStoppedInternal;
+        waveOutDevice.PlaybackStopped += OnPlaybackStopped;
     }
 
-    private void OnPlaybackStoppedInternal(object sender, StoppedEventArgs e)
+    private void OnPlaybackStopped(object sender, StoppedEventArgs e)
     {
         if (PlaybackStopped != null)
         {
@@ -39,7 +38,7 @@ public class Player
     {
         if (audioFileReader != null)
         {
-            audioFileReader.Dispose(); // Dispose previous reader
+            audioFileReader.Dispose();
         }
 
         try
@@ -69,6 +68,11 @@ public class Player
         }
     }
 
+    public bool IsPlaying()
+    {
+        return waveOutDevice.PlaybackState == PlaybackState.Playing;
+    }
+
     public void PauseMusic()
     {
         waveOutDevice.Pause();
@@ -83,7 +87,7 @@ public class Player
     {
         if (audioFileReader != null)
         {
-            audioFileReader.Volume = volume; // Volume between 0.0 and 1.0
+            audioFileReader.Volume = volume;
         }
     }
 
@@ -103,6 +107,29 @@ public class Player
             PlayNextTrack();
         }
     }
+
+    public void SetPlaylist(BasePlaylist playlist)
+    {
+        currentPlaylist = playlist;
+        currentTrackIndex = 0;
+
+        PlayCurrentTrack();
+    }
+
+    public void PlayCurrentTrack()
+    {
+        if (currentPlaylist != null && currentPlaylist.GetPlaylistSongs().Count > 0)
+        {
+            var track = currentPlaylist.GetPlaylistSongs()[currentTrackIndex];
+            LoadMusic(track.GetSongLocation());
+            PlayMusic();
+        }
+        else
+        {
+            Console.WriteLine("Playlist is empty or not set.");
+        }
+    }
+
 
     public void ToggleShuffle()
     {
@@ -168,15 +195,40 @@ public class Player
 
     public string GetCurrentTrackArtist()
     {
+        // Ensure that the playlist and the current track index are valid
         if (currentPlaylist != null && currentTrackIndex >= 0 && currentTrackIndex < currentPlaylist.GetPlaylistSongs().Count)
         {
-            return currentPlaylist.GetPlaylistSongs()[currentTrackIndex].GetArtist().GetName();
+            Song song = currentPlaylist.GetPlaylistSongs()[currentTrackIndex];
+            Artist artist = song.GetArtist(); // Assume GetArtist returns an Artist object which might be null
+
+            // Check if artist is not null before trying to access its name
+            if (artist != null)
+            {
+                return artist.GetName();
+            }
+            else
+            {
+                return "Unknown Artist"; // Artist data might be missing or not set
+            }
         }
         else
         {
-            return "Unknown Artist";
+            return "Unknown Artist"; // Invalid playlist data or index
         }
     }
+
+    public TimeSpan GetCurrentTrackLength()
+    {
+        if (audioFileReader != null)
+        {
+            return audioFileReader.TotalTime;
+        }
+        else
+        {
+            return TimeSpan.Zero; // Return zero if no track is loaded
+        }
+    }
+
 
     public string GetCurrentTrackImage()
     {
@@ -187,7 +239,7 @@ public class Player
         }
         else
         {
-            return "default_album_cover.png";  // Return a default image if no track is loaded or if no image URL is set
+            return "default_album_cover.png";
         }
     }
 

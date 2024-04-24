@@ -1,10 +1,13 @@
+using Betawave.ViewModels;
+
 namespace Betawave;
 
 public partial class PlayQueue : ContentPage
 {
-    public PlayQueue()
+    public PlayQueue(AudioViewModel audioViewModel)
     {
         InitializeComponent();
+        BindingContext = audioViewModel;
     }
 
 

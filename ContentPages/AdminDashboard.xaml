@@ -8,9 +8,6 @@
              BackgroundColor="#151417">
 
     <!-- Remember to change the to AudioViewModel-->
-    <ContentPage.BindingContext>
-        <vm:AudioViewModel/>
-    </ContentPage.BindingContext>
 
 
     <Grid RowDefinitions="9*, 1.5*" ColumnDefinitions="2*, 8*" Margin="2">

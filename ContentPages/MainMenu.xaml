@@ -30,31 +30,27 @@
         <Grid Grid.Row="0" Grid.Column="1" Margin="2" Padding="1">
             <Frame Grid.Row="0" Grid.Column="0" CornerRadius="15" Margin="5" Padding="2" BackgroundColor="#27232E" BorderColor="#27232E">
 
-                <Frame.BindingContext>
-                    <mainMenuVM:MainMenuViewModel/>
-                </Frame.BindingContext>
-
                 <ScrollView Orientation="Vertical">
                     <FlexLayout Wrap="Wrap" Direction="Row" AlignItems="Center" AlignContent="SpaceEvenly" JustifyContent="SpaceEvenly" Padding="10" Margin="10">
                         
                         <!-- Dynamically generated content -->
-                        <Frame CornerRadius="10" BackgroundColor="#312842" WidthRequest="200" HeightRequest="300" Margin="10"  BorderColor="#27232E">
-                            <StackLayout>
+                        <Frame  CornerRadius="10" BackgroundColor="#312842" WidthRequest="200" HeightRequest="300" Margin="10"  BorderColor="#27232E">
+                            <StackLayout >
                                 
                                 <Image Source="{Binding AlbumImagePath1}" Aspect="AspectFill"/>
-                                    <Label Text="{Binding AlbumName1}" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
-                                <Label Text="{Binding ArtistName1}" FontAttributes="Italic" TextColor="Gray" HorizontalTextAlignment="Center"/>
-                                
+                                <Label Text="{Binding AlbumName1}" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
+                                <Label Text="{Binding ArtistName1}" FontAttributes="Italic" TextColor="White" HorizontalTextAlignment="Center"/>
+                                <Button Text="Play Album" Command="{Binding PlayAlbum1Command}"></Button>
                             </StackLayout>
                         </Frame>
 
-                        <Frame CornerRadius="10" BackgroundColor="#312842" WidthRequest="200" HeightRequest="300" Margin="10" BorderColor="#27232E">
+                        <Frame   CornerRadius="10" BackgroundColor="#312842" WidthRequest="200" HeightRequest="300" Margin="10" BorderColor="#27232E">
                             <StackLayout>
 
                                 <Image Source="{Binding AlbumImagePath2}" Aspect="AspectFill"/>
                                 <Label Text="{Binding AlbumName2}" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
-                                <Label Text="{Binding ArtistName2}" FontAttributes="Italic" TextColor="Gray" HorizontalTextAlignment="Center"/>
-
+                                <Label Text="{Binding ArtistName2}" FontAttributes="Italic" TextColor="White" HorizontalTextAlignment="Center"/>
+                                <Button Text="Play Album" Command="{Binding PlayAlbum2Command}"></Button>
                             </StackLayout>
                         </Frame>
 
@@ -63,8 +59,8 @@
 
                                 <Image Source="{Binding AlbumImagePath3}" Aspect="AspectFill"/>
                                 <Label Text="{Binding AlbumName3}" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
-                                <Label Text="{Binding ArtistName3}" FontAttributes="Italic" TextColor="Gray" HorizontalTextAlignment="Center"/>
-
+                                <Label Text="{Binding ArtistName3}" FontAttributes="Italic" TextColor="White" HorizontalTextAlignment="Center"/>
+                                <Button Text="Play Album" Command="{Binding PlayAlbum3Command}"></Button>
                             </StackLayout>
                         </Frame>
 
@@ -79,10 +75,6 @@
 
         <!-- Bottom layout grid for the music player UI-->
         <Frame Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" CornerRadius="15" Margin="0" Padding="1" BackgroundColor="#27232E" BorderColor="#27232E">
-
-            <Frame.BindingContext>
-                <audioVM:AudioViewModel/>
-            </Frame.BindingContext>
 
             <Grid RowDefinitions="*,*" Padding="0" ColumnDefinitions="*, *, *, *, *, *, *, *, *, *, *">
                 <!-- First Row Elements -->

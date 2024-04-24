@@ -8,9 +8,6 @@
              BackgroundColor="#151417"
              Padding="0">
 
-    <ContentPage.BindingContext>
-        <vm:AudioViewModel />
-    </ContentPage.BindingContext>
     
     <Grid RowDefinitions="9*, 1.5*" ColumnDefinitions="2*, 8*" Margin="2">
         <!-- Left side VerticalStackLayout -->

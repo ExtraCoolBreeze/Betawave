@@ -10,27 +10,34 @@ public class DatabaseManager
 
     // Manager instances
 
-    private SongManager songManager;
-    private AlbumManager albumManager;
     private ArtistManager artistManager;
+    private AlbumManager albumManager;
+    private SongManager songManager;
     private PlaylistManager playlistManager;
 
     public DatabaseManager(DatabaseAccess access)
     {
         dbAccess = access;
+        artistManager = new ArtistManager(dbAccess);
         songManager = new SongManager(dbAccess, artistManager);
         albumManager = new AlbumManager(dbAccess, artistManager);
-        artistManager = new ArtistManager(dbAccess);
         playlistManager = new PlaylistManager(dbAccess, artistManager);
     }
 
     // Initialize all data from database
     public async Task LoadAllDataAsync()
     {
-        await artistManager.LoadArtistsAsync();
-        await songManager.LoadSongsIntoProgramAsync();
-        await albumManager.LoadAlbumsAsync();
-        await playlistManager.LoadPlaylistsAsync();
+        try
+        {
+            await artistManager.LoadArtistsAsync();
+            await albumManager.LoadAlbumsAsync();
+            await songManager.LoadSongsIntoProgramAsync();
+            await playlistManager.LoadPlaylistsAsync();
+        }
+        catch (Exception ex) 
+        {
+            Console.WriteLine("Failed to load data: " + ex.Message);
+        }
     }
 
     // Handling user login and role retrieval

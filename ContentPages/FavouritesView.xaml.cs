@@ -1,10 +1,13 @@
+using Betawave.ViewModels;
+
 namespace Betawave;
 
 public partial class FavouritesView : ContentPage
 {
-	public FavouritesView()
+	public FavouritesView(AudioViewModel audioViewModel)
 	{
 		InitializeComponent();
+        BindingContext = audioViewModel;
 	}
 
     async void CreatePlaylistButton_Clicked(object sender, EventArgs e)

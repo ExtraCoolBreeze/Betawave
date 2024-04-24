@@ -108,5 +108,33 @@ namespace Betawave.Classes
             }
             return null;
         }
+        public async Task<List<Song>> GetSongsForAlbum(int albumId)
+        {
+            var albumSongs = new List<Song>();
+            using (var connection = dbAccess.ConnectToMySql())
+            {
+                var command = new MySqlCommand(
+                "SELECT s.song_id, s.name, s.song_location " +
+                "FROM song s " +
+                "JOIN album_track at ON s.song_id = at.song_id " +
+                "WHERE at.album_id = @AlbumId", connection);
+
+                command.Parameters.AddWithValue("@AlbumId", albumId);
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        var song = new Song();
+                        song.SetSongId(reader.GetInt32("song_id"));
+                        song.SetName(reader.GetString("name"));
+                        song.SetSongLocation(reader.GetString("song_location"));
+
+                        albumSongs.Add(song);
+                    }
+                }
+            }
+            return albumSongs;
+        }
+
     }
 }

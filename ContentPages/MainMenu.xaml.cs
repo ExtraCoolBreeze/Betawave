@@ -1,5 +1,6 @@
 using Betawave;
 using Betawave.Classes;
+using Betawave.ViewModels;
 using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Core.Primitives;
 using CommunityToolkit.Maui.Views;
@@ -9,9 +10,10 @@ namespace Betawave
     public partial class MainMenu : ContentPage
     {
 
-        public MainMenu()
+        public MainMenu(MainMenuViewModel mainMenuViewModel)
         {
             InitializeComponent();
+            BindingContext = mainMenuViewModel;
         }
 
 

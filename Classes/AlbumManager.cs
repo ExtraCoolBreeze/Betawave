@@ -22,11 +22,10 @@ namespace Betawave.Classes
         {
             using (var connection = dbAccess.ConnectToMySql())
             {
-                // Remove artist_id from the SQL query
-                var command = new MySqlCommand("SELECT album_id, title, image_location FROM album ORDER BY album_id ASC LIMIT 3", connection);
+                var command = new MySqlCommand("SELECT album_id, title, image_location, artist_id FROM album ORDER BY album_id ASC LIMIT 3", connection);
                 using (var reader = await command.ExecuteReaderAsync())
                 {
-                    //albums.Clear();
+                    albums.Clear();
                     while (await reader.ReadAsync())
                     {
                         var album = new Album(artistManager);
@@ -34,8 +33,24 @@ namespace Betawave.Classes
                         album.SetAlbumTitle(reader.GetString("title"));
                         album.SetImageLocation(reader.GetString("image_location"));
 
-                        // Assuming artist_id handling here, if artist logic is necessary
-                        // You would need another method to associate artist if required
+                        if (artistManager != null)  // Check if artistManager is not null
+                        {
+                            int artistId = reader.GetInt32("artist_id");
+                            album.SetArtistId(artistId);  // Set the artist ID
+                            Artist artist = artistManager.GetArtistById(artistId);  // Retrieve the Artist object
+                            if (artist != null)  // Check if an artist was found
+                            {
+                                album.SetArtist(artist);
+                            }
+                            else
+                            {
+                                Console.WriteLine("No artist found with ID: " + artistId);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Artist manager is not initialized.");
+                        }
 
                         albums.Add(album);
                     }
@@ -43,14 +58,14 @@ namespace Betawave.Classes
             }
         }
 
+
         public async Task<bool> AddAlbum(Album album)
         {
             if (await CountAlbums() >= 3)
             {
-                return false; // Return false if the limit of 3 albums is reached
+                return false;
             }
 
-            // Add the album if the limit is not reached
             albums.Add(album);
             using (var connection = dbAccess.ConnectToMySql())
             {
@@ -121,14 +136,15 @@ namespace Betawave.Classes
 
         public Album GetAlbumById(int albumId)
         {
-            for (int i = 0; i < albums.Count; i++)
+            foreach (var album in albums)
             {
-                if (albums[i].GetAlbumId() == albumId)
+                if (album.GetAlbumId() == albumId)
                 {
-                    return albums[i];
+                    return album;
                 }
             }
             return null; // Return null if no album is found
         }
+
     }
 }

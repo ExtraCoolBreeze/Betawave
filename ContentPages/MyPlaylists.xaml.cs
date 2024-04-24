@@ -1,3 +1,4 @@
+using Betawave.ViewModels;
 using CommunityToolkit.Maui.Core.Primitives;
 using CommunityToolkit.Maui.Views;
 namespace Betawave;
@@ -5,9 +6,10 @@ namespace Betawave;
 public partial class MyPlaylists : ContentPage
 {
 
-    public MyPlaylists()
+    public MyPlaylists(AudioViewModel audioViewModel)
     {
         InitializeComponent();
+        BindingContext = audioViewModel;
     }
 
 

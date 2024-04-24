@@ -10,26 +10,26 @@ namespace Betawave.ViewModels
     public class LoginViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private string _username;
-        private string _password;
-        private readonly DatabaseManager _databaseManager;
+        private string username;
+        private string password;
+        private readonly DatabaseManager databaseManager;
 
         public ICommand LoginCommand { get; private set; }
 
         public LoginViewModel()
         {
-            _databaseManager = new DatabaseManager(new DatabaseAccess()); // Ensure you pass correct dependencies
+            databaseManager = new DatabaseManager(new DatabaseAccess()); // Ensure you pass correct dependencies
             LoginCommand = new Command(async () => await ExecuteLoginCommand());
         }
 
         public string Username
         {
-            get => _username;
+            get => username;
             set
             {
-                if (_username != value)
+                if (username != value)
                 {
-                    _username = value;
+                    username = value;
                     OnPropertyChanged();
                 }
             }
@@ -37,12 +37,12 @@ namespace Betawave.ViewModels
 
         public string Password
         {
-            get => _password;
+            get => password;
             set
             {
-                if (_password != value)
+                if (password != value)
                 {
-                    _password = value;
+                    password = value;
                     OnPropertyChanged();
                 }
             }
@@ -56,13 +56,13 @@ namespace Betawave.ViewModels
                 return;
             }
 
-            if (await _databaseManager.ValidateUser(Username, Password))
+            if (await databaseManager.ValidateUser(Username, Password))
             {
                 // Load data from the database
-                await _databaseManager.LoadAllDataAsync();
+                await databaseManager.LoadAllDataAsync();
 
                 // Navigation based on user role
-                if (await _databaseManager.IsAdmin(Username))
+                if (await databaseManager.IsAdmin(Username))
                 {
                     await Shell.Current.GoToAsync("///AdminDashboard");
                 }

@@ -21,9 +21,9 @@ public class Song
         return pksongId;
     }
 
-    public void SetSongId(int songId)
+    public void SetSongId(int value)
     {
-        pksongId = songId;
+        pksongId = value;
     }
 
     public string GetName()
