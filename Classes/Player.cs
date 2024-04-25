@@ -22,11 +22,21 @@ public class Player
 
     private void OnPlaybackStopped(object sender, StoppedEventArgs e)
     {
+        if (e.Exception != null)
+        {
+            Console.WriteLine($"Playback stopped due to an error: {e.Exception.Message}");
+        }
+        else
+        {
+            Console.WriteLine("Playback stopped without any error.");
+        }
+
         if (PlaybackStopped != null)
         {
             PlaybackStopped(this, e);
         }
     }
+
 
     public void LoadAndPlayMusic(string filePath)
     {
@@ -36,19 +46,19 @@ public class Player
 
     public void LoadMusic(string filePath)
     {
+        StopMusic();
+
         if (audioFileReader != null)
         {
             audioFileReader.Dispose();
+            audioFileReader = null;
         }
 
         try
         {
             audioFileReader = new AudioFileReader(filePath);
             waveOutDevice.Init(audioFileReader);
-            if (TrackChanged != null)
-            {
-                TrackChanged(this, EventArgs.Empty);
-            }
+            TrackChanged?.Invoke(this, EventArgs.Empty);
         }
         catch (Exception ex)
         {
@@ -142,9 +152,7 @@ public class Player
         if (currentPlaylist != null && currentPlaylist.GetPlaylistSongs().Count > 0)
         {
             currentTrackIndex = (currentTrackIndex + 1) % currentPlaylist.GetPlaylistSongs().Count;
-            var track = currentPlaylist.GetPlaylistSongs()[currentTrackIndex];
-            LoadMusic(track.GetSongLocation());
-            PlayMusic();
+            PlayTrackAtCurrentIndex();
         }
     }
 
@@ -153,9 +161,7 @@ public class Player
         if (currentPlaylist != null && currentPlaylist.GetPlaylistSongs().Count > 0)
         {
             currentTrackIndex = (currentTrackIndex - 1 + currentPlaylist.GetPlaylistSongs().Count) % currentPlaylist.GetPlaylistSongs().Count;
-            var track = currentPlaylist.GetPlaylistSongs()[currentTrackIndex];
-            LoadMusic(track.GetSongLocation());
-            PlayMusic();
+            PlayTrackAtCurrentIndex();
         }
     }
 
@@ -240,6 +246,16 @@ public class Player
         else
         {
             return "default_album_cover.png";
+        }
+    }
+
+    private void PlayTrackAtCurrentIndex()
+    {
+        if (currentTrackIndex >= 0 && currentTrackIndex < currentPlaylist.GetPlaylistSongs().Count)
+        {
+            var track = currentPlaylist.GetPlaylistSongs()[currentTrackIndex];
+            LoadMusic(track.GetSongLocation());
+            PlayMusic();
         }
     }
 
