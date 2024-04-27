@@ -12,6 +12,14 @@ namespace Betawave.Classes
         private List<Song> songs = new List<Song>();
         private DatabaseAccess dbAccess;
         private ArtistManager artistManager;
+        private AlbumManager albumManager; 
+
+        public SongManager(DatabaseAccess dbAccess, ArtistManager artistManager, AlbumManager albumManager) 
+        {
+            this.dbAccess = dbAccess;
+            this.artistManager = artistManager;
+            this.albumManager = albumManager;
+        }
 
         public SongManager(DatabaseAccess dbAccess, ArtistManager artistManager)
         {
@@ -110,14 +118,16 @@ namespace Betawave.Classes
         }
         public async Task<List<Song>> GetSongsForAlbum(int albumId)
         {
-            var albumSongs = new List<Song>();
+            List<Song> albumSongs = new List<Song>();
             using (var connection = dbAccess.ConnectToMySql())
             {
                 var command = new MySqlCommand(
-                "SELECT s.song_id, s.name, s.song_location " +
-                "FROM song s " +
-                "JOIN album_track at ON s.song_id = at.song_id " +
-                "WHERE at.album_id = @AlbumId", connection);
+                    "SELECT s.song_id, s.name, s.song_location, a.artist_id, ar.name as artist_name " +
+                    "FROM song s " +
+                    "JOIN album_track at ON s.song_id = at.song_id " +
+                    "JOIN album a ON at.album_id = a.album_id " +
+                    "JOIN artist ar ON a.artist_id = ar.artist_id " +
+                    "WHERE at.album_id = @AlbumId", connection);
 
                 command.Parameters.AddWithValue("@AlbumId", albumId);
                 using (var reader = await command.ExecuteReaderAsync())
@@ -129,12 +139,22 @@ namespace Betawave.Classes
                         song.SetName(reader.GetString("name"));
                         song.SetSongLocation(reader.GetString("song_location"));
 
+                        // Set the artist details
+                        Artist artist = new Artist();
+                        artist.SetArtistId (reader.GetInt32("artist_id"));
+                        artist.SetName(reader.GetString("artist_name"));
+                        
+                        song.SetArtist(artist);
+
                         albumSongs.Add(song);
                     }
                 }
             }
             return albumSongs;
         }
+
+
+
 
     }
 }

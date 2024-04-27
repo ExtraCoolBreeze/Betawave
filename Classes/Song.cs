@@ -7,6 +7,7 @@ public class Song
     private int artistId;
     private string songLocation;
     private Artist artist;
+    private Album album;
 
     public Song()
     {
@@ -63,7 +64,17 @@ public class Song
 
     public Artist GetArtist()
     {
-       return artist;
+        return artist;
+    }
+
+    public void SetAlbum(Album value)
+    {
+        album = value;
+    }
+
+    public Album GetAlbum()
+    {
+        return album;
     }
 
 

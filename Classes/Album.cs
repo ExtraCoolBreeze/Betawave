@@ -74,10 +74,19 @@ namespace Betawave.Classes
         {
             if (this.Artist == null && this.artistId > 0)
             {
-                this.Artist = artistManager.GetArtistById(this.artistId);
+                Artist fetchedArtist = artistManager.GetArtistById(this.artistId);
+                if (fetchedArtist != null)
+                {
+                    this.Artist = fetchedArtist;
+                }
+                else
+                {
+                     string ArtistError = "Cannot load artist";
+                }
             }
             return this.Artist;
         }
+
 
 
 

@@ -14,12 +14,14 @@ namespace Betawave.ViewModels
         private ICommand skipNextCommand;
         private ICommand skipPreviousCommand;
         private ICommand toggleShuffleCommand;
+        private ICommand toggleRepeatCommand;
         private float volume = 1.0f;
         private bool shuffle;
         private string currentTrackName = "Track Name: ";
         private string currentTrackArtist = "Artist Name: ";
         private double currentTrackPosition = 0.00;
         private double trackLength = 0.00;
+        private System.Timers.Timer trackPositionTimer;
         private string currentTrackImage = "C:\\Users\\Craig\\Desktop\\Betawave8.0\\Betawave\\Resources\\Images\\default.png"; // Default image
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -34,8 +36,15 @@ namespace Betawave.ViewModels
             this.audioPlayerService = new Player();
 
             shuffle = audioPlayerService.GetShuffle();
-            audioPlayerService.PlaybackStopped += HandlePlaybackStopped;
-            audioPlayerService.TrackChanged += UpdateTrackDetails;
+            audioPlayerService.PlaybackStopped += HandlePlaybackStoppedAndStopTimer;
+
+            audioPlayerService.TrackChanged += (sender, args) => UpdateTrackDetails(sender, args);
+            trackPositionTimer = new System.Timers.Timer();
+            trackPositionTimer.Interval = 1000; // Update every second (adjust as needed)
+            trackPositionTimer.Elapsed += UpdateTrackPosition;
+            trackPositionTimer.AutoReset = true;
+            trackPositionTimer.Enabled = false; // Start timer when playback begins
+
         }
 
         public ICommand PlayPauseCommand => playPauseCommand;
@@ -191,11 +200,29 @@ namespace Betawave.ViewModels
             CurrentTrackImage = audioPlayerService.GetCurrentTrackImage();
             CurrentTrackName = audioPlayerService.GetCurrentTrackName();
             CurrentTrackArtist = audioPlayerService.GetCurrentTrackArtist();
-            CurrentTrackPosition = 0; // Reset or update according to actual progress
-            TrackLength = audioPlayerService.GetCurrentTrackLength().TotalSeconds;  // Update length when track changes
+            CurrentTrackPosition = 0;
+            TrackLength = audioPlayerService.GetCurrentTrackLength().TotalSeconds;
             OnPropertyChanged(nameof(TrackLength));
         }
 
+        public void StartTrackPositionTimer()
+        {
+            trackPositionTimer.Start();
+        }
+
+        public void StopTrackPositionTimer(object sender, StoppedEventArgs e)
+        {
+            trackPositionTimer.Stop();
+        }
+
+        public void UpdateTrackPosition(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (audioPlayerService != null && audioPlayerService.IsPlaying())
+            {
+                CurrentTrackPosition = audioPlayerService.GetCurrentTrackPosition().TotalSeconds;
+                OnPropertyChanged(nameof(CurrentTrackPosition));
+            }
+        }
 
         public void HandlePlaybackStopped(object sender, StoppedEventArgs e)
         {
@@ -203,6 +230,13 @@ namespace Betawave.ViewModels
             {
                 Console.WriteLine($"Playback Stopped due to an error: {e.Exception.Message}");
             }
+        }
+
+        private void HandlePlaybackStoppedAndStopTimer(object sender, StoppedEventArgs e)
+        {
+            // Invoke both event handlers
+            HandlePlaybackStopped(sender, e);
+            StopTrackPositionTimer(sender, e);
         }
 
         public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

@@ -128,6 +128,7 @@ namespace Betawave.ViewModels
         }
 
 
+
         public MainMenuViewModel(AudioViewModel audioViewModel)
         {
             
@@ -142,13 +143,14 @@ namespace Betawave.ViewModels
             ToggleShuffleCommand = new Command(() => audioViewModel.ToggleShuffle());
 
             this.audioViewModel = audioViewModel;
+            this.audioViewModel.PropertyChanged += AudioViewModel_PropertyChanged;
             var dbAccess = new DatabaseAccess();
             var manager = new DatabaseManager(dbAccess);
             manager.LoadAllDataAsync();
 
             var artistManager = new ArtistManager(dbAccess);
             albumManager = new AlbumManager(dbAccess, artistManager);
-            songManager = new SongManager(dbAccess, artistManager);
+            songManager = new SongManager(dbAccess, artistManager, albumManager);
 
             LoadData();
         }
@@ -162,18 +164,22 @@ namespace Betawave.ViewModels
             {
                 AlbumImagePath1 = albums[0].GetImageLocation();
                 AlbumName1 = albums[0].GetAlbumTitle();
+                ArtistName1 = albums[0].GetArtist()?.GetName();
+
             }
 
             if (albums.Count > 1)
             {
                 AlbumImagePath2 = albums[1].GetImageLocation();
                 AlbumName2 = albums[1].GetAlbumTitle();
+                ArtistName2 = albums[1].GetArtist()?.GetName();
             }
 
             if (albums.Count > 2)
             {
                 AlbumImagePath3 = albums[2].GetImageLocation();
                 AlbumName3 = albums[2].GetAlbumTitle();
+                ArtistName3 = albums[2].GetArtist()?.GetName();
             }
         }
 
@@ -212,7 +218,11 @@ namespace Betawave.ViewModels
             }
         }
 
-
+        private void AudioViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            // Relay the property changed event to the View
+            OnPropertyChanged(e.PropertyName);
+        }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

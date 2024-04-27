@@ -9,7 +9,9 @@ public class Player
     private BasePlaylist currentPlaylist;
     private Random random = new Random();
     private bool shuffle = false;
+    private bool repeat = false;
     private int currentTrackIndex = -1;
+
 
     public event EventHandler<StoppedEventArgs> PlaybackStopped;
     public event EventHandler TrackChanged;
@@ -20,7 +22,7 @@ public class Player
         waveOutDevice.PlaybackStopped += OnPlaybackStopped;
     }
 
-    private void OnPlaybackStopped(object sender, StoppedEventArgs e)
+    public void OnPlaybackStopped(object sender, StoppedEventArgs e)
     {
         if (e.Exception != null)
         {
@@ -144,17 +146,56 @@ public class Player
     public void ToggleShuffle()
     {
         shuffle = !shuffle;
+
+        if (shuffle == true)
+        {
+
+        }
         Console.WriteLine($"Shuffle mode: {(shuffle ? "Enabled" : "Disabled")}");
+    }
+
+    public void ToggleRepeat()
+    {
+        repeat = !repeat;
+
+        if (repeat == true)
+        {
+            //
+        }
+        Console.WriteLine($"Shuffle mode: {(shuffle ? "Enabled" : "Disabled")}");
+
     }
 
     public void PlayNextTrack()
     {
-        if (currentPlaylist != null && currentPlaylist.GetPlaylistSongs().Count > 0)
+        if (currentPlaylist == null || currentPlaylist.GetPlaylistSongs().Count == 0)
         {
+            Console.WriteLine("Playlist is empty or not set.");
+            return;
+        }
+
+        if (shuffle)
+        {
+            PlayRandomTrack();
+        }
+        else
+        {
+            // Increment the current track index
             currentTrackIndex = (currentTrackIndex + 1) % currentPlaylist.GetPlaylistSongs().Count;
-            PlayTrackAtCurrentIndex();
+
+            // If the index wraps around to 0 and you do not want to repeat the playlist automatically
+            if (currentTrackIndex == 0 && !repeat) // Assuming 'repeat' is a boolean indicating if the playlist should loop
+            {
+                Console.WriteLine("Reached end of playlist.");
+                StopMusic(); // Stop playing if repeat is not enabled
+            }
+            else
+            {
+                PlayTrackAtCurrentIndex();
+            }
         }
     }
+
 
     public void PlayPreviousTrack()
     {
@@ -180,10 +221,14 @@ public class Player
     {
         if (currentPlaylist != null && currentPlaylist.GetPlaylistSongs().Count > 0)
         {
-            int index = random.Next(currentPlaylist.GetPlaylistSongs().Count);
-            var track = currentPlaylist.GetPlaylistSongs()[index];
-            LoadMusic(track.GetSongLocation());
-            PlayMusic();
+            int newIndex;
+            do
+            {
+                newIndex = random.Next(currentPlaylist.GetPlaylistSongs().Count);
+            } while (currentPlaylist.GetPlaylistSongs().Count > 1 && newIndex == currentTrackIndex); // Avoid repeating the same track if possible
+
+            currentTrackIndex = newIndex;
+            PlayTrackAtCurrentIndex();
         }
     }
 
@@ -201,27 +246,29 @@ public class Player
 
     public string GetCurrentTrackArtist()
     {
-        // Ensure that the playlist and the current track index are valid
         if (currentPlaylist != null && currentTrackIndex >= 0 && currentTrackIndex < currentPlaylist.GetPlaylistSongs().Count)
         {
             Song song = currentPlaylist.GetPlaylistSongs()[currentTrackIndex];
-            Artist artist = song.GetArtist(); // Assume GetArtist returns an Artist object which might be null
-
-            // Check if artist is not null before trying to access its name
+            Artist artist = song.GetArtist();
             if (artist != null)
             {
+                Console.WriteLine($"Artist Found: {artist.GetName()}");
                 return artist.GetName();
             }
             else
             {
-                return "Unknown Artist"; // Artist data might be missing or not set
+                Console.WriteLine("Artist is null");
+                return "Unknown Artist";
             }
         }
         else
         {
-            return "Unknown Artist"; // Invalid playlist data or index
+            Console.WriteLine("Invalid playlist data or index");
+            return "Unknown Artist";
         }
     }
+
+
 
     public TimeSpan GetCurrentTrackLength()
     {
@@ -241,21 +288,36 @@ public class Player
         if (currentPlaylist != null && currentTrackIndex >= 0 && currentTrackIndex < currentPlaylist.GetPlaylistSongs().Count)
         {
             Song currentSong = currentPlaylist.GetPlaylistSongs()[currentTrackIndex];
-            return currentSong.GetSongLocation();  // Ensure songs have an image location set
+            Album album = currentSong.GetAlbum();
+            if (album != null)
+            {
+                return album.GetImageLocation();
+            }
         }
-        else
-        {
-            return "default_album_cover.png";
-        }
+        return "default_album_cover.png";
     }
 
-    private void PlayTrackAtCurrentIndex()
+
+
+    public void PlayTrackAtCurrentIndex()
     {
         if (currentTrackIndex >= 0 && currentTrackIndex < currentPlaylist.GetPlaylistSongs().Count)
         {
             var track = currentPlaylist.GetPlaylistSongs()[currentTrackIndex];
             LoadMusic(track.GetSongLocation());
             PlayMusic();
+        }
+    }
+
+    public TimeSpan GetCurrentTrackPosition()
+    {
+        if (audioFileReader != null)
+        {
+            return audioFileReader.CurrentTime;
+        }
+        else
+        {
+            return TimeSpan.Zero; // Or appropriate default value
         }
     }
 
