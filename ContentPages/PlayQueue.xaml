@@ -24,17 +24,132 @@
         </Frame>
 
         <Grid Grid.Row="0" Grid.Column="1" Margin="2" Padding="1">
-            <!-- Place the main content here -->
-            <Frame Grid.Row="0" Grid.Column="0" CornerRadius="15" Margin="5" Padding= "2" BackgroundColor="#27232E" BorderColor="#27232E" >
+            <Frame Grid.Row="0" Grid.Column="0" CornerRadius="15" Margin="5" Padding="2" BackgroundColor="#27232E" BorderColor="#27232E" >
                 <ScrollView Orientation="Vertical">
-                    <VerticalStackLayout>
+                    <Grid RowDefinitions="*,*,*,*,*,*,*,*,*,*,*,*" ColumnDefinitions="*" >
 
-                        <Frame BackgroundColor="#312842" BorderColor="#27232E"  Margin="5">
+                        <HorizontalStackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" >
+                            <Frame BackgroundColor="#312842" BorderColor="#312842" CornerRadius="15" Padding="0" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+                                <HorizontalStackLayout Padding="10">
+                                    <Label Text="Track Name" FontSize="20" TextColor="White" Margin="5"/>
+                                    <Label Text="Artist" FontSize="20" TextColor="White" Margin="5"/>
+                                    <Label Text="Album" FontSize="20" TextColor="White" Margin="5"/>
+                                </HorizontalStackLayout>
+                            </Frame>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
+                            <Frame BackgroundColor="#312842" BorderColor="#312842" CornerRadius="15" Padding="0" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+                                <HorizontalStackLayout Padding="10">
+                                    <Label Text="{Binding Song1}" TextColor="White" Margin="5"/>
+                                    <Label Text="{Binding Artist1}" TextColor="White" Margin="5"/>
+                                    <Label Text="{Binding Album1}" TextColor="White" Margin="5"/>
+                                </HorizontalStackLayout>
+                            </Frame>
+                        </HorizontalStackLayout>
 
 
-                        </Frame>
+                        <HorizontalStackLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
+                            <Frame BackgroundColor="#312842" BorderColor="#312842" CornerRadius="15" Padding="0" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+                                <HorizontalStackLayout Padding="10">
+                                    <Label Text="{Binding Song2}" TextColor="White" Margin="5"/>
+                                    <Label Text="{Binding Artist1}" TextColor="White" Margin="5"/>
+                                    <Label Text="{Binding Album1}" TextColor="White" Margin="5"/>
+                                </HorizontalStackLayout>
+                            </Frame>
+                        </HorizontalStackLayout>
 
-                    </VerticalStackLayout>
+                        <HorizontalStackLayout Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
+                            <Frame BackgroundColor="#312842" BorderColor="#312842" CornerRadius="15" Padding="0" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+                                <HorizontalStackLayout Padding="10">
+                                    <Label Text="{Binding Song3}" TextColor="White" Margin="5"/>
+                                    <Label Text="{Binding Artist1}" TextColor="White" Margin="5"/>
+                                    <Label Text="{Binding Album1}" TextColor="White" Margin="5"/>
+                                </HorizontalStackLayout>
+                            </Frame>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
+                            <Frame BackgroundColor="#312842" BorderColor="#312842" CornerRadius="15" Padding="0" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+                                <HorizontalStackLayout Padding="10">
+                                    <Label Text="{Binding Song4}" TextColor="White" Margin="5"/>
+                                    <Label Text="{Binding Artist1}" TextColor="White" Margin="5"/>
+                                    <Label Text="{Binding Album1}" TextColor="White" Margin="5"/>
+                                </HorizontalStackLayout>
+                            </Frame>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
+                            <Frame BackgroundColor="#312842" BorderColor="#312842" CornerRadius="15" Padding="0" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+                                <HorizontalStackLayout Padding="10">
+                                    <Label Text="{Binding Song5}" TextColor="White" Margin="5"/>
+                                    <Label Text="{Binding Artist1}" TextColor="White" Margin="5"/>
+                                    <Label Text="{Binding Album1}" TextColor="White" Margin="5"/>
+                                </HorizontalStackLayout>
+                            </Frame>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
+                            <Frame BackgroundColor="#312842" BorderColor="#312842" CornerRadius="15" Padding="0" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+                                <HorizontalStackLayout Padding="10">
+                                    <Label Text="{Binding Song6}" TextColor="White" Margin="5"/>
+                                    <Label Text="{Binding Artist1}" TextColor="White" Margin="5"/>
+                                    <Label Text="{Binding Album1}" TextColor="White" Margin="5"/>
+                                </HorizontalStackLayout>
+                            </Frame>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
+                            <Frame BackgroundColor="#312842" BorderColor="#312842" CornerRadius="15" Padding="0" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+                                <HorizontalStackLayout Padding="10">
+                                    <Label Text="{Binding Song7}" TextColor="White" Margin="5"/>
+                                    <Label Text="{Binding Artist1}" TextColor="White" Margin="5"/>
+                                    <Label Text="{Binding Album1}" TextColor="White" Margin="5"/>
+                                </HorizontalStackLayout>
+                            </Frame>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
+                            <Frame BackgroundColor="#312842" BorderColor="#312842" CornerRadius="15" Padding="0" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+                                <HorizontalStackLayout Padding="10">
+                                    <Label Text="{Binding Song8}" TextColor="White" Margin="5"/>
+                                    <Label Text="{Binding Artist1}" TextColor="White" Margin="5"/>
+                                    <Label Text="{Binding Album1}" TextColor="White" Margin="5"/>
+                                </HorizontalStackLayout>
+                            </Frame>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
+                            <Frame BackgroundColor="#312842" BorderColor="#312842" CornerRadius="15" Padding="0" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+                                <HorizontalStackLayout Padding="10">
+                                    <Label Text="{Binding Song9}" TextColor="White" Margin="5"/>
+                                    <Label Text="{Binding Artist1}" TextColor="White" Margin="5"/>
+                                    <Label Text="{Binding Album1}" TextColor="White" Margin="5"/>
+                                </HorizontalStackLayout>
+                            </Frame>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
+                            <Frame BackgroundColor="#312842" BorderColor="#312842" CornerRadius="15" Padding="0" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+                                <HorizontalStackLayout Padding="10">
+                                    <Label Text="{Binding Song10}" TextColor="White" Margin="5"/>
+                                    <Label Text="{Binding Artist1}" TextColor="White" Margin="5"/>
+                                    <Label Text="{Binding Album1}" TextColor="White" Margin="5"/>
+                                </HorizontalStackLayout>
+                            </Frame>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
+                            <Frame BackgroundColor="#312842" BorderColor="#312842" CornerRadius="15" Padding="0" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+                                <HorizontalStackLayout Padding="10">
+                                    <Label Text="{Binding Song11}" TextColor="White" Margin="5"/>
+                                    <Label Text="{Binding Artist1}" TextColor="White" Margin="5"/>
+                                    <Label Text="{Binding Album1}" TextColor="White" Margin="5"/>
+                                </HorizontalStackLayout>
+                            </Frame>
+                        </HorizontalStackLayout>
+
+                    </Grid>
                 </ScrollView>
             </Frame>
         </Grid>
