@@ -32,6 +32,13 @@ public partial class MyPlaylists : ContentPage
     {
         await Shell.Current.GoToAsync("///PlayQueue");
     }
+
+    async void MainMenuButton_Clicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("///MainMenu");
+    }
+
+
     async void LogoutButton_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("///MainMenu");

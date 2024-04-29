@@ -19,6 +19,7 @@
                     <Button Text="My Playlists" FontSize="20" Margin="5" x:Name="myPlaylistsButton" Clicked="myPlaylistsButton_Clicked"/>
                     <Button Text="Favourites" FontSize="20" Margin="5" x:Name="FavouritesButton" Clicked="FavouritesButton_Clicked"/>
                     <Button Text="Play Queue" FontSize="20" Margin="5" x:Name="PlayQueueButton" Clicked="PlayQueueButton_Clicked"/>
+                    <Button Text="Main Menu" FontSize="20" Margin="5" x:Name="MainMenuButton" Clicked="MainMenuButton_Clicked"/>
                     <Button Text="Logout"  Command="{Binding StopCommand}" FontSize="20" Margin="5" VerticalOptions="End" x:Name="BackButton" Clicked="BackButton_Clicked"/>
                 </VerticalStackLayout>
             </ScrollView>

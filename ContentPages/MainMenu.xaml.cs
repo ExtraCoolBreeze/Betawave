@@ -38,16 +38,17 @@ namespace Betawave
             await Shell.Current.GoToAsync("///PlayQueue");
         }
 
+
+        async void MainMenuButton_Clicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("///MainMenu");
+        }
+
+
         async void MMLogoutButton_Clicked(object sender, EventArgs e)
         {
 
             await Shell.Current.GoToAsync("///LoginScreen");
         }
-
-        async void MMtestButton_Clicked(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync("///MyPlaylists");
-        }
-
     }
 }

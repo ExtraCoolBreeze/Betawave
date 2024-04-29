@@ -1,6 +1,7 @@
 ﻿using NAudio.Wave;
 using System;
-using Betawave.Classes; // Ensure this is correctly referencing your classes
+using Betawave.Classes;
+using System.Collections.Generic; // Ensure this is correctly referencing your classes
 
 public class Player
 {
@@ -127,6 +128,12 @@ public class Player
 
         PlayCurrentTrack();
     }
+
+    public BasePlaylist GetCurrentPlaylist()
+    {
+        return currentPlaylist;
+    }
+
 
     public void PlayCurrentTrack()
     {
@@ -268,6 +275,19 @@ public class Player
         }
     }
 
+    public string GetCurrentAlbumName()
+    {
+        if (currentPlaylist != null && currentTrackIndex >= 0 && currentTrackIndex < currentPlaylist.GetPlaylistSongs().Count)
+        {
+            Song currentSong = currentPlaylist.GetPlaylistSongs()[currentTrackIndex];
+            Album album = currentSong.GetAlbum();
+            if (album != null)
+            {
+                return album.GetAlbumTitle();
+            }
+        }
+        return "Unknown Album";
+    }
 
 
     public TimeSpan GetCurrentTrackLength()

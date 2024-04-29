@@ -19,6 +19,7 @@ namespace Betawave.ViewModels
         private bool shuffle;
         private string currentTrackName = "Track Name: ";
         private string currentTrackArtist = "Artist Name: ";
+        private string currentAlbumName = "Album Name: ";
         private double currentTrackPosition = 0.00;
         private double trackLength = 0.00;
         private System.Timers.Timer trackPositionTimer;
@@ -168,6 +169,20 @@ namespace Betawave.ViewModels
             }
         }
 
+        public string CurrentAlbumName
+        {
+            get => currentAlbumName;
+            set
+            {
+                if (currentAlbumName != value)
+                {
+                    currentAlbumName = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+
 
         public void SetPlaylistAndPlay(BasePlaylist playlist)
         {
@@ -195,11 +210,18 @@ namespace Betawave.ViewModels
             audioPlayerService.ToggleShuffle();
         }
 
+        public BasePlaylist GetCurrentPlaylist()
+        {
+            return audioPlayerService.GetCurrentPlaylist();
+        }
+
+
         private void UpdateTrackDetails(object sender, EventArgs e)
         {
             CurrentTrackImage = audioPlayerService.GetCurrentTrackImage();
             CurrentTrackName = audioPlayerService.GetCurrentTrackName();
             CurrentTrackArtist = audioPlayerService.GetCurrentTrackArtist();
+            CurrentAlbumName = audioPlayerService.GetCurrentAlbumName();
             CurrentTrackPosition = 0;
             TrackLength = audioPlayerService.GetCurrentTrackLength().TotalSeconds;
             OnPropertyChanged(nameof(TrackLength));

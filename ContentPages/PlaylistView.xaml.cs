@@ -32,7 +32,13 @@ public partial class PlaylistView : ContentPage
     {
         await Shell.Current.GoToAsync("///PlayQueue");
     }
-	async void BackButton_Clicked(object sender, EventArgs e)
+
+    async void MainMenuButton_Clicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("///MainMenu");
+    }
+
+    async void BackButton_Clicked(object sender, EventArgs e)
 	{
 		await Shell.Current.GoToAsync("///LoginScreen");
 	}

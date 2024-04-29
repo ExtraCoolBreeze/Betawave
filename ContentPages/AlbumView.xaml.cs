@@ -30,6 +30,11 @@ public partial class AlbumView : ContentPage
         await Shell.Current.GoToAsync("///PlayQueue");
     }
 
+    async void MainMenuButton_Clicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("///MainMenu");
+    }
+
     async void AVBackButton_Clicked(object sender, EventArgs e)
     {
 

@@ -7,7 +7,7 @@ public partial class PlayQueue : ContentPage
     public PlayQueue(AudioViewModel audioViewModel)
     {
         InitializeComponent();
-        BindingContext = audioViewModel;
+        BindingContext = new QueueViewModel(audioViewModel);
     }
 
 
@@ -30,6 +30,11 @@ public partial class PlayQueue : ContentPage
     async void PlayQueueButton_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("///PlayQueue");
+    }
+
+    async void MainMenuButton_Clicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("///MainMenu");
     }
 
     async void BackButton_Clicked(object sender, EventArgs e)
