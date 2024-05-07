@@ -2,17 +2,16 @@
 Author: Craig McMillan
 Date: 06 / 05 / 2024
 Project Description: Music player application for HND Software Development Year 2 Graded Unit
-Class Description: This view model was created to manage the interactions, updating and displaying of the UI on the Main menu content page  */
+Class Description: This view model was created to manage the interactions, updating and displaying of the UI on AddMedia content page  */
 
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Betawave.Classes;
 
-
 namespace Betawave.ViewModels
 {
-    public class MainMenuViewModel : INotifyPropertyChanged
+    public class AddMediaViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -23,6 +22,9 @@ namespace Betawave.ViewModels
         public ICommand PlayAlbum1Command { get; private set; }
         public ICommand PlayAlbum2Command { get; private set; }
         public ICommand PlayAlbum3Command { get; private set; }
+        public ICommand DeleteAlbum1Command { get; private set; }
+        public ICommand DeleteAlbum2Command { get; private set; }
+        public ICommand DeleteAlbum3Command { get; private set; }
 
         public ICommand PlayPauseCommand { get; private set; }
         public ICommand StopCommand { get; private set; }
@@ -36,6 +38,7 @@ namespace Betawave.ViewModels
         public double CurrentTrackPosition => audioViewModel.CurrentTrackPosition;
         public double TrackLength => audioViewModel.TrackLength;
 
+
         public float Volume
         {
             get => audioViewModel.Volume;
@@ -45,19 +48,6 @@ namespace Betawave.ViewModels
                 {
                     audioViewModel.Volume = value;
                     OnPropertyChanged(nameof(Volume));
-                }
-            }
-        }
-
-        public bool Shuffle
-        {
-            get => audioViewModel.Shuffle;
-            set
-            {
-                if (audioViewModel.Shuffle != value)
-                {
-                    audioViewModel.Shuffle = value;
-                    OnPropertyChanged(nameof(Shuffle));
                 }
             }
         }
@@ -128,14 +118,15 @@ namespace Betawave.ViewModels
             set { artistName3 = value; OnPropertyChanged(); }
         }
 
-
-
-        public MainMenuViewModel(AudioViewModel audioViewModel)
+        public AddMediaViewModel(AudioViewModel audioViewModel)
         {
-            
             PlayAlbum1Command = new Command(() => PlayAlbum(0));
             PlayAlbum2Command = new Command(() => PlayAlbum(1));
             PlayAlbum3Command = new Command(() => PlayAlbum(2));
+
+            DeleteAlbum1Command = new Command(() => DeleteAlbum(0));
+            DeleteAlbum2Command = new Command(() => DeleteAlbum(1));
+            DeleteAlbum3Command = new Command(() => DeleteAlbum(2));
 
             PlayPauseCommand = new Command(() => audioViewModel.TogglePlayPause());
             StopCommand = new Command(() => audioViewModel.StopAudio());
@@ -145,6 +136,7 @@ namespace Betawave.ViewModels
 
             this.audioViewModel = audioViewModel;
             this.audioViewModel.PropertyChanged += AudioViewModel_PropertyChanged;
+
             var dbAccess = new DatabaseAccess();
             var manager = new DatabaseManager(dbAccess);
             manager.LoadAllDataAsync();
@@ -166,7 +158,6 @@ namespace Betawave.ViewModels
                 AlbumImagePath1 = albums[0].GetImageLocation();
                 AlbumName1 = albums[0].GetAlbumTitle();
                 ArtistName1 = albums[0].GetArtist()?.GetName();
-
             }
 
             if (albums.Count > 1)
@@ -183,24 +174,6 @@ namespace Betawave.ViewModels
                 ArtistName3 = albums[2].GetArtist()?.GetName();
             }
         }
-
-
-        // also this   SELECT COUNT(*) FROM your_table; Control the number of rows inserted by checking the current count of rows before inserting new data. 
-        // use this to limit how many accounts or items that can be input into a table. MUST USE!
-
-        /*        DELIMITER //
-        CREATE TRIGGER check_row_count_before_insert
-        BEFORE INSERT ON your_table
-        FOR EACH ROW
-        BEGIN
-         DECLARE row_count INT;
-        SET row_count = (SELECT COUNT(*) FROM your_table);
-        IF row_count >= 1000 THEN
-            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cannot insert more than 1000 rows';
-        END IF;
-        END;
-    //
-    DELIMITER ;*/
 
         private async void PlayAlbum(int albumIndex)
         {
@@ -219,9 +192,20 @@ namespace Betawave.ViewModels
             }
         }
 
-        private void AudioViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        public void DeleteAlbum(int albumIndex)
         {
-            // Relay the property changed event to the View
+            var albums = albumManager.GetAllAlbums();
+            if (albumIndex < albums.Count)
+            {
+                int albumId = albums[albumIndex].GetAlbumId(); // Retrieve album ID
+                albumManager.DeleteAlbum(albumId); // Pass the album ID
+                LoadData(); // Reload data after deletion
+            }
+        }
+
+
+        public void AudioViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
             OnPropertyChanged(e.PropertyName);
         }
 

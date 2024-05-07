@@ -1,11 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿/*Project name: Betawave
+Author: Craig McMillan
+Date: 06 / 05 / 2024
+Project Description: Music player application for HND Software Development Year 2 Graded Unit
+Class Description: This Album class us used to store Album details */
 
-using System;
 
 namespace Betawave.Classes
 {
-    public class Album : PlaylistControl
+
+    //Changed the inheritance from PlaylistControl to BasePlaylist
+    public class Album : BasePlaylist
     {
         private int albumId;
         private string albumTitle;

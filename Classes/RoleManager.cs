@@ -1,8 +1,13 @@
-﻿using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
+﻿/*Project name: Betawave
+Author: Craig McMillan
+Date: 06 / 05 / 2024
+Project Description: Music player application for HND Software Development Year 2 Graded Unit
+Class Description: The role manager class was designed to load in a store the role information from the database, it was going to be used for checks and to verify user authority. 
+It was created but again never full implemented due to cuts and time constraints  */
+
+/*
+using MySql.Data.MySqlClient;
 using System.Data;
-using System.Threading.Tasks;
 
 namespace Betawave.Classes
 {
@@ -102,3 +107,4 @@ namespace Betawave.Classes
         }
     }
 }
+*/

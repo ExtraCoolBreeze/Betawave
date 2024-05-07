@@ -1,7 +1,11 @@
-﻿using Betawave;
+﻿/*Project name: Betawave
+Author: Craig McMillan
+Date: 06 / 05 / 2024
+Project Description: Music player application for HND Software Development Year 2 Graded Unit
+Class Description: This class is the main program class and is used for initialising and building the application  */
+
 using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui;
-using NAudio.Wave;
 using Betawave.ViewModels;
 
 
@@ -60,6 +64,7 @@ namespace Betawave
             builder.Services.AddTransient<AdminDashboard>();
 
             builder.Services.AddTransient<AddMediaScreen>();
+            builder .Services.AddTransient<AddMediaViewModel>();
 
             builder.Services.AddTransient<PlayQueue>();
 

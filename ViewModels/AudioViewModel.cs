@@ -1,5 +1,11 @@
-﻿using NAudio.Wave;
-using System;
+﻿/*Project name: Betawave
+Author: Craig McMillan
+Date: 06 / 05 / 2024
+Project Description: Music player application for HND Software Development Year 2 Graded Unit
+Class Description: This view model was the first created and was designed to allow the user to interact with the player class through the media player UI,
+this was originally added to every page however this changed after more view models were created. */
+
+using NAudio.Wave;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -34,6 +40,7 @@ namespace Betawave.ViewModels
             skipNextCommand = new Command(SkipNext);
             skipPreviousCommand = new Command(SkipPrevious);
             toggleShuffleCommand = new Command(ToggleShuffle);
+            toggleRepeatCommand = new Command(ToggleRepeat);
             this.audioPlayerService = new Player();
 
             shuffle = audioPlayerService.GetShuffle();
@@ -41,10 +48,10 @@ namespace Betawave.ViewModels
 
             audioPlayerService.TrackChanged += (sender, args) => UpdateTrackDetails(sender, args);
             trackPositionTimer = new System.Timers.Timer();
-            trackPositionTimer.Interval = 1000; // Update every second (adjust as needed)
+            trackPositionTimer.Interval = 1000;
             trackPositionTimer.Elapsed += UpdateTrackPosition;
             trackPositionTimer.AutoReset = true;
-            trackPositionTimer.Enabled = false; // Start timer when playback begins
+            trackPositionTimer.Enabled = false;
 
         }
 
@@ -208,6 +215,11 @@ namespace Betawave.ViewModels
         public void ToggleShuffle()
         {
             audioPlayerService.ToggleShuffle();
+        }
+
+        public void ToggleRepeat()
+        {
+            audioPlayerService.ToggleRepeat();
         }
 
         public BasePlaylist GetCurrentPlaylist()

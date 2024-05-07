@@ -1,19 +1,21 @@
+/*Project name: Betawave
+Author: Craig McMillan
+Date: 06 / 05 / 2024
+Project Description: Music player application for HND Software Development Year 2 Graded Unit
+Class Description: This is the code behind the AddMediaScreen page and is to create and run the page as well as deal with simple interactions   */
+
 using Betawave.ViewModels;
-using CommunityToolkit.Maui.Core.Primitives;
-using CommunityToolkit.Maui.Views;
 
 namespace Betawave;
 
 public partial class AddMediaScreen : ContentPage
 {
 
-    public AddMediaScreen(AudioViewModel audioViewModel)
+    public AddMediaScreen(AddMediaViewModel addMediaViewModel)
     {
         InitializeComponent();
-        BindingContext = audioViewModel;
+        BindingContext = addMediaViewModel;
     }
-
-
 
 
 

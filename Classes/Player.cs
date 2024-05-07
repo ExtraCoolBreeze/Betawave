@@ -1,7 +1,11 @@
-﻿using NAudio.Wave;
-using System;
+﻿/*Project name: Betawave
+Author: Craig McMillan
+Date: 06 / 05 / 2024
+Project Description: Music player application for HND Software Development Year 2 Graded Unit
+Class Description: This player class was created to store the information and functions based around playing media */
+
+using NAudio.Wave;
 using Betawave.Classes;
-using System.Collections.Generic; // Ensure this is correctly referencing your classes
 
 public class Player
 {
@@ -247,7 +251,7 @@ public class Player
         }
         else
         {
-            return "Unknown Track";
+            return "Error: Unknown Track";
         }
     }
 
@@ -265,13 +269,13 @@ public class Player
             else
             {
                 Console.WriteLine("Artist is null");
-                return "Unknown Artist";
+                return "Error: Unknown Artist";
             }
         }
         else
         {
             Console.WriteLine("Invalid playlist data or index");
-            return "Unknown Artist";
+            return "Error: Unknown Artist";
         }
     }
 
@@ -286,7 +290,7 @@ public class Player
                 return album.GetAlbumTitle();
             }
         }
-        return "Unknown Album";
+        return "Error: Unknown Album";
     }
 
 

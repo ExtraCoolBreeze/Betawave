@@ -14,8 +14,7 @@
                 <VerticalStackLayout Margin="9" BackgroundColor="#27232E">
 
                     <!-- Your existing VerticalStackLayout content -->
-                    <Label Text="Type and press enter to search" FontSize="14" TextColor="White" Margin="5" VerticalOptions="Start" HorizontalOptions="Center"/>
-                    <Entry Placeholder="type your password" Margin="5" Background="#ffffff"/>
+                    <Entry Placeholder="Type and enter to search" Margin="5" Background="#ffffff"/>
                     <Button Text="Create Playlist" FontSize="20" Margin="5" x:Name="CreatePlaylistButton" Clicked="CreatePlaylistButton_Clicked"/>
                     <Button Text="My Playlists" FontSize="20" Margin="5" x:Name="myPlaylistsButton" Clicked="myPlaylistsButton_Clicked"/>
                     <Button Text="Favourites" FontSize="20" Margin="5" x:Name="FavouritesButton" Clicked="FavouritesButton_Clicked"/>

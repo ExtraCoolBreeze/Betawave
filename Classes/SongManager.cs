@@ -1,9 +1,11 @@
-﻿using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
+﻿/*Project name: Betawave
+Author: Craig McMillan
+Date: 06 / 05 / 2024
+Project Description: Music player application for HND Software Development Year 2 Graded Unit
+Class Description: This class was created to manage and control song objects and associated information */
+
+using MySql.Data.MySqlClient;
 using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Betawave.Classes
 {
@@ -152,9 +154,5 @@ namespace Betawave.Classes
             }
             return albumSongs;
         }
-
-
-
-
     }
 }

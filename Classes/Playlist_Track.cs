@@ -1,5 +1,9 @@
-﻿using Betawave.Classes;
-using System.Drawing;
+﻿/*Project name: Betawave
+Author: Craig McMillan
+Date: 06 / 05 / 2024
+Project Description: Music player application for HND Software Development Year 2 Graded Unit
+Class Description: This class was created to store the information about specific playlist tracks
+*/
 
 public class Playlist_Track
 {

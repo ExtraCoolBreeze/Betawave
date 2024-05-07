@@ -1,4 +1,10 @@
-﻿using System.Data.SqlClient;
+﻿/*Project name: Betawave
+Author: Craig McMillan
+Date: 06 / 05 / 2024
+Project Description: Music player application for HND Software Development Year 2 Graded Unit
+Class Description: This interface class was created to ensure so specific functionality for the Database Access class*/
+
+using System.Data.SqlClient;
 
 namespace Betawave.Classes
 {

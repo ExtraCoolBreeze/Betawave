@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System;
+﻿/*Project name: Betawave
+Author: Craig McMillan
+Date: 06/05/2024
+Project Description: Music player application for HND Software Development Year 2 Graded Unit
+Class Description:  This is Account class for storing account details */
 
 namespace Betawave.Classes
 {
@@ -28,21 +27,21 @@ namespace Betawave.Classes
             return username;
         }
 
-        public bool SetUsername(string username, out string usernameError)
+        public bool SetUsername(string username)
         {
-            usernameError = "";
             if (!string.IsNullOrWhiteSpace(username))
             {
                 this.username = username;
                 return true;
             }
-                usernameError = "The username cannot be blank or contain spaces.";
+            else
+            {
                 return false;
+            }
         }
 
-        public bool SetPassword(string password, out string passwordError)
+        public bool SetPassword(string password)
         {
-            passwordError = "";
             if (IsValidPassword(password) == "pass")
             {
                 this.userpassword = password;
@@ -50,7 +49,6 @@ namespace Betawave.Classes
             }
             else
             {
-                passwordError = "The password must be at least 8 characters long, include both upper and lower case letters, a number, and a special character.";
                 return false;
             }
         }

@@ -1,4 +1,12 @@
-﻿using System;
+﻿/*Project name: Betawave
+Author: Craig McMillan
+Date: 06 / 05 / 2024
+Project Description: Music player application for HND Software Development Year 2 Graded Unit
+Class Description: This is the Account_Role class meant to store details from the Account_Role junction table in the database however, it was created from the class diagram but left unused
+*/
+
+
+/*using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,3 +52,4 @@ namespace Betawave.Classes
         }
     }
 }
+*/

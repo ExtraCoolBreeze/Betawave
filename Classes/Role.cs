@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿/*Project name: Betawave
+Author: Craig McMillan
+Date: 06 / 05 / 2024
+Project Description: Music player application for HND Software Development Year 2 Graded Unit
+Class Description: This class is designed to store the accounts admin information based on the class and database design  */
+/*
 namespace Betawave.Classes
 {
     public class Role
@@ -44,3 +44,4 @@ namespace Betawave.Classes
         }
     }
 }
+*/

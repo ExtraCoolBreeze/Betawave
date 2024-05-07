@@ -1,6 +1,10 @@
-﻿using Betawave.Classes;
-using System;
-using System.Threading.Tasks;
+﻿/*Project name: Betawave
+Author: Craig McMillan
+Date: 06 / 05 / 2024
+Project Description: Music player application for HND Software Development Year 2 Graded Unit
+Class Description: This class was created to initialise all the manager classes and load in all data from the database to be used within the application */
+
+using Betawave.Classes;
 
 public class DatabaseManager
 {

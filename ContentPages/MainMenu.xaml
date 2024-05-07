@@ -14,8 +14,7 @@
             <ScrollView>
                 <VerticalStackLayout  Margin="9" BackgroundColor="#27232E">
                     <!-- Your existing VerticalStackLayout content -->
-                    <Label Text="Type and press enter to search" FontSize="14" TextColor="White" Margin="5" VerticalOptions="Start" HorizontalOptions="Center"/>
-                    <Entry Placeholder="Search" Margin="5" Background="#ffffff"/>
+                    <Entry Placeholder="Type and enter to search" Margin="5" Background="#ffffff"/>
                     <Button Text="Create Playlist" FontSize="20" Margin="5" x:Name="MMCreatePlaylistButton" Clicked="MMCreatePlaylistButton_Clicked"/>
                     <Button Text="My Playlists" FontSize="20" Margin="5" x:Name="MMmyPlaylistsButton" Clicked="MMmyPlaylistsButton_Clicked"/>
                     <Button Text="Favourites" FontSize="20" Margin="5" x:Name="MMFavouritesButton" Clicked="MMFavouritesButton_Clicked"/>
@@ -42,7 +41,7 @@
                                 <Image Source="{Binding AlbumImagePath1}" Aspect="AspectFill"/>
                                 <Label Text="{Binding AlbumName1}" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
                                 <Label Text="{Binding ArtistName1}" FontAttributes="Italic" TextColor="White" HorizontalTextAlignment="Center"/>
-                                <Button Text="Play Album" Command="{Binding PlayAlbum1Command}"></Button>
+                                <Button Text="Play Album"  Command="{Binding PlayAlbum1Command}"></Button>
                             </StackLayout>
                         </Frame>
 
@@ -52,7 +51,7 @@
                                 <Image Source="{Binding AlbumImagePath2}" Aspect="AspectFill"/>
                                 <Label Text="{Binding AlbumName2}" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
                                 <Label Text="{Binding ArtistName2}" FontAttributes="Italic" TextColor="White" HorizontalTextAlignment="Center"/>
-                                <Button Text="Play Album" Command="{Binding PlayAlbum2Command}"></Button>
+                                <Button Text="Play Album" FontSize="15" Command="{Binding PlayAlbum2Command}"></Button>
                             </StackLayout>
                         </Frame>
 
@@ -62,7 +61,7 @@
                                 <Image Source="{Binding AlbumImagePath3}" Aspect="AspectFill"/>
                                 <Label Text="{Binding AlbumName3}" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
                                 <Label Text="{Binding ArtistName3}" FontAttributes="Italic" TextColor="White" HorizontalTextAlignment="Center"/>
-                                <Button Text="Play Album" Command="{Binding PlayAlbum3Command}"></Button>
+                                <Button Text="Play Album" FontSize="15" Command="{Binding PlayAlbum3Command}"></Button>
                             </StackLayout>
                         </Frame>
 

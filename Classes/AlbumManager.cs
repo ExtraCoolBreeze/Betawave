@@ -1,8 +1,11 @@
-﻿using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
+﻿/*Project name: Betawave
+Author: Craig McMillan
+Date: 06 / 05 / 2024
+Project Description: Music player application for HND Software Development Year 2 Graded Unit
+Class Description: This class was created to manage album objects */
+
+using MySql.Data.MySqlClient;
 using System.Data;
-using System.Threading.Tasks;
 
 namespace Betawave.Classes
 {
@@ -123,7 +126,6 @@ namespace Betawave.Classes
             using (var connection = dbAccess.ConnectToMySql())
             {
                 var command = new MySqlCommand("SELECT COUNT(*) FROM album", connection);
-                await connection.OpenAsync();
                 int count = Convert.ToInt32(await command.ExecuteScalarAsync());
                 return count;
             }

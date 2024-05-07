@@ -1,4 +1,10 @@
-﻿using MySql.Data.MySqlClient;
+﻿/*Project name: Betawave
+Author: Craig McMillan
+Date: 06 / 05 / 2024
+Project Description: Music player application for HND Software Development Year 2 Graded Unit
+Class Description: This class was created to manage the connection to the database and perform basic checks and validation*/
+
+using MySql.Data.MySqlClient;
 using System.Text;
 using System.Security.Cryptography;
 using System.Data;
@@ -7,13 +13,13 @@ namespace Betawave.Classes
 {
     public class DatabaseAccess
     {
-        private string MySqlConnectionString = "server=localhost;userid=root;password=;database=betawave";
+        private string MySqlConnectionString;
 
 
         // Constructor that accepts a connection string
         public DatabaseAccess()
         {
-
+            MySqlConnectionString = "server=localhost;userid=root;password=;database=betawave";
         }
 
 
@@ -138,8 +144,8 @@ namespace Betawave.Classes
                     {
                         Account user = new Account();
                         user.SetAccountId(reader.GetInt32("account_id"));
-                        user.SetUsername(reader.GetString("username"), out string _); // Assuming you handle the output parameter within the setter.
-                        user.SetPassword(reader.GetString("userpassword"), out string _); // Assuming you handle password similarly.
+                        user.SetUsername(reader.GetString("username")); // Assuming you handle the output parameter within the setter.
+                        user.SetPassword(reader.GetString("userpassword")); // Assuming you handle password similarly.
                         user.SetIsAdmin(reader.GetBoolean("is_admin")); // This assumes there's a field in your DB that indicates if the user is admin.
                         return user;
                     }

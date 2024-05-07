@@ -1,4 +1,9 @@
-﻿using System;
+﻿/*Project name: Betawave
+Author: Craig McMillan
+Date: 06 / 05 / 2024
+Project Description: Music player application for HND Software Development Year 2 Graded Unit
+Class Description: This view model was created the interactions, updating and displaying of the UI on the CreateAccount content page */
+
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -8,8 +13,8 @@ namespace Betawave.ViewModels
 {
     public class CreateAccountViewModel : INotifyPropertyChanged
     {
-        private string _username;
-        private string _password;
+        private string username;
+        private string password;
         private readonly DatabaseAccess dbAccess = new DatabaseAccess();
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -24,12 +29,12 @@ namespace Betawave.ViewModels
 
         public string Username
         {
-            get => _username;
+            get => username;
             set
             {
-                if (_username != value)
+                if (username != value)
                 {
-                    _username = value;
+                    username = value;
                     OnPropertyChanged();
                 }
             }
@@ -37,12 +42,12 @@ namespace Betawave.ViewModels
 
         public string Password
         {
-            get => _password;
+            get => password;
             set
             {
-                if (_password != value)
+                if (password != value)
                 {
-                    _password = value;
+                    password = value;
                     OnPropertyChanged();
                 }
             }
@@ -52,7 +57,7 @@ namespace Betawave.ViewModels
         {
             if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "Username and password cannot be empty.", "OK");
+                await Application.Current.MainPage.DisplayAlert("Error", "Username or password field cannot be empty.", "OK");
                 return;
             }
 

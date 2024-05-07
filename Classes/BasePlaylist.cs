@@ -1,5 +1,10 @@
-﻿using Betawave.Classes;
-using Org.BouncyCastle.Utilities;
+﻿/*
+Project name: Betawave
+Author: Craig McMillan
+Date: 06 / 05 / 2024
+Project Description: Music player application for HND Software Development Year 2 Graded Unit
+Class Description: This playlist class was created to store the information about playlist objects*/
+
 public class BasePlaylist
 {
     private int pkplaylistId;

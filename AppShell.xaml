@@ -7,7 +7,14 @@
     Shell.FlyoutBehavior="Disabled"
     Title="Betawave">
 
-<!-- This is where all the navigation routes live for moving between pages -->
+    <!-- /*Project name: Betawave
+    Author: Craig McMillan
+    Date: 06 / 05 / 2024
+    Project Description: Music player application for HND Software Development Year 2 Graded Unit
+    Class Description: This App Shell acts as the navigation class and is configured to include all named content pages. This allows the page names to be called in the code behind the content pages in conjuntion with button
+    presses to navigate around the application*/ -->
+    
+    
     <ShellContent
         Title="Login Screen"
         ContentTemplate="{DataTemplate local:LoginScreen}"

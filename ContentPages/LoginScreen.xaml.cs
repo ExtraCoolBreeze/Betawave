@@ -1,4 +1,10 @@
-using Betawave.Classes;
+
+/*Project name: Betawave
+Author: Craig McMillan
+Date: 06 / 05 / 2024
+Project Description: Music player application for HND Software Development Year 2 Graded Unit
+Class Description: This is the code behind the LoginScreen page and is to create and run the page as well as deal with simple interactions   */
+
 using Betawave.ViewModels;
 
 namespace Betawave;
@@ -9,12 +15,12 @@ public partial class LoginScreen : ContentPage
     public LoginScreen()
     {
         InitializeComponent();
-        this.Appearing += OnAppearingHandler;
+        Appearing += OnAppearingHandler;
     }
 
     private void OnAppearingHandler(object sender, EventArgs e)
     {
-        var viewModel = this.BindingContext as LoginViewModel;
+        var viewModel = BindingContext as LoginViewModel;
         if (viewModel != null)
         {
             viewModel.Username = "";  // Clear the username

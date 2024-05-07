@@ -1,8 +1,12 @@
-﻿using System.Collections.ObjectModel;
+﻿/*Project name: Betawave
+Author: Craig McMillan
+Date: 06 / 05 / 2024
+Project Description: Music player application for HND Software Development Year 2 Graded Unit
+Class Description: This view model was created to manage the interactions, updating and displaying of the UI on the Queue content page  */
+
 using System.ComponentModel;
 using System.Windows.Input;
 using Betawave.ViewModels;
-using Betawave.Classes;
 using System.Runtime.CompilerServices;
 public class QueueViewModel : INotifyPropertyChanged
 {
@@ -15,6 +19,7 @@ public class QueueViewModel : INotifyPropertyChanged
     public ICommand SkipNextCommand { get; private set; }
     public ICommand SkipPreviousCommand { get; private set; }
     public ICommand ToggleShuffleCommand { get; private set; }
+    public ICommand ToggleRepeatCommand { get; private set; }
 
     public string CurrentTrackName => audioViewModel.CurrentTrackName;
     public string CurrentTrackArtist => audioViewModel.CurrentTrackArtist;
@@ -70,7 +75,6 @@ public class QueueViewModel : INotifyPropertyChanged
         SkipNextCommand = new Command(() => audioViewModel.SkipNext());
         SkipPreviousCommand = new Command(() => audioViewModel.SkipPrevious());
         ToggleShuffleCommand = new Command(() => audioViewModel.ToggleShuffle());
-
         audioViewModel.PropertyChanged += AudioViewModel_PropertyChanged;
         UpdateSongInformation();
     }

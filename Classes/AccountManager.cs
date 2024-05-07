@@ -1,8 +1,12 @@
-﻿using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
+﻿/*Project name: Betawave
+Author: Craig McMillan
+Date: 06 / 05 / 2024
+Project Description: Music player application for HND Software Development Year 2 Graded Unit
+Class Description: This class was created manage Account objects */
+
+
+using MySql.Data.MySqlClient;
 using System.Data;
-using System.Threading.Tasks;
 
 namespace Betawave.Classes
 {
@@ -27,8 +31,8 @@ namespace Betawave.Classes
                     {
                         var account = new Account();
                         account.SetAccountId(reader.GetInt32("account_id"));
-                        account.SetUsername(reader.GetString("username"), out string usernameError);
-                        account.SetPassword(reader.GetString("userpassword"), out string passwordError);
+                        account.SetUsername(reader.GetString("username"));
+                        account.SetPassword(reader.GetString("userpassword"));
                         account.SetIsAdmin(reader.GetBoolean("IsAdmin"));
                         accounts.Add(account);
                     }
@@ -55,8 +59,8 @@ namespace Betawave.Classes
             {
                 if (accounts[i].GetAccountId() == account.GetAccountId())
                 {
-                    accounts[i].SetUsername(account.GetUsername(), out string _);
-                    accounts[i].SetPassword(account.GetPassword(), out string _);
+                    accounts[i].SetUsername(account.GetUsername());
+                    accounts[i].SetPassword(account.GetPassword());
                     accounts[i].SetIsAdmin(account.GetIsAdmin());
                     break;
                 }
@@ -87,7 +91,7 @@ namespace Betawave.Classes
                     return accounts[i];
                 }
             }
-            return null;  // Return null if no account is found
+            return null;
         }
     }
 }

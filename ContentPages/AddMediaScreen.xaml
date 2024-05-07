@@ -12,10 +12,9 @@
             <ScrollView>
                 <VerticalStackLayout  Margin="9" BackgroundColor="#27232E">
                     <!-- Your existing VerticalStackLayout content -->
-                    <Label Text="Type and press enter to search" FontSize="14" TextColor="White" Margin="5" VerticalOptions="Start" HorizontalOptions="Center"/>
-                    <Entry Placeholder="Search" Margin="5" Background="#ffffff"/>
+                    <Entry Placeholder="Type and enter to search" Margin="5" Background="#ffffff"/>
                     <Button Text="Dashboard" FontSize="20" Margin="5" x:Name="DashboardButton" Clicked="DashboardButton_Clicked"/>
-                    <Button Text="Add Media Screen" FontSize="20" Margin="5" x:Name="AddMediaScreenButton" Clicked="AddMediaScreenButton_Clicked"/>
+                    <Button Text="Manage Media" FontSize="20" Margin="5" x:Name="AddMediaScreenButton" Clicked="AddMediaScreenButton_Clicked"/>
                     <Button Text="Create Playlist" FontSize="20" Margin="5" x:Name="CreatePlaylistButto" Clicked="CreatePlaylistButton_Clicked"/>
                     <Button Text="Logout" Command="{Binding StopCommand}" FontSize="20" Margin="5" VerticalOptions="End" x:Name="LogoutButton" Clicked="LogoutButton_Clicked"/>
                 </VerticalStackLayout>
@@ -25,20 +24,44 @@
         <Grid Grid.Row="0" Grid.Column="1" Margin="2" Padding="1">
             <Frame Grid.Row="0" Grid.Column="0" CornerRadius="15" Margin="5" Padding= "2" BackgroundColor="#27232E" BorderColor="#27232E">
                 <VerticalStackLayout>
-                    <HorizontalStackLayout Margin="9" Spacing="5">
-                        <Button Text="Add Media" FontSize="20" HeightRequest="90" x:Name="AddMedia" Clicked="AddMediaButton_Clicked"/>
+                    <HorizontalStackLayout Margin="5" Spacing="5">
+                        <Button Text="Add Album" FontSize="20" HeightRequest="90" x:Name="AddMedia" Clicked="AddMediaButton_Clicked"/>
                     </HorizontalStackLayout>
-                    <ScrollView>
-                        <VerticalStackLayout Margin="9" BackgroundColor="#27232E">
-                            <!-- Here I need to generate buttons that  -->
-                            <Button Text="List of Albums" FontSize="20" Margin="5"/>
-                        </VerticalStackLayout>
+                    <VerticalStackLayout Margin="0" BackgroundColor="#27232E">
+                            <Button Text="List of Albums on Betawave" FontSize="20" Margin="5"/>
+                    </VerticalStackLayout>
+                    <FlexLayout Margin="0" BackgroundColor="#27232E">
 
-                     <!--   <VerticalStackLayout Margin="9" BackgroundColor="#27232E"> -->
-                            <!-- Here I need to generate buttons that  -->
-                            <!--    <Button Text="List of playlists" FontSize="20" Margin="5"/> -->
-                     <!--   </VerticalStackLayout> -->
-                    </ScrollView>
+                        <Frame CornerRadius="10" BackgroundColor="#312842" WidthRequest="200" HeightRequest="350" Margin="10" BorderColor="#27232E">
+                            <StackLayout>
+                                <Image Source="{Binding AlbumImagePath1}" Aspect="AspectFill"/>
+                                <Label Text="{Binding AlbumName1}"  FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
+                                <Label Text="{Binding ArtistName1}" FontAttributes="Italic" TextColor="White" HorizontalTextAlignment="Center"/>
+                                <Button Text="Play Album" FontSize="15" Command="{Binding PlayAlbum1Command}"/>
+                                <Button Text="Delete Album" FontSize="15" Command="{Binding DeleteAlbum1Command}"/>
+                            </StackLayout>
+                        </Frame>
+
+                        <Frame CornerRadius="10" BackgroundColor="#312842" WidthRequest="200" HeightRequest="350" Margin="10" BorderColor="#27232E">
+                            <StackLayout>
+                                <Image Source="{Binding AlbumImagePath2}" Aspect="AspectFill"/>
+                                <Label Text="{Binding AlbumName2}" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
+                                <Label Text="{Binding ArtistName2}" FontAttributes="Italic" TextColor="White" HorizontalTextAlignment="Center"/>
+                                <Button Text="Play Album" FontSize="15" Command="{Binding PlayAlbum2Command}"/>
+                                <Button Text="Delete Album" FontSize="15" Command="{Binding DeleteAlbum2Command}"/>
+                            </StackLayout>
+                        </Frame>
+
+                        <Frame CornerRadius="10" BackgroundColor="#312842" WidthRequest="200" HeightRequest="350" Margin="10" BorderColor="#27232E">
+                            <StackLayout>
+                                <Image Source="{Binding AlbumImagePath3}" Aspect="AspectFill"/>
+                                <Label Text="{Binding AlbumName3}" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
+                                <Label Text="{Binding ArtistName3}" FontAttributes="Italic" TextColor="White" HorizontalTextAlignment="Center"/>
+                                <Button Text="Play Album" FontSize="15" Command="{Binding PlayAlbum3Command}"/>
+                                <Button Text="Delete Album" FontSize="15" Command="{Binding DeleteAlbum3Command}"/>
+                            </StackLayout>
+                        </Frame>
+                    </FlexLayout>
                 </VerticalStackLayout>
             </Frame>
         </Grid>

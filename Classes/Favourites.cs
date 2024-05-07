@@ -1,5 +1,11 @@
-﻿
+﻿/*Project name: Betawave
+Author: Craig McMillan
+Date: 06 / 05 / 2024
+Project Description: Music player application for HND Software Development Year 2 Graded Unit
+Class Description: This class was created to store the details about user favourites, it was created based on the requirements spec but I ran out of time to fully implement it.
+*/
 
+/*
 namespace Betawave.Classes
 {
 
@@ -42,3 +48,4 @@ namespace Betawave.Classes
     }
 
 }
+*/

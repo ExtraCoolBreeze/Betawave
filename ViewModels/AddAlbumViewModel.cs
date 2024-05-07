@@ -1,8 +1,13 @@
-﻿using System.ComponentModel;
+﻿/*Project name: Betawave
+Author: Craig McMillan
+Date: 06 / 05 / 2024
+Project Description: Music player application for HND Software Development Year 2 Graded Unit
+Class Description: This view model was created to manage the interactions, updating and displaying of the UI on AddAlbum content page */
+
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Betawave.Classes;
-using Microsoft.Maui.Controls;
 
 namespace Betawave.ViewModels
 {
