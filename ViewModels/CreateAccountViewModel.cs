@@ -21,7 +21,7 @@ namespace Betawave.ViewModels
 
         public CreateAccountViewModel()
         {
-            CreateAccountCommand = new Command(async () => await CreateAccountAsync());
+            CreateAccountCommand = new Command(async () => await CreateAccountNewAccount());
         }
 
 
@@ -53,15 +53,20 @@ namespace Betawave.ViewModels
             }
         }
 
-        public async Task CreateAccountAsync()
+        public async Task CreateAccountNewAccount()
         {
             if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
             {
                 await Application.Current.MainPage.DisplayAlert("Error", "Username or password field cannot be empty.", "OK");
                 return;
             }
+/* add function that catches any database connection errors.
+            if ()
+            {
+                await Application.Current.MainPage.DisplayAlert("Connection Error", "Cannot connect to the database" , "OK");
+            }*/
 
-            if (await dbAccess.CheckUserExists(Username))
+            if (await dbAccess.CheckIfUserExists(Username))
             {
                 await Application.Current.MainPage.DisplayAlert("User Exists", "The username is already taken. Please choose a different one.", "OK");
                 return;

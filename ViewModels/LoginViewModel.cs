@@ -23,7 +23,7 @@ namespace Betawave.ViewModels
         public LoginViewModel()
         {
             databaseManager = new DatabaseManager(new DatabaseAccess()); // Ensure you pass correct dependencies
-            LoginCommand = new Command(async () => await ExecuteLoginCommand());
+            LoginCommand = new Command(async () => await RunLoginCommand());
         }
 
         public string Username
@@ -52,7 +52,7 @@ namespace Betawave.ViewModels
             }
         }
 
-        public async Task ExecuteLoginCommand()
+        public async Task RunLoginCommand()
         {
             if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
             {
@@ -79,6 +79,8 @@ namespace Betawave.ViewModels
             {
                 await Application.Current.MainPage.DisplayAlert("Error", "Username or password incorrect.", "OK");
             }
+
+
         }
 
 

@@ -1,11 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<!-- /*Project name: Betawave
-		Author: Craig McMillan
-		Date: 06 / 05 / 2024
-		Project Description: Music player application for HND Software Development Year 2 Graded Unit
-		Class Description: This is the project file for the program and allows for specific configurations, in here I edited the App icon, target frameworks and well as, manipulated resources  */-->
-	
+
 	<PropertyGroup>
 		<TargetFrameworks>net8.0-maccatalyst</TargetFrameworks>
 		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>

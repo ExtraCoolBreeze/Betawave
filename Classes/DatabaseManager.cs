@@ -50,18 +50,9 @@ public class DatabaseManager
         if (await dbAccess.ValidateUser(username, password))
         {
             CurrentUser = await dbAccess.GetUserByUsername(username);
-            if (CurrentUser != null)
-            {
-                CurrentUserRole = dbAccess.GetRoleForAccountId(CurrentUser.GetAccountId());
                 return true;
-            }
         }
         return false;
-    }
-
-    private int GetRoleForAccount(int accountId)
-    {
-        return dbAccess.GetRoleForAccountId(accountId); // Adjust this to fetch directly or process in the manager
     }
 
     public async Task<bool> ValidateUser(string username, string password)

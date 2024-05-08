@@ -3,7 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Betawave.CreatePlaylistAdmin"
              Title="Create Playlist">
-    
+
+    <!-- Project name: Betawave
+        Author: Craig McMillan
+        Date: 06 / 05 / 2024
+        Project Description: Music player application for HND Software Development Year 2 Graded Unit
+        Class Description: This is the user UI for the CreatePlaylistAdmin page  -->
+
     <Frame CornerRadius="15" Margin="0" Padding="0" HeightRequest="400" WidthRequest="350">
         <VerticalStackLayout Margin="0" Background="#27232E">
             <Label Text="Name your new playlist" TextColor="#ffffff" 

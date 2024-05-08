@@ -8,107 +8,137 @@ namespace Betawave.Classes
 {
     public class Account
     {
+        //initialising variables
         private int pkaccount_id;
         private string username;
         private string userpassword;
-        private bool IsAdmin;
+        private bool isadmin;
 
-
+        /// <summary>
+        /// The account constructor
+        /// </summary>
         public Account()
         {
             pkaccount_id = 0;
             username = "";
             userpassword = "";
-            IsAdmin = false;
+            isadmin = false;
         }
 
+        /// <summary>
+        /// Returns the username varible of account
+        /// </summary>
+        /// <returns></returns>
         public string GetUsername()
         {
             return username;
         }
 
-        public bool SetUsername(string username)
+        /// <summary>
+        /// Set the username variable based on input
+        /// </summary>
+        /// <param name="username"></param>
+        public void SetUsername(string username)
         {
-            if (!string.IsNullOrWhiteSpace(username))
-            {
-                this.username = username;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+           this.username = username;
         }
 
-        public bool SetPassword(string password)
+        /// <summary>
+        /// When passed a viable password, this function will check password for valid parameters and once complete set the password variable 
+        /// </summary>
+        /// <param name="password"></param>
+        public void SetPassword(string password)
         {
             if (IsValidPassword(password) == "pass")
             {
                 this.userpassword = password;
-                return true;
-            }
-            else
-            {
-                return false;
             }
         }
 
+        /// <summary>
+        /// Sets the accountId variable based on input
+        /// </summary>
+        /// <param name="data"></param>
         public void SetAccountId(int data)
         {
             pkaccount_id = data;
         }
 
+        /// <summary>
+        /// Returns the accountId variable
+        /// </summary>
+        /// <returns></returns>
         public int GetAccountId()
         { 
             return pkaccount_id;
         }
 
+        /// <summary>
+        /// Returns the userpassword variable
+        /// </summary>
+        /// <returns></returns>
         public string GetPassword()
         {
             return userpassword;
         }
 
+        /// <summary>
+        /// Sets the isadmin variable based on input
+        /// </summary>
+        /// <param name="data"></param>
         public void SetIsAdmin(bool data)
         { 
-            IsAdmin = data;
+            isadmin = data;
         }
 
+        /// <summary>
+        /// Returns the isadmin variable
+        /// </summary>
+        /// <returns></returns>
         public bool GetIsAdmin()
         { 
-            return IsAdmin;
+            return isadmin;
         }
 
+        /// <summary>
+        /// prints the contents of the account class for testing
+        /// </summary>
         public void PrintAccountDetails()
         {
             Console.WriteLine("Username: " + GetUsername());
             Console.WriteLine("Password: " + GetPassword());
             Console.WriteLine("Username: " + GetAccountId());
             Console.WriteLine("Password: " + GetIsAdmin());
-
-
         }
 
+        /// <summary>
+        /// Accepts a password. Checks if the password meets basic security targets. 
+        /// At least 8 characters, cannot be null or white space, and includes a number, as well as an upper case and lower case character.
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public string IsValidPassword(string password)
         {
             string hasUpperChar = "fail";
             string hasLowerChar = "fail";
             string hasNumber = "fail";
-            string hasSpecialChar = "fail";
             string isLongEnough = "fail";
             string notEmpty = "fail";
 
-            // Check if password is not null or whitespace
+
+
+            // Check if viable password is not null or whitespace
             if (!string.IsNullOrWhiteSpace(password))
             {
                 notEmpty = "pass";
 
-                // Check if the password length is at least 8 characters
+                // Check if password is at least 8 characters long
                 if (password.Length >= 8)
                 {
                     isLongEnough = "pass";
                 }
 
-                // Iterate through each character in the password
+                // Checks if the password has at least 1 upper, 1 lower and 1 digit
                 foreach (var charString in password)
                 {
                     if (char.IsUpper(charString))
@@ -123,15 +153,11 @@ namespace Betawave.Classes
                     {
                         hasNumber = "pass";
                     }
-                    else if (!char.IsWhiteSpace(charString))
-                    {
-                        hasSpecialChar = "pass";
-                    }    
                 }
             }
 
-            // Check all conditions for a valid password
-            if (notEmpty == "pass" && isLongEnough == "pass" && hasUpperChar == "pass" && hasLowerChar == "pass" && hasNumber == "pass" && hasSpecialChar == "pass")
+            //Checks if the password passes all checks 
+            if (notEmpty == "pass" && isLongEnough == "pass" && hasUpperChar == "pass" && hasLowerChar == "pass" && hasNumber == "pass")
             {
                 return "pass";
             }

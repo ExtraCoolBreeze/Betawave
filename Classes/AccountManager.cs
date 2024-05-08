@@ -20,7 +20,7 @@ namespace Betawave.Classes
             this.dbAccess = dbAccess;
         }
 
-        public async Task LoadAccountsAsync()
+        public async Task LoadAccounts()
         {
             using (var connection = dbAccess.ConnectToMySql())
             {

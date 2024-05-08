@@ -6,6 +6,12 @@
              BackgroundColor="#151417"
              Padding="0">
 
+    <!-- Project name: Betawave
+        Author: Craig McMillan
+        Date: 06 / 05 / 2024
+        Project Description: Music player application for HND Software Development Year 2 Graded Unit
+        Class Description: This is the user UI for the AddMediaScreen page  -->
+
     <Grid RowDefinitions="9*, 1.5*" ColumnDefinitions="2*, 8*" Margin="2">
         <!-- Left side VerticalStackLayout -->
         <Frame Grid.Row="0" Grid.Column="0" CornerRadius="15" Margin="5" BackgroundColor="#27232E" BorderColor="#27232E">

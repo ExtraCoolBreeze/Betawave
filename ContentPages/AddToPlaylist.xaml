@@ -3,7 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Betawave.AddToPlaylist"
              Title="AddToPlaylist">
-    
+
+    <!-- Project name: Betawave
+        Author: Craig McMillan
+        Date: 06 / 05 / 2024
+        Project Description: Music player application for HND Software Development Year 2 Graded Unit
+        Class Description: This is the user UI for the AddToPlaylist page  -->
+
     <Frame CornerRadius="15" Margin="1" HeightRequest="480" WidthRequest="390" BackgroundColor="#151417">
         <Frame CornerRadius="15" Margin="0" BackgroundColor="#27232E" BorderColor="#27232E">
             <ScrollView >
