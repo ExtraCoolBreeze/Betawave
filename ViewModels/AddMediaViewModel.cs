@@ -139,7 +139,7 @@ namespace Betawave.ViewModels
 
             var dbAccess = new DatabaseAccess();
             var manager = new DatabaseManager(dbAccess);
-            manager.LoadAllDataAsync();
+            manager.LoadInAllManagerClassData();
 
             var artistManager = new ArtistManager(dbAccess);
             albumManager = new AlbumManager(dbAccess, artistManager);
@@ -185,7 +185,7 @@ namespace Betawave.ViewModels
                 BasePlaylist playlist = new BasePlaylist();
                 foreach (var song in songsForAlbum)
                 {
-                    playlist.AddSong(song);
+                    playlist.AddSongToPlaylist(song);
                 }
 
                 audioViewModel.SetPlaylistAndPlay(playlist);

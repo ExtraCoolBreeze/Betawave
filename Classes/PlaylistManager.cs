@@ -58,7 +58,7 @@ namespace Betawave.Classes
                     {
                         var song = new Song();
                         song.SetSongId(reader.GetInt32("song_id"));
-                        song.SetName(reader.GetString("name"));
+                        song.SetSongName(reader.GetString("name"));
                         song.SetSongLocation(reader.GetString("song_location"));
 
                         // Assuming there is a method to get the artist ID from the song data
@@ -69,7 +69,7 @@ namespace Betawave.Classes
                             song.SetArtist(artist);
                         }
 
-                        playlist.AddSong(song);
+                        playlist.AddSongToPlaylist(song);
                     }
                 }
             }

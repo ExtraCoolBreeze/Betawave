@@ -247,7 +247,7 @@ public class Player
     {
         if (currentPlaylist != null && currentTrackIndex >= 0 && currentTrackIndex < currentPlaylist.GetPlaylistSongs().Count)
         {
-            return currentPlaylist.GetPlaylistSongs()[currentTrackIndex].GetName();
+            return currentPlaylist.GetPlaylistSongs()[currentTrackIndex].GetSongName();
         }
         else
         {

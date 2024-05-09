@@ -29,13 +29,13 @@ public class DatabaseManager
     }
 
     // Initialize all data from database
-    public async Task LoadAllDataAsync()
+    public async Task LoadInAllManagerClassData()
     {
         try
         {
-            await artistManager.LoadArtistsAsync();
+            await artistManager.LoadArtists();
             await albumManager.LoadAlbumsAsync();
-            await songManager.LoadSongsIntoProgramAsync();
+            await songManager.LoadSongsIntoProgram();
             await playlistManager.LoadPlaylistsAsync();
         }
         catch (Exception ex) 
@@ -45,7 +45,7 @@ public class DatabaseManager
     }
 
     // Handling user login and role retrieval
-    public async Task<bool> LoginUserAsync(string username, string password)
+    public async Task<bool> LoginUser(string username, string password)
     {
         if (await dbAccess.ValidateUser(username, password))
         {

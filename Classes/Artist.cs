@@ -4,7 +4,6 @@ Date: 06 / 05 / 2024
 Project Description: Music player application for HND Software Development Year 2 Graded Unit
 Class Description:  This class was created to store the information of the Artist class*/
 
-//I think this is functionally correct although needs double checking. Print function may need changing 
 
 namespace Betawave.Classes
 {
@@ -19,34 +18,48 @@ namespace Betawave.Classes
             ArtistName = "";
         }
 
-        // Getter method for artistId
+        /// <summary>
+        /// Returns artistId
+        /// </summary>
+        /// <returns></returns>
         public int GetArtistId()
         {
             return artistId;
         }
 
-        // Setter method for artistId
+        /// <summary>
+        /// When passed an int, it sets that to the artistId
+        /// </summary>
+        /// <param name="id"></param>
         public void SetArtistId(int id)
         {
             artistId = id;
         }
 
-        // Getter method for name
+        /// <summary>
+        /// Returns the artistName
+        /// </summary>
+        /// <returns></returns>
         public string GetName()
         {
             return ArtistName;
         }
 
-        // Setter method for name
+        /// <summary>
+        /// When passed a string name, it sets that to the ArtistName
+        /// </summary>
+        /// <param name="name"></param>
         public void SetName(string name)
         {
             ArtistName = name;
         }
 
-        public void PrintArtistDetails()
-        {
-            Console.WriteLine($"Artist ID: {GetArtistId()}, Artist Name: {GetName()}");
-        }
+        //unused print function
+        /*        public void PrintArtistDetails()
+                {
+                    GetArtistId();
+                    GetName();
+                }*/
 
     }
 }

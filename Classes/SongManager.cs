@@ -14,7 +14,7 @@ namespace Betawave.Classes
         private List<Song> songs = new List<Song>();
         private DatabaseAccess dbAccess;
         private ArtistManager artistManager;
-        private AlbumManager albumManager; 
+       private AlbumManager albumManager; 
 
         public SongManager(DatabaseAccess dbAccess, ArtistManager artistManager, AlbumManager albumManager) 
         {
@@ -29,7 +29,7 @@ namespace Betawave.Classes
             this.artistManager = artistManager;
         }
 
-        public async Task LoadSongsIntoProgramAsync()
+        public async Task LoadSongsIntoProgram()
         {
             using (var connection = dbAccess.ConnectToMySql())
             {
@@ -40,7 +40,7 @@ namespace Betawave.Classes
                     {
                         var song = new Song();
                         song.SetSongId(reader.GetInt32("song_id"));
-                        song.SetName(reader.GetString("name"));
+                        song.SetSongName(reader.GetString("name"));
                         song.SetSongLocation(reader.GetString("song_location"));
 
                         songs.Add(song);
@@ -49,19 +49,19 @@ namespace Betawave.Classes
             }
         }
 
-        public void AddSong(Song song)
+        public void AddSongToDatabase(Song song)
         {
             songs.Add(song);
             using (var connection = dbAccess.ConnectToMySql())
             {
                 var command = new MySqlCommand("INSERT INTO song (name, song_location) VALUES (@Name, @SongLocation)", connection);
-                command.Parameters.AddWithValue("@Name", song.GetName());
+                command.Parameters.AddWithValue("@Name", song.GetSongName());
                 command.Parameters.AddWithValue("@SongLocation", song.GetSongLocation());
                 command.ExecuteNonQuery();
             }
         }
 
-        public void UpdateSong(Song song)
+/*        public void UpdateSong(Song song)
         {
             foreach (var existingSong in songs)
             {
@@ -81,9 +81,9 @@ namespace Betawave.Classes
                 command.Parameters.AddWithValue("@SongLocation", song.GetSongLocation());
                 command.ExecuteNonQuery();
             }
-        }
+        }*/
 
-        public void DeleteSong(int songId)
+/*        public void DeleteSong(int songId)
         {
             for (int i = 0; i < songs.Count; i++)
             {
@@ -100,14 +100,14 @@ namespace Betawave.Classes
                 command.Parameters.AddWithValue("@SongId", songId);
                 command.ExecuteNonQuery();
             }
-        }
+        }*/
 
-        public List<Song> GetAllSongs()
+/*        public List<Song> GetAllSongs()
         {
             return songs;
         }
-
-        public Song GetSongById(int songId)
+*/
+/*        public Song GetSongById(int songId)
         {
             foreach (var song in songs)
             {
@@ -117,7 +117,9 @@ namespace Betawave.Classes
                 }
             }
             return null;
-        }
+        }*/
+
+
         public async Task<List<Song>> GetSongsForAlbum(int albumId)
         {
             List<Song> albumSongs = new List<Song>();
@@ -138,7 +140,7 @@ namespace Betawave.Classes
                     {
                         var song = new Song();
                         song.SetSongId(reader.GetInt32("song_id"));
-                        song.SetName(reader.GetString("name"));
+                        song.SetSongName(reader.GetString("name"));
                         song.SetSongLocation(reader.GetString("song_location"));
 
                         // Set the artist details

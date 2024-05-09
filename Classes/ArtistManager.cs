@@ -2,7 +2,7 @@
 Author: Craig McMillan
 Date: 06 / 05 / 2024
 Project Description: Music player application for HND Software Development Year 2 Graded Unit
-Class Description: This class was created to manage the artist objects
+Class Description: This class was created to manage a list artist objects
 */
 
 using MySql.Data.MySqlClient;
@@ -20,7 +20,12 @@ namespace Betawave.Classes
             this.dbAccess = dbAccess;
         }
 
-        public async Task LoadArtistsAsync()
+        /// <summary>
+        /// This method loads in all artists from the database. 
+        /// It connects, the searches for the artist id and name and then creates and sets an artist object and finally adds that artist object to a list of artist objects.
+        /// </summary>
+        /// <returns></returns>
+        public async Task LoadArtists()
         {
             using (var connection = dbAccess.ConnectToMySql())
             {
@@ -38,10 +43,12 @@ namespace Betawave.Classes
             }
         }
 
-
+        /// <summary>
+        /// This method when passed an artist object, connects and adds that artist name to the database
+        /// </summary>
+        /// <param name="artist"></param>
         public void AddArtist(Artist artist)
         {
-            artists.Add(artist);
             using (var connection = dbAccess.ConnectToMySql())
             {
                 var command = new MySqlCommand("INSERT INTO artist (name) VALUES (@Name)", connection);
@@ -50,26 +57,30 @@ namespace Betawave.Classes
             }
         }
 
-        public void UpdateArtist(Artist artist)
-        {
-            for (int i = 0; i < artists.Count; i++)
-            {
-                if (artists[i].GetArtistId() == artist.GetArtistId())
+        /*        public void UpdateArtist(Artist artist)
                 {
-                    artists[i].SetName(artist.GetName());
-                    break;
-                }
-            }
+                    for (int i = 0; i < artists.Count; i++)
+                    {
+                        if (artists[i].GetArtistId() == artist.GetArtistId())
+                        {
+                            artists[i].SetName(artist.GetName());
+                            break;
+                        }
+                    }
 
-            using (var connection = dbAccess.ConnectToMySql())
-            {
-                var command = new MySqlCommand("UPDATE artist SET name = @Name WHERE artist_id = @ArtistId", connection);
-                command.Parameters.AddWithValue("@ArtistId", artist.GetArtistId());
-                command.Parameters.AddWithValue("@Name", artist.GetName());
-                command.ExecuteNonQuery();
-            }
-        }
+                    using (var connection = dbAccess.ConnectToMySql())
+                    {
+                        var command = new MySqlCommand("UPDATE artist SET name = @Name WHERE artist_id = @ArtistId", connection);
+                        command.Parameters.AddWithValue("@ArtistId", artist.GetArtistId());
+                        command.Parameters.AddWithValue("@Name", artist.GetName());
+                        command.ExecuteNonQuery();
+                    }
+                }*/
 
+        /// <summary>
+        /// When passed an int, it searches the artist list for the artist id and removes that artist from the list. It then searches for the artist in the database based on the artist id and deletes it.
+        /// </summary>
+        /// <param name="artistId"></param>
         public void DeleteArtist(int artistId)
         {
             for (int i = artists.Count - 1; i >= 0; i--)
@@ -89,23 +100,46 @@ namespace Betawave.Classes
             }
         }
 
+        //May need to write a function that searches the database for artists, counts them and then if there is already 3 artists in the database then return and true or false
+
+        //Might be better to use this in the view model but unsure yet
+
+        /// <summary>
+        /// This function returns the list of artist objects
+        /// </summary>
+        /// <returns></returns>
         public List<Artist> GetAllArtists()
         {
             return artists;
         }
 
+
+        //Might be a good idea to change this so if the id isn't found then search the database for it and return that.
+        /// <summary>
+        /// When passed an int, this function searches the list of artists for the artist object with the matching artistId and returns it, if not returns null
+        /// </summary>
+        /// <param name="artistId"></param>
+        /// <returns></returns>
         public Artist GetArtistById(int artistId)
         {
-            for (int i = 0; i < artists.Count; i++)
+            foreach (var artist in artists)
             {
-                if (artists[i].GetArtistId() == artistId)
+                if (artist.GetArtistId() == artistId)
                 {
-                    return artists[i];
+                    return artist;
                 }
             }
-            return null;  // Return null if no artist is found
+
+            return null; // Return null if no match is found
         }
 
+
+        /// <summary>
+        /// When passed an string, this function searches the database for an artist and returns if not returns null.
+        /// It connects, searches for the artist name and artist id, saves that information to an artist object and returns the artist object, if not returns null.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public async Task<Artist> GetArtistByName(string name)
         {
             using (var connection = dbAccess.ConnectToMySql())
@@ -125,6 +159,5 @@ namespace Betawave.Classes
             }
             return null;
         }
-
     }
 }

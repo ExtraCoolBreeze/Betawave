@@ -33,12 +33,12 @@ public class Song
         pksongId = value;
     }
 
-    public string GetName()
+    public string GetSongName()
     {
         return songName;
     }
 
-    public void SetName(string value)
+    public void SetSongName(string value)
     {
         songName = value;
     }

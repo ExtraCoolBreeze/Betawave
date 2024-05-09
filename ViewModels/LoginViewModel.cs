@@ -63,7 +63,7 @@ namespace Betawave.ViewModels
             if (await databaseManager.ValidateUser(Username, Password))
             {
                 // Load data from the database
-                await databaseManager.LoadAllDataAsync();
+                await databaseManager.LoadInAllManagerClassData();
 
                 // Navigation based on user role
                 if (await databaseManager.IsAdmin(Username))

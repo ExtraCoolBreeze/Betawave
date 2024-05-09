@@ -102,7 +102,7 @@ public class QueueViewModel : INotifyPropertyChanged
             {
                 TrackCount++;
                 Song song = playlistSongs[i];
-                string songInfo = $"{TrackCount}. {song.GetName()} - {song.GetArtist()?.GetName()} - {song.GetAlbum()?.GetAlbumTitle()}";
+                string songInfo = $"{TrackCount}. {song.GetSongName()} - {song.GetArtist()?.GetName()} - {song.GetAlbum()?.GetAlbumTitle()}";
 
                 string albumName = audioViewModel.CurrentAlbumName;
                 if (!string.IsNullOrEmpty(albumName))

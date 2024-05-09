@@ -81,7 +81,7 @@ public class BasePlaylist
         return PlaylistSongs;
     }
 
-    public void AddSong(Song song)
+    public void AddSongToPlaylist(Song song)
     {
         if (song == null)
         {
@@ -106,7 +106,7 @@ public class BasePlaylist
         Console.WriteLine($"Playlist Title: {GetTitle()}");
         foreach (var song in GetPlaylistSongs())
         {
-            Console.WriteLine($"Song: {song.GetName()}");
+            Console.WriteLine($"Song: {song.GetSongName()}");
         }
     }
 }
