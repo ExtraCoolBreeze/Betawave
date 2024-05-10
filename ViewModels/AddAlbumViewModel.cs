@@ -202,13 +202,14 @@ namespace Betawave.ViewModels
 
         private ArtistManager artistManager;
         private AlbumManager albumManager;
+        private SongManager songManager;
         private DatabaseAccess databaseAccess;
         public ICommand AddAlbumCommand { get; private set; }
 
         public AddAlbumViewModel()
         {
             artistManager = new ArtistManager(new DatabaseAccess());
-            albumManager = new AlbumManager(new DatabaseAccess(), artistManager);
+            albumManager = new AlbumManager(new DatabaseAccess());
             AddAlbumCommand = new Command(async () => await AddNewAlbum());
         }
 
@@ -276,7 +277,7 @@ namespace Betawave.ViewModels
             }
 
 
-            Album newAlbum = new Album(artistManager);
+            Album newAlbum = new Album();
             newAlbum.SetAlbumTitle(AlbumName);
             newAlbum.SetImageLocation(AlbumArtPath);
             newAlbum.SetArtistId(artist.GetArtistId());

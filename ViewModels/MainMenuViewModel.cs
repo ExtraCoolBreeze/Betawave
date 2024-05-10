@@ -18,7 +18,8 @@ namespace Betawave.ViewModels
 
         public AlbumManager albumManager;
         public SongManager songManager;
-        private AudioViewModel audioViewModel;
+        public ArtistManager artistManager;
+        public AudioViewModel audioViewModel;
 
         public ICommand PlayAlbum1Command { get; private set; }
         public ICommand PlayAlbum2Command { get; private set; }
@@ -149,40 +150,70 @@ namespace Betawave.ViewModels
             var manager = new DatabaseManager(dbAccess);
             manager.LoadInAllManagerClassData();
 
-            var artistManager = new ArtistManager(dbAccess);
-            albumManager = new AlbumManager(dbAccess, artistManager);
-            songManager = new SongManager(dbAccess, artistManager, albumManager);
+            artistManager = new ArtistManager(dbAccess);
+            albumManager = new AlbumManager(dbAccess);
+            songManager = new SongManager(dbAccess);
 
             LoadData();
         }
 
         public async void LoadData()
         {
-            await albumManager.LoadAlbumsAsync();
+            await albumManager.LoadAlbums();
+            await artistManager.LoadArtists();
             List<Album> albums = albumManager.GetAllAlbums();
+            List<Artist> artists = artistManager.GetAllArtists();
 
-            if (albums.Count > 0)
+            if (albums.Count > 0 && artists.Count > 0)
             {
                 AlbumImagePath1 = albums[0].GetImageLocation();
                 AlbumName1 = albums[0].GetAlbumTitle();
-                ArtistName1 = albums[0].GetArtist()?.GetName();
 
+                Artist artist1 = artistManager.GetArtistById(albums[0].GetArtistId());
+                if (artist1 != null)
+                {
+                    ArtistName1 = artist1.GetName();
+                }
+                else
+                {
+                    ArtistName1 = "Unknown Artist";
+                }
             }
 
             if (albums.Count > 1)
             {
                 AlbumImagePath2 = albums[1].GetImageLocation();
                 AlbumName2 = albums[1].GetAlbumTitle();
-                ArtistName2 = albums[1].GetArtist()?.GetName();
+
+                Artist artist2 = artistManager.GetArtistById(albums[1].GetArtistId());
+                if (artist2 != null)
+                {
+                    ArtistName2 = artist2.GetName();
+                }
+                else
+                {
+                    ArtistName2 = "Unknown Artist";
+                }
             }
 
             if (albums.Count > 2)
             {
                 AlbumImagePath3 = albums[2].GetImageLocation();
                 AlbumName3 = albums[2].GetAlbumTitle();
-                ArtistName3 = albums[2].GetArtist()?.GetName();
+
+                Artist artist3 = artistManager.GetArtistById(albums[2].GetArtistId());
+                if (artist3 != null)
+                {
+                    ArtistName3 = artist3.GetName();
+                }
+                else
+                {
+                    ArtistName3 = "Unknown Artist";
+                }
             }
         }
+
+
 
 
         // also this   SELECT COUNT(*) FROM your_table; Control the number of rows inserted by checking the current count of rows before inserting new data. 
@@ -204,17 +235,21 @@ namespace Betawave.ViewModels
 
         private async void PlayAlbum(int albumIndex)
         {
-            var albums = albumManager.GetAllAlbums();
+            List<Album> albums = albumManager.GetAllAlbums();
             if (albumIndex < albums.Count)
             {
                 Album album = albums[albumIndex];
-                var songsForAlbum = await songManager.GetSongsForAlbum(album.GetAlbumId());
+                List<Song> songsForAlbum = await songManager.GetSongsForAlbum(album.GetAlbumId());
                 BasePlaylist playlist = new BasePlaylist();
-                foreach (var song in songsForAlbum)
+                foreach (Song song in songsForAlbum)
                 {
-                    playlist.AddSongToPlaylist(song);
+                    playlist.AddToPlaylist(song);
                 }
+                playlist.SetAlbumName(album.GetAlbumTitle());
 
+                Artist artist1 = artistManager.GetArtistById(album.GetArtistId());
+                string ArtistName = artist1.GetName();
+                playlist.SetArtistName(ArtistName);
                 audioViewModel.SetPlaylistAndPlay(playlist);
             }
         }

@@ -17,6 +17,7 @@ namespace Betawave.ViewModels
 
         public AlbumManager albumManager;
         public SongManager songManager;
+        public ArtistManager artistManager;
         private AudioViewModel audioViewModel;
 
         public ICommand PlayAlbum1Command { get; private set; }
@@ -142,36 +143,43 @@ namespace Betawave.ViewModels
             manager.LoadInAllManagerClassData();
 
             var artistManager = new ArtistManager(dbAccess);
-            albumManager = new AlbumManager(dbAccess, artistManager);
-            songManager = new SongManager(dbAccess, artistManager, albumManager);
+            albumManager = new AlbumManager(dbAccess);
 
             LoadData();
         }
 
         public async void LoadData()
         {
-            await albumManager.LoadAlbumsAsync();
-            var albums = albumManager.GetAllAlbums();
+            await albumManager.LoadAlbums();
+            await artistManager.LoadArtists();
+            List<Album> albums = albumManager.GetAllAlbums();
+            List<Artist> artists = artistManager.GetAllArtists();
 
-            if (albums.Count > 0)
+            if (albums.Count > 0 && artists.Count > 0)
             {
                 AlbumImagePath1 = albums[0].GetImageLocation();
                 AlbumName1 = albums[0].GetAlbumTitle();
-                ArtistName1 = albums[0].GetArtist()?.GetName();
+
+                Artist artist1 = artistManager.GetArtistById(albums[0].GetArtistId());
+                ArtistName1 = artist1?.GetName() ?? "Unknown Artist";
             }
 
             if (albums.Count > 1)
             {
                 AlbumImagePath2 = albums[1].GetImageLocation();
                 AlbumName2 = albums[1].GetAlbumTitle();
-                ArtistName2 = albums[1].GetArtist()?.GetName();
+
+                Artist artist2 = artistManager.GetArtistById(albums[1].GetArtistId());
+                ArtistName2 = artist2?.GetName() ?? "Unknown Artist";
             }
 
             if (albums.Count > 2)
             {
                 AlbumImagePath3 = albums[2].GetImageLocation();
                 AlbumName3 = albums[2].GetAlbumTitle();
-                ArtistName3 = albums[2].GetArtist()?.GetName();
+
+                Artist artist3 = artistManager.GetArtistById(albums[2].GetArtistId());
+                ArtistName3 = artist3?.GetName() ?? "Unknown Artist";
             }
         }
 
@@ -185,7 +193,7 @@ namespace Betawave.ViewModels
                 BasePlaylist playlist = new BasePlaylist();
                 foreach (var song in songsForAlbum)
                 {
-                    playlist.AddSongToPlaylist(song);
+                    playlist.AddToPlaylist(song);
                 }
 
                 audioViewModel.SetPlaylistAndPlay(playlist);

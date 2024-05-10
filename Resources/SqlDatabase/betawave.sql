@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 22, 2024 at 12:33 PM
+-- Generation Time: May 10, 2024 at 10:39 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -38,8 +38,9 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`account_id`, `username`, `userpassword`) VALUES
-(1, '4Dm1n42', '1t1s4test'),
-(9, 'test2', '0aa84d5589f317f4e7cf7695da9c340d351fa678e77a075e8d747defe737d68f');
+(1, '4Dm1n42', '1T1s4test'),
+(9, 'test2', 'Testtest2\"'),
+(103, 'test3', 'Testtest3£');
 
 -- --------------------------------------------------------
 
@@ -58,7 +59,8 @@ CREATE TABLE `account_role` (
 
 INSERT INTO `account_role` (`account_id`, `role_id`) VALUES
 (1, 1),
-(9, 20);
+(9, 20),
+(103, 21);
 
 -- --------------------------------------------------------
 
@@ -69,15 +71,16 @@ INSERT INTO `account_role` (`account_id`, `role_id`) VALUES
 CREATE TABLE `album` (
   `album_id` int(11) NOT NULL,
   `title` varchar(60) NOT NULL,
-  `image_location` varchar(60) NOT NULL
+  `image_location` varchar(255) NOT NULL,
+  `artist_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `album`
 --
 
-INSERT INTO `album` (`album_id`, `title`, `image_location`) VALUES
-(5, 'Coral Fang', 'C:\\Users\\Craig\\Desktop\\Betawave8.0\\Betawave\\Resources\\Music\\');
+INSERT INTO `album` (`album_id`, `title`, `image_location`, `artist_id`) VALUES
+(5, 'Coral Fang', 'C:\\Users\\Craig\\Desktop\\Betawave8.0\\Betawave\\Resources\\Music\\CoralFang\\folder.jpg', 7);
 
 -- --------------------------------------------------------
 
@@ -127,17 +130,6 @@ INSERT INTO `artist` (`artist_id`, `name`) VALUES
 (5, 'Da Octopuss'),
 (6, '111'),
 (7, 'The Distillers');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `featured_artists`
---
-
-CREATE TABLE `featured_artists` (
-  `artist_id` int(11) NOT NULL,
-  `song_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -243,7 +235,8 @@ ALTER TABLE `account_role`
 -- Indexes for table `album`
 --
 ALTER TABLE `album`
-  ADD PRIMARY KEY (`album_id`);
+  ADD PRIMARY KEY (`album_id`),
+  ADD KEY `fk_artist` (`artist_id`);
 
 --
 -- Indexes for table `album_track`
@@ -257,13 +250,6 @@ ALTER TABLE `album_track`
 --
 ALTER TABLE `artist`
   ADD PRIMARY KEY (`artist_id`);
-
---
--- Indexes for table `featured_artists`
---
-ALTER TABLE `featured_artists`
-  ADD PRIMARY KEY (`artist_id`,`song_id`),
-  ADD KEY `featured_artists_to_song` (`song_id`);
 
 --
 -- Indexes for table `playlist`
@@ -299,19 +285,19 @@ ALTER TABLE `song`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
 
 --
 -- AUTO_INCREMENT for table `album`
 --
 ALTER TABLE `album`
-  MODIFY `album_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `album_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `artist`
 --
 ALTER TABLE `artist`
-  MODIFY `artist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `artist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `playlist`
@@ -343,18 +329,17 @@ ALTER TABLE `account_role`
   ADD CONSTRAINT `account_role_to_role` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`);
 
 --
+-- Constraints for table `album`
+--
+ALTER TABLE `album`
+  ADD CONSTRAINT `fk_artist` FOREIGN KEY (`artist_id`) REFERENCES `artist` (`artist_id`);
+
+--
 -- Constraints for table `album_track`
 --
 ALTER TABLE `album_track`
   ADD CONSTRAINT `album_track_to_album` FOREIGN KEY (`album_id`) REFERENCES `album` (`album_id`),
   ADD CONSTRAINT `album_track_to_song` FOREIGN KEY (`song_id`) REFERENCES `song` (`song_id`);
-
---
--- Constraints for table `featured_artists`
---
-ALTER TABLE `featured_artists`
-  ADD CONSTRAINT `featured_artists_to_artist` FOREIGN KEY (`artist_id`) REFERENCES `artist` (`artist_id`),
-  ADD CONSTRAINT `featured_artists_to_song` FOREIGN KEY (`song_id`) REFERENCES `song` (`song_id`);
 
 --
 -- Constraints for table `playlist`

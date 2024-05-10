@@ -13,15 +13,13 @@ namespace Betawave.Classes
     {
         private List<Album> albums = new List<Album>();
         private DatabaseAccess dbAccess;
-        private ArtistManager artistManager;
 
-        public AlbumManager(DatabaseAccess dbAccess, ArtistManager artistManager)
+        public AlbumManager(DatabaseAccess dbAccess)
         {
             this.dbAccess = dbAccess;
-            this.artistManager = artistManager;
         }
 
-        public async Task LoadAlbumsAsync()
+        public async Task LoadAlbums()
         {
             using (var connection = dbAccess.ConnectToMySql())
             {
@@ -31,29 +29,11 @@ namespace Betawave.Classes
                     albums.Clear();
                     while (await reader.ReadAsync())
                     {
-                        var album = new Album(artistManager);
+                        var album = new Album();
                         album.SetAlbumId(reader.GetInt32("album_id"));
                         album.SetAlbumTitle(reader.GetString("title"));
                         album.SetImageLocation(reader.GetString("image_location"));
-
-                        if (artistManager != null)  // Check if artistManager is not null
-                        {
-                            int artistId = reader.GetInt32("artist_id");
-                            album.SetArtistId(artistId);  // Set the artist ID
-                            Artist artist = artistManager.GetArtistById(artistId);  // Retrieve the Artist object
-                            if (artist != null)  // Check if an artist was found
-                            {
-                                album.SetArtist(artist);
-                            }
-                            else
-                            {
-                                Console.WriteLine("No artist found with ID: " + artistId);
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Artist manager is not initialized.");
-                        }
+                        album.SetArtistId(reader.GetInt32("artist_id"));
 
                         albums.Add(album);
                     }
@@ -61,7 +41,7 @@ namespace Betawave.Classes
             }
         }
 
-
+        
         public async Task<bool> AddAlbum(Album album)
         {
             if (await CountAlbums() >= 3)

@@ -23,7 +23,7 @@ public partial class AddToPlaylist : ContentPage
         {
             var button = new Button
             {
-                Text = playlist.GetTitle(),
+               // Text = playlist.GetTitle(),
                 Margin = new Thickness(5),
                 BackgroundColor = Color.FromArgb("#333333"),
                 TextColor = Color.FromArgb("#FFFFFF")
@@ -40,18 +40,17 @@ public partial class AddToPlaylist : ContentPage
 
     private void Button_Clicked(object sender, EventArgs e)
     {
-        if (sender is Button button && button.CommandParameter is BasePlaylist selectedPlaylist)
+/*        if ()
         {
-            PlaylistButtonClicked(selectedPlaylist);
-        }
+            PlaylistButtonClicked();
+        }*/
     }
 
-    private async void PlaylistButtonClicked(BasePlaylist selectedPlaylist)
+/*    private async void PlaylistButtonClicked()
     {
-        Console.WriteLine($"Playlist Selected: {selectedPlaylist.GetTitle()}");
-        await Shell.Current.GoToAsync($"playlistdetails?playlistId={selectedPlaylist.GetPlaylistId()}");
+        //await Shell.Current.GoToAsync("");
     }
-
+*/
     private List<BasePlaylist> GetPlaylists()
     {
         return new List<BasePlaylist>();

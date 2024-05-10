@@ -14,7 +14,7 @@ namespace Betawave.ViewModels
 {
     public class AudioViewModel : INotifyPropertyChanged
     {
-        private Player audioPlayerService;
+        private Player audioPlayer;
         private ICommand playPauseCommand;
         private ICommand stopCommand;
         private ICommand skipNextCommand;
@@ -41,12 +41,12 @@ namespace Betawave.ViewModels
             skipPreviousCommand = new Command(SkipPrevious);
             toggleShuffleCommand = new Command(ToggleShuffle);
             toggleRepeatCommand = new Command(ToggleRepeat);
-            this.audioPlayerService = new Player();
+            audioPlayer = new Player();
 
-            shuffle = audioPlayerService.GetShuffle();
-            audioPlayerService.PlaybackStopped += HandlePlaybackStoppedAndStopTimer;
+            shuffle = audioPlayer.GetShuffle();
+            audioPlayer.PlaybackStopped += HandlePlaybackStoppedAndStopTimer;
 
-            audioPlayerService.TrackChanged += (sender, args) => UpdateTrackDetails(sender, args);
+            audioPlayer.TrackChanged += (sender, args) => UpdateTrackDetails(sender, args);
             trackPositionTimer = new System.Timers.Timer();
             trackPositionTimer.Interval = 1000;
             trackPositionTimer.Elapsed += UpdateTrackPosition;
@@ -109,7 +109,7 @@ namespace Betawave.ViewModels
                 {
                     volume = value;
                     OnPropertyChanged();
-                    audioPlayerService.SetVolume(volume);
+                    audioPlayer.SetVolume(volume);
                 }
             }
         }
@@ -123,7 +123,7 @@ namespace Betawave.ViewModels
                 {
                     shuffle = value;
                     OnPropertyChanged();
-                    audioPlayerService.SetShuffle(shuffle);
+                    audioPlayer.SetShuffle(shuffle);
                 }
             }
         }
@@ -143,13 +143,13 @@ namespace Betawave.ViewModels
 
         public void TogglePlayPause()
         {
-            if (audioPlayerService.IsPlaying())
+            if (audioPlayer.IsPlaying())
             {
-                audioPlayerService.PauseMusic();
+                audioPlayer.PauseMusic();
             }
             else
             {
-                audioPlayerService.PlayMusic();
+                audioPlayer.PlayMusic();
             }
         }
 
@@ -157,9 +157,9 @@ namespace Betawave.ViewModels
         {
             get
             {
-                if (audioPlayerService != null && audioPlayerService.GetCurrentTrackLength() != TimeSpan.Zero)
+                if (audioPlayer != null && audioPlayer.GetCurrentTrackLength() != TimeSpan.Zero)
                 {
-                    return audioPlayerService.GetCurrentTrackLength().TotalSeconds;
+                    return audioPlayer.GetCurrentTrackLength().TotalSeconds;
                 }
                 else
                 {
@@ -193,49 +193,49 @@ namespace Betawave.ViewModels
 
         public void SetPlaylistAndPlay(BasePlaylist playlist)
         {
-            audioPlayerService.SetPlaylist(playlist);
-            audioPlayerService.PlayMusic();
+            audioPlayer.SetPlaylist(playlist);
+            audioPlayer.PlayMusic();
         }
 
         public void SkipNext()
         {
-            audioPlayerService.PlayNextTrack();
+            audioPlayer.PlayNextTrack();
         }
 
         public void SkipPrevious()
         {
-            audioPlayerService.PlayPreviousTrack();
+            audioPlayer.PlayPreviousTrack();
         }
 
         public void StopAudio()
         {
-            audioPlayerService.StopMusic();
+            audioPlayer.StopMusic();
         }
 
         public void ToggleShuffle()
         {
-            audioPlayerService.ToggleShuffle();
+            audioPlayer.ToggleShuffle();
         }
 
         public void ToggleRepeat()
         {
-            audioPlayerService.ToggleRepeat();
+            audioPlayer.ToggleRepeat();
         }
 
         public BasePlaylist GetCurrentPlaylist()
         {
-            return audioPlayerService.GetCurrentPlaylist();
+            return audioPlayer.GetCurrentPlaylist();
         }
 
 
         private void UpdateTrackDetails(object sender, EventArgs e)
         {
-            CurrentTrackImage = audioPlayerService.GetCurrentTrackImage();
-            CurrentTrackName = audioPlayerService.GetCurrentTrackName();
-            CurrentTrackArtist = audioPlayerService.GetCurrentTrackArtist();
-            CurrentAlbumName = audioPlayerService.GetCurrentAlbumName();
+            CurrentTrackImage = audioPlayer.GetCurrentTrackImage();
+            CurrentTrackName = audioPlayer.GetCurrentTrackName();
+            CurrentTrackArtist = audioPlayer.GetCurrentTrackArtist();
+            CurrentAlbumName = audioPlayer.GetCurrentAlbumName();
             CurrentTrackPosition = 0;
-            TrackLength = audioPlayerService.GetCurrentTrackLength().TotalSeconds;
+            TrackLength = audioPlayer.GetCurrentTrackLength().TotalSeconds;
             OnPropertyChanged(nameof(TrackLength));
         }
 
@@ -251,9 +251,9 @@ namespace Betawave.ViewModels
 
         public void UpdateTrackPosition(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (audioPlayerService != null && audioPlayerService.IsPlaying())
+            if (audioPlayer != null && audioPlayer.IsPlaying())
             {
-                CurrentTrackPosition = audioPlayerService.GetCurrentTrackPosition().TotalSeconds;
+                CurrentTrackPosition = audioPlayer.GetCurrentTrackPosition().TotalSeconds;
                 OnPropertyChanged(nameof(CurrentTrackPosition));
             }
         }

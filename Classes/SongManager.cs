@@ -13,20 +13,10 @@ namespace Betawave.Classes
     {
         private List<Song> songs = new List<Song>();
         private DatabaseAccess dbAccess;
-        private ArtistManager artistManager;
-       private AlbumManager albumManager; 
 
-        public SongManager(DatabaseAccess dbAccess, ArtistManager artistManager, AlbumManager albumManager) 
+        public SongManager(DatabaseAccess dbAccess) 
         {
             this.dbAccess = dbAccess;
-            this.artistManager = artistManager;
-            this.albumManager = albumManager;
-        }
-
-        public SongManager(DatabaseAccess dbAccess, ArtistManager artistManager)
-        {
-            this.dbAccess = dbAccess;
-            this.artistManager = artistManager;
         }
 
         public async Task LoadSongsIntoProgram()
@@ -142,13 +132,6 @@ namespace Betawave.Classes
                         song.SetSongId(reader.GetInt32("song_id"));
                         song.SetSongName(reader.GetString("name"));
                         song.SetSongLocation(reader.GetString("song_location"));
-
-                        // Set the artist details
-                        Artist artist = new Artist();
-                        artist.SetArtistId (reader.GetInt32("artist_id"));
-                        artist.SetName(reader.GetString("artist_name"));
-                        
-                        song.SetArtist(artist);
 
                         albumSongs.Add(song);
                     }

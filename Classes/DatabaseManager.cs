@@ -17,15 +17,15 @@ public class DatabaseManager
     private ArtistManager artistManager;
     private AlbumManager albumManager;
     private SongManager songManager;
-    private PlaylistManager playlistManager;
+    //private PlaylistManager playlistManager;
 
     public DatabaseManager(DatabaseAccess access)
     {
         dbAccess = access;
         artistManager = new ArtistManager(dbAccess);
-        songManager = new SongManager(dbAccess, artistManager);
-        albumManager = new AlbumManager(dbAccess, artistManager);
-        playlistManager = new PlaylistManager(dbAccess, artistManager);
+        songManager = new SongManager(dbAccess);
+        albumManager = new AlbumManager(dbAccess);
+        //playlistManager = new PlaylistManager(dbAccess, artistManager);
     }
 
     // Initialize all data from database
@@ -34,9 +34,9 @@ public class DatabaseManager
         try
         {
             await artistManager.LoadArtists();
-            await albumManager.LoadAlbumsAsync();
+            await albumManager.LoadAlbums();
             await songManager.LoadSongsIntoProgram();
-            await playlistManager.LoadPlaylistsAsync();
+           // await playlistManager.LoadPlaylistsAsync();
         }
         catch (Exception ex) 
         {

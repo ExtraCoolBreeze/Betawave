@@ -9,7 +9,7 @@ using Betawave.Classes;
 
 public class Player
 {
-    private IWavePlayer waveOutDevice;
+    private IWavePlayer BetawavePlayer;
     private AudioFileReader audioFileReader;
     private BasePlaylist currentPlaylist;
     private Random random = new Random();
@@ -23,8 +23,8 @@ public class Player
 
     public Player()
     {
-        waveOutDevice = new WaveOutEvent();
-        waveOutDevice.PlaybackStopped += OnPlaybackStopped;
+        BetawavePlayer = new WaveOutEvent();
+        BetawavePlayer.PlaybackStopped += OnPlaybackStopped;
     }
 
     public void OnPlaybackStopped(object sender, StoppedEventArgs e)
@@ -64,7 +64,7 @@ public class Player
         try
         {
             audioFileReader = new AudioFileReader(filePath);
-            waveOutDevice.Init(audioFileReader);
+            BetawavePlayer.Init(audioFileReader);
             TrackChanged?.Invoke(this, EventArgs.Empty);
         }
         catch (Exception ex)
@@ -77,7 +77,7 @@ public class Player
     {
         if (audioFileReader != null)
         {
-            waveOutDevice.Play();
+            BetawavePlayer.Play();
         }
         else
         {
@@ -87,17 +87,17 @@ public class Player
 
     public bool IsPlaying()
     {
-        return waveOutDevice.PlaybackState == PlaybackState.Playing;
+        return BetawavePlayer.PlaybackState == PlaybackState.Playing;
     }
 
     public void PauseMusic()
     {
-        waveOutDevice.Pause();
+        BetawavePlayer.Pause();
     }
 
     public void StopMusic()
     {
-        waveOutDevice.Stop();
+        BetawavePlayer.Stop();
     }
 
     public void SetVolume(float volume)
@@ -259,23 +259,22 @@ public class Player
     {
         if (currentPlaylist != null && currentTrackIndex >= 0 && currentTrackIndex < currentPlaylist.GetPlaylistSongs().Count)
         {
-            Song song = currentPlaylist.GetPlaylistSongs()[currentTrackIndex];
-            Artist artist = song.GetArtist();
-            if (artist != null)
+
+            string artistName = currentPlaylist.GetArtistName();
+            if (artistName != null)
             {
-                Console.WriteLine($"Artist Found: {artist.GetName()}");
-                return artist.GetName();
+                return artistName;
             }
             else
             {
-                Console.WriteLine("Artist is null");
-                return "Error: Unknown Artist";
+                string currentArtistError = "Error: Unknown Artist";
+                return currentArtistError;
             }
         }
         else
         {
-            Console.WriteLine("Invalid playlist data or index");
-            return "Error: Unknown Artist";
+            string currentPlaylistError = "Invalid playlist data or index";
+            return currentPlaylistError;
         }
     }
 
@@ -283,14 +282,14 @@ public class Player
     {
         if (currentPlaylist != null && currentTrackIndex >= 0 && currentTrackIndex < currentPlaylist.GetPlaylistSongs().Count)
         {
-            Song currentSong = currentPlaylist.GetPlaylistSongs()[currentTrackIndex];
-            Album album = currentSong.GetAlbum();
-            if (album != null)
+            string albumTitle = currentPlaylist.GetAlbumName();
+            if (albumTitle != null)
             {
-                return album.GetAlbumTitle();
+                return albumTitle;
             }
         }
-        return "Error: Unknown Album";
+        string currentAlbumError = "Error: Unknown Album";
+        return currentAlbumError;
     }
 
 
@@ -312,11 +311,12 @@ public class Player
         if (currentPlaylist != null && currentTrackIndex >= 0 && currentTrackIndex < currentPlaylist.GetPlaylistSongs().Count)
         {
             Song currentSong = currentPlaylist.GetPlaylistSongs()[currentTrackIndex];
-            Album album = currentSong.GetAlbum();
+
+/*           // Album album = currentSong;//.GetAlbum();
             if (album != null)
             {
                 return album.GetImageLocation();
-            }
+            }*/
         }
         return "default_album_cover.png";
     }

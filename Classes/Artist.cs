@@ -54,13 +54,6 @@ namespace Betawave.Classes
             ArtistName = name;
         }
 
-        //unused print function
-        /*        public void PrintArtistDetails()
-                {
-                    GetArtistId();
-                    GetName();
-                }*/
-
     }
 }
 

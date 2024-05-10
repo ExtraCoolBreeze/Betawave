@@ -11,10 +11,10 @@ namespace Betawave.Classes
     public interface IPlaylist
     {
         // Method to add a song to the playlist
-        void AddToPlaylist(string song);
+        void AddToPlaylist(Song song);
 
         // Method to remove a song from the playlist
-        void RemoveFromPlaylist(string song);
+        void RemoveFromPlaylist(Song song);
 
         // Method to print the details of the playlist
         void PrintPlaylistDetails();

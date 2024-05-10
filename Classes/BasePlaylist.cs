@@ -5,25 +5,72 @@ Date: 06 / 05 / 2024
 Project Description: Music player application for HND Software Development Year 2 Graded Unit
 Class Description: This playlist class was created to store the information about playlist objects*/
 
-public class BasePlaylist
+using Betawave.Classes;
+
+public class BasePlaylist : IPlaylist
 {
-    private int pkplaylistId;
-    private string PlaylistTitle;
-    private string isQueue;
-    private int  fkaccountId;
-    private string isFavourite;
+
+
     private List<Song> PlaylistSongs;
+    private string albumName;
+    private string artistName;
+    private string imageLocation;
+
+    //private int pkplaylistId;
+    //private string PlaylistTitle;
+    //private int fkaccountId;
+    // private string isQueue;
+    // private string isFavourite;
+
 
     public BasePlaylist()
     {
-        PlaylistTitle = "";
-        pkplaylistId = 0;
-        isQueue = "";
-        isFavourite = "";
+
+
         PlaylistSongs = new List<Song>();
+        albumName = "";
+        artistName = "";
+        imageLocation = "";
+
+    //PlaylistTitle = "";
+    //pkplaylistId = 0;
+    //isQueue = "";
+    //isFavourite = "";
+
 }
 
-    public void SetPlaylistId(int userinput)
+
+    public void SetAlbumName(string nameofalbum)
+    {
+        albumName = nameofalbum;
+    }
+
+    public string GetAlbumName()
+    {
+        return albumName;
+    }
+
+    public void SetArtistName(string nameofartist)
+    {
+        artistName = nameofartist;
+    }
+
+    public string GetArtistName()
+    { 
+        return artistName;
+    }
+
+    public void SetImageLocation(string image)
+    { 
+        imageLocation = image;
+    }
+
+    public string GetImageLocation()
+    { 
+        return imageLocation;
+    }
+
+    /*    public void SetPlaylistId(int userinput)
     {
         pkplaylistId = userinput;
     }
@@ -43,7 +90,19 @@ public class BasePlaylist
         return PlaylistTitle;
     }
 
-    public void SetQueue(string inputQueue)
+    public void SetAccountId(int accountid)
+    {
+        fkaccountId = accountid;
+    }
+
+    public int GetAccountId()
+    { 
+        return fkaccountId;
+    }
+*/
+
+
+    /*    public void SetQueue(string inputQueue)
     {
         isQueue = inputQueue;
     }
@@ -62,17 +121,7 @@ public class BasePlaylist
     {
         return isFavourite;
     }
-
-
-    public void SetAccountId(int accountid)
-    {
-        fkaccountId = accountid;
-    }
-
-    public int GetAccountId()
-    { 
-        return fkaccountId;
-    }
+*/
 
     //--------------------------------Start of functions to store the list of playlist songs
 
@@ -81,7 +130,7 @@ public class BasePlaylist
         return PlaylistSongs;
     }
 
-    public void AddSongToPlaylist(Song song)
+    public void AddToPlaylist(Song song)
     {
         if (song == null)
         {
@@ -91,7 +140,7 @@ public class BasePlaylist
         PlaylistSongs.Add(song);
     }
 
-    public void RemoveSong(Song song)
+    public void RemoveFromPlaylist(Song song)
     {
         if (song == null)
         {
@@ -103,7 +152,7 @@ public class BasePlaylist
 
     public void PrintPlaylistDetails()
     {
-        Console.WriteLine($"Playlist Title: {GetTitle()}");
+       // Console.WriteLine($"Playlist Title: {GetTitle()}");
         foreach (var song in GetPlaylistSongs())
         {
             Console.WriteLine($"Song: {song.GetSongName()}");

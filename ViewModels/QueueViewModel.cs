@@ -8,10 +8,15 @@ using System.ComponentModel;
 using System.Windows.Input;
 using Betawave.ViewModels;
 using System.Runtime.CompilerServices;
+using Betawave.Classes;
+using Windows.Media.Playlists;
 public class QueueViewModel : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler PropertyChanged;
 
+    public DatabaseAccess dbAccess;
+    public PlaylistManager playlistManager;
+    public BasePlaylist playlist;
     private AudioViewModel audioViewModel;
 
     public ICommand PlayPauseCommand { get; private set; }
@@ -69,6 +74,9 @@ public class QueueViewModel : INotifyPropertyChanged
     {
 
         this.audioViewModel = audioViewModel;
+        dbAccess = new DatabaseAccess();
+        playlistManager = new PlaylistManager( dbAccess);
+        playlist = new BasePlaylist();
 
         PlayPauseCommand = new Command(() => audioViewModel.TogglePlayPause());
         StopCommand = new Command(() => audioViewModel.StopAudio());
@@ -91,10 +99,10 @@ public class QueueViewModel : INotifyPropertyChanged
 
 
 
-    public void UpdateSongInformation()
+    public async Task UpdateSongInformation()
     {
         BasePlaylist currentPlaylist = audioViewModel.GetCurrentPlaylist();
-        List<Song> playlistSongs = currentPlaylist?.GetPlaylistSongs();
+        List<Song> playlistSongs = currentPlaylist.GetPlaylistSongs();
         int TrackCount = 0;
         if (playlistSongs != null)
         {
@@ -102,13 +110,12 @@ public class QueueViewModel : INotifyPropertyChanged
             {
                 TrackCount++;
                 Song song = playlistSongs[i];
-                string songInfo = $"{TrackCount}. {song.GetSongName()} - {song.GetArtist()?.GetName()} - {song.GetAlbum()?.GetAlbumTitle()}";
+                string songName = song.GetSongName();
+                playlist = await playlistManager.GetDetailsForPlaylist(songName);
 
-                string albumName = audioViewModel.CurrentAlbumName;
-                if (!string.IsNullOrEmpty(albumName))
-                {
-                    songInfo += $" - {albumName}";
-                }
+                string artistName = playlist.GetArtistName();
+                string albumName = playlist.GetAlbumName();
+                string songInfo = $"{TrackCount}. {song.GetSongName()} - {artistName} - {albumName}";
 
                 // Assign songInfo to the appropriate property based on the index
                 switch (i)
