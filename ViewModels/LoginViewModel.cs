@@ -16,13 +16,15 @@ namespace Betawave.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
         private string username;
         private string password;
-        private readonly DatabaseManager databaseManager;
+        private DatabaseAccess dbAccess;
+        private DatabaseManager databaseManager;
 
         public ICommand LoginCommand { get; private set; }
 
         public LoginViewModel()
         {
-            databaseManager = new DatabaseManager(new DatabaseAccess()); // Ensure you pass correct dependencies
+            dbAccess = new DatabaseAccess();
+            databaseManager = new DatabaseManager(dbAccess);
             LoginCommand = new Command(async () => await RunLoginCommand());
         }
 
@@ -60,13 +62,13 @@ namespace Betawave.ViewModels
                 return;
             }
 
-            if (await databaseManager.ValidateUser(Username, Password))
+            if (await dbAccess.ValidateUser(Username, Password))
             {
                 // Load data from the database
-                await databaseManager.LoadInAllManagerClassData();
+                 await databaseManager.LoadInAllManagerClassData();
 
                 // Navigation based on user role
-                if (await databaseManager.IsAdmin(Username))
+                if (dbAccess.IsAdmin(Username))
                 {
                     await Shell.Current.GoToAsync("///AdminDashboard");
                 }

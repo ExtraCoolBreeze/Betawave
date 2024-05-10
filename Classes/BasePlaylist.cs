@@ -9,35 +9,18 @@ using Betawave.Classes;
 
 public class BasePlaylist : IPlaylist
 {
-
-
     private List<Song> PlaylistSongs;
     private string albumName;
     private string artistName;
     private string imageLocation;
 
-    //private int pkplaylistId;
-    //private string PlaylistTitle;
-    //private int fkaccountId;
-    // private string isQueue;
-    // private string isFavourite;
-
-
     public BasePlaylist()
     {
-
-
         PlaylistSongs = new List<Song>();
         albumName = "";
         artistName = "";
         imageLocation = "";
-
-    //PlaylistTitle = "";
-    //pkplaylistId = 0;
-    //isQueue = "";
-    //isFavourite = "";
-
-}
+    }
 
 
     public void SetAlbumName(string nameofalbum)
@@ -70,58 +53,6 @@ public class BasePlaylist : IPlaylist
         return imageLocation;
     }
 
-    /*    public void SetPlaylistId(int userinput)
-    {
-        pkplaylistId = userinput;
-    }
-
-    public int GetPlaylistId()
-    { 
-        return pkplaylistId;
-    }
-
-    public void SetTitle(string userInput)
-    {
-        PlaylistTitle = userInput;
-    }
-
-    public string GetTitle()
-    {
-        return PlaylistTitle;
-    }
-
-    public void SetAccountId(int accountid)
-    {
-        fkaccountId = accountid;
-    }
-
-    public int GetAccountId()
-    { 
-        return fkaccountId;
-    }
-*/
-
-
-    /*    public void SetQueue(string inputQueue)
-    {
-        isQueue = inputQueue;
-    }
-
-    public string GetQueue()
-    {
-        return isQueue;
-    }
-
-    public void SetFavourite(string fave)
-    {
-        isFavourite = fave;
-    }
-
-    public string GetFavourite()
-    {
-        return isFavourite;
-    }
-*/
 
     //--------------------------------Start of functions to store the list of playlist songs
 
@@ -152,7 +83,6 @@ public class BasePlaylist : IPlaylist
 
     public void PrintPlaylistDetails()
     {
-       // Console.WriteLine($"Playlist Title: {GetTitle()}");
         foreach (var song in GetPlaylistSongs())
         {
             Console.WriteLine($"Song: {song.GetSongName()}");

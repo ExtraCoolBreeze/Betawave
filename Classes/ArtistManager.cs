@@ -57,26 +57,6 @@ namespace Betawave.Classes
             }
         }
 
-        /*        public void UpdateArtist(Artist artist)
-                {
-                    for (int i = 0; i < artists.Count; i++)
-                    {
-                        if (artists[i].GetArtistId() == artist.GetArtistId())
-                        {
-                            artists[i].SetName(artist.GetName());
-                            break;
-                        }
-                    }
-
-                    using (var connection = dbAccess.ConnectToMySql())
-                    {
-                        var command = new MySqlCommand("UPDATE artist SET name = @Name WHERE artist_id = @ArtistId", connection);
-                        command.Parameters.AddWithValue("@ArtistId", artist.GetArtistId());
-                        command.Parameters.AddWithValue("@Name", artist.GetName());
-                        command.ExecuteNonQuery();
-                    }
-                }*/
-
         /// <summary>
         /// When passed an int, it searches the artist list for the artist id and removes that artist from the list. It then searches for the artist in the database based on the artist id and deletes it.
         /// </summary>

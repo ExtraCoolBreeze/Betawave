@@ -9,15 +9,14 @@ using Betawave.Classes;
 public class DatabaseManager
 {
     private DatabaseAccess dbAccess;
-    public Account CurrentUser { get; private set; }
+ /*   public Account CurrentUser { get; private set; }
     public int CurrentUserRole { get; private set; }
-
+*/
     // Manager instances
 
     private ArtistManager artistManager;
     private AlbumManager albumManager;
     private SongManager songManager;
-    //private PlaylistManager playlistManager;
 
     public DatabaseManager(DatabaseAccess access)
     {
@@ -25,7 +24,6 @@ public class DatabaseManager
         artistManager = new ArtistManager(dbAccess);
         songManager = new SongManager(dbAccess);
         albumManager = new AlbumManager(dbAccess);
-        //playlistManager = new PlaylistManager(dbAccess, artistManager);
     }
 
     // Initialize all data from database
@@ -36,7 +34,6 @@ public class DatabaseManager
             await artistManager.LoadArtists();
             await albumManager.LoadAlbums();
             await songManager.LoadSongsIntoProgram();
-           // await playlistManager.LoadPlaylistsAsync();
         }
         catch (Exception ex) 
         {
@@ -45,7 +42,7 @@ public class DatabaseManager
     }
 
     // Handling user login and role retrieval
-    public async Task<bool> LoginUser(string username, string password)
+/*    public async Task<bool> LoginUser(string username, string password)
     {
         if (await dbAccess.ValidateUser(username, password))
         {
@@ -53,24 +50,17 @@ public class DatabaseManager
                 return true;
         }
         return false;
-    }
+    }*/
 
-    public async Task<bool> ValidateUser(string username, string password)
+/*    public async Task<bool> ValidateUser(string username, string password)
     {
         return await dbAccess.ValidateUser(username, password);
     }
-
-    public async Task<bool> IsAdmin(string username)
+*/
+/*    public async Task<bool> IsAdmin(string username)
     {
         return dbAccess.IsAdmin(username);
-    }
-
-
-    public void PrintUserDetails()
-    {
-        Console.WriteLine($"User: {CurrentUser.GetUsername()}, Role ID: {CurrentUserRole}");
-    }
-
+    }*/
 
 }
 

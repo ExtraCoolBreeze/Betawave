@@ -8,7 +8,7 @@ namespace Betawave.Classes
 {
     public class Account
     {
-        //initialising variables
+        //declaring variables
         private int pkaccount_id;
         private string username;
         private string userpassword;

@@ -4,21 +4,30 @@ Date: 06 / 05 / 2024
 Project Description: Music player application for HND Software Development Year 2 Graded Unit
 Class Description: This class was created to manage album objects */
 
+using Betawave.Classes;
 using MySql.Data.MySqlClient;
 using System.Data;
 
 namespace Betawave.Classes
 {
+    //declaring the class
     public class AlbumManager
     {
+        //declaring objects
         private List<Album> albums = new List<Album>();
         private DatabaseAccess dbAccess;
 
+        //class constuctor passing in Database access class
         public AlbumManager(DatabaseAccess dbAccess)
         {
             this.dbAccess = dbAccess;
         }
 
+        /// <summary>
+        /// When called this method connects to the database and searches for the all the details from the first 3 database entries
+        /// it then adds that album data to an album object and finally adds that album to a list of album objects
+        /// </summary>
+        /// <returns></returns>
         public async Task LoadAlbums()
         {
             using (var connection = dbAccess.ConnectToMySql())
@@ -41,7 +50,12 @@ namespace Betawave.Classes
             }
         }
 
-        
+        /// <summary>
+        /// When called and passed an album object, this function checks if there is already 3 or more albums in the database, if there is then it stops and returns false
+        /// if there is less than 3, the passed albums properites are added to the database and then a true value is returned
+        /// </summary>
+        /// <param name="album"></param>
+        /// <returns></returns>
         public async Task<bool> AddAlbum(Album album)
         {
             if (await CountAlbums() >= 3)
@@ -52,43 +66,29 @@ namespace Betawave.Classes
             albums.Add(album);
             using (var connection = dbAccess.ConnectToMySql())
             {
-                var command = new MySqlCommand("INSERT INTO album (title, image_location) VALUES (@Title, @ImageLocation)", connection);
+                var command = new MySqlCommand("INSERT INTO album (title, image_location, artist_id) VALUES (@Title, @ImageLocation, @ArtistId)", connection);
                 command.Parameters.AddWithValue("@Title", album.GetAlbumTitle());
                 command.Parameters.AddWithValue("@ImageLocation", album.GetImageLocation());
+                command.Parameters.AddWithValue("@ArtistId", album.GetArtistId());
                 await command.ExecuteNonQueryAsync();
             }
             return true;
         }
 
-        public void UpdateAlbum(Album album)
-        {
-            for (int i = 0; i < albums.Count; i++)
-            {
-                if (albums[i].GetAlbumId() == album.GetAlbumId())
-                {
-                    albums[i].SetAlbumTitle(album.GetAlbumTitle());
-                    albums[i].SetImageLocation(album.GetImageLocation());
-                    break;
-                }
-            }
-
-            using (var connection = dbAccess.ConnectToMySql())
-            {
-                var command = new MySqlCommand("UPDATE album SET title = @Title, image_location = @ImageLocation WHERE album_id = @AlbumId", connection);
-                command.Parameters.AddWithValue("@AlbumId", album.GetAlbumId());
-                command.Parameters.AddWithValue("@Title", album.GetAlbumTitle());
-                command.Parameters.AddWithValue("@ImageLocation", album.GetImageLocation());
-                command.ExecuteNonQuery();
-            }
-        }
-
+        /// <summary>
+        /// When called and passed an int, this method search through the current list of albums for one with the id as the input
+        /// if it finds it, the album is removed front the list and then it connect and deletes it from the database
+        /// </summary>
+        /// <param name="albumId"></param>
         public void DeleteAlbum(int albumId)
         {
+
             for (int i = albums.Count - 1; i >= 0; i--)
             {
                 if (albums[i].GetAlbumId() == albumId)
                 {
                     albums.RemoveAt(i);
+
                     break;
                 }
             }
@@ -101,6 +101,11 @@ namespace Betawave.Classes
             }
         }
 
+        /// <summary>
+        /// When this function is called it counts the number of album entries in the database and return the amount
+        /// It connects to the database and counts the entries and then returns a number
+        /// /// </summary>
+        /// <returns></returns>
         public async Task<int> CountAlbums()
         {
             using (var connection = dbAccess.ConnectToMySql())
@@ -111,21 +116,13 @@ namespace Betawave.Classes
             }
         }
 
+        /// <summary>
+        /// When called this functions the list of album object belonging to the class
+        /// </summary>
+        /// <returns></returns>
         public List<Album> GetAllAlbums()
         {
             return albums;
-        }
-
-        public Album GetAlbumById(int albumId)
-        {
-            foreach (var album in albums)
-            {
-                if (album.GetAlbumId() == albumId)
-                {
-                    return album;
-                }
-            }
-            return null; // Return null if no album is found
         }
 
     }

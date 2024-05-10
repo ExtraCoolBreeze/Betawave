@@ -101,7 +101,15 @@ public class QueueViewModel : INotifyPropertyChanged
 
     public async Task UpdateSongInformation()
     {
+        
         BasePlaylist currentPlaylist = audioViewModel.GetCurrentPlaylist();
+
+        //have fixes already but remove it for test and add it back in to show correction
+        if (currentPlaylist == null)
+        {
+            return; // Exit if no valid playlist is available
+        }
+
         List<Song> playlistSongs = currentPlaylist.GetPlaylistSongs();
         int TrackCount = 0;
         if (playlistSongs != null)
