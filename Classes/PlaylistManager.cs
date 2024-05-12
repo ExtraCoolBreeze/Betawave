@@ -8,21 +8,32 @@ Class Description: This class was created to manage the playlist objects */
 using MySql.Data.MySqlClient;
 using System.Data;
 
+
 namespace Betawave.Classes
 {
+    //declare class
     public class PlaylistManager
     {
-        private List<BasePlaylist> playlists = new List<BasePlaylist>();
+        //declaring class objects
+        private List<BasePlaylist> listofPlaylists;
         private DatabaseAccess dbAccess;
         private BasePlaylist playlist;
 
+        //class constructor
         public PlaylistManager(DatabaseAccess dbAccess)
         {
+            //initialising objects
+            listofPlaylists = new List<BasePlaylist>();
             playlist = new BasePlaylist();
             this.dbAccess = dbAccess;
-
         }
 
+        /// <summary>
+        /// When called and passed a song name, this function connects to the database, searches for the album title, album image location and artist name associated with it, adds that data to a playlist object
+        /// and then returns that playlist object. If it does not find data in the database, it returns null.
+        /// </summary>
+        /// <param name="songName"></param>
+        /// <returns></returns>
         public async Task<BasePlaylist> GetDetailsForPlaylist(string songName)
         {
             using (var connection = dbAccess.ConnectToMySql())
@@ -41,9 +52,7 @@ namespace Betawave.Classes
                     {
                         return null;
                     }
-
                 }
-
             }
             return playlist;
         }

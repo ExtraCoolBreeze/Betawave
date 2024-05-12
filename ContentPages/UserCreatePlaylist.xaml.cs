@@ -20,6 +20,6 @@ public partial class UserCreatePlaylist : ContentPage
 
     public async void BackButton_Clicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync("//AdminDashboard");
+        await Shell.Current.GoToAsync("//MainMenu");
     }
 }

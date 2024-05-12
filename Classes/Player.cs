@@ -4,18 +4,20 @@ Date: 06 / 05 / 2024
 Project Description: Music player application for HND Software Development Year 2 Graded Unit
 Class Description: This player class was created to store the information and functions based around playing media */
 
-using NAudio.Wave;
 using Betawave.Classes;
+using NAudio.Wave;
 
 public class Player
 {
     private IWavePlayer BetawavePlayer;
     private AudioFileReader audioFileReader;
     private BasePlaylist currentPlaylist;
+    private DatabaseAccess dbAccess;
     private Random random = new Random();
     private bool shuffle = false;
     private bool repeat = false;
     private int currentTrackIndex = -1;
+    private Logger logger;
 
 
     public event EventHandler<StoppedEventArgs> PlaybackStopped;
@@ -24,6 +26,10 @@ public class Player
     public Player()
     {
         BetawavePlayer = new WaveOutEvent();
+        currentPlaylist = new BasePlaylist();
+        dbAccess = new DatabaseAccess();
+        logger = new Logger("BetawaveErrorLog.txt");
+
         BetawavePlayer.PlaybackStopped += OnPlaybackStopped;
     }
 
@@ -33,16 +39,19 @@ public class Player
         {
             Console.WriteLine($"Playback stopped due to an error: {e.Exception.Message}");
         }
-        else
-        {
-            Console.WriteLine("Playback stopped without any error.");
-        }
 
         if (PlaybackStopped != null)
         {
             PlaybackStopped(this, e);
         }
+
+        if (audioFileReader != null && BetawavePlayer.PlaybackState != PlaybackState.Playing)
+        {
+            SkipNextTrack();
+        }
     }
+
+
 
 
     public void LoadAndPlayMusic(string filePath)
@@ -54,7 +63,6 @@ public class Player
     public void LoadMusic(string filePath)
     {
         StopMusic();
-
         if (audioFileReader != null)
         {
             audioFileReader.Dispose();
@@ -65,11 +73,11 @@ public class Player
         {
             audioFileReader = new AudioFileReader(filePath);
             BetawavePlayer.Init(audioFileReader);
-            TrackChanged?.Invoke(this, EventArgs.Empty);
+            TrackChanged.Invoke(this, EventArgs.Empty);
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error loading music: {ex.Message}");
+            logger.LogError(ex);
         }
     }
 
@@ -81,7 +89,7 @@ public class Player
         }
         else
         {
-            Console.WriteLine("Audio file is not loaded.");
+            logger.Log("Audio file is not loaded.");
         }
     }
 
@@ -98,7 +106,10 @@ public class Player
     public void StopMusic()
     {
         BetawavePlayer.Stop();
+        audioFileReader?.Dispose();
+        audioFileReader = null;
     }
+
 
     public void SetVolume(float volume)
     {
@@ -143,13 +154,13 @@ public class Player
     {
         if (currentPlaylist != null && currentPlaylist.GetPlaylistSongs().Count > 0)
         {
-            var track = currentPlaylist.GetPlaylistSongs()[currentTrackIndex];
+            Song track = currentPlaylist.GetPlaylistSongs()[currentTrackIndex];
             LoadMusic(track.GetSongLocation());
             PlayMusic();
         }
         else
         {
-            Console.WriteLine("Playlist is empty or not set.");
+            logger.Log("Playlist is empty or not set.");
         }
     }
 
@@ -157,31 +168,18 @@ public class Player
     public void ToggleShuffle()
     {
         shuffle = !shuffle;
-
-        if (shuffle == true)
-        {
-
-        }
-        Console.WriteLine($"Shuffle mode: {(shuffle ? "Enabled" : "Disabled")}");
     }
 
     public void ToggleRepeat()
     {
         repeat = !repeat;
-
-        if (repeat == true)
-        {
-            //
-        }
-        Console.WriteLine($"Shuffle mode: {(shuffle ? "Enabled" : "Disabled")}");
-
     }
 
     public void PlayNextTrack()
     {
         if (currentPlaylist == null || currentPlaylist.GetPlaylistSongs().Count == 0)
         {
-            Console.WriteLine("Playlist is empty or not set.");
+            logger.Log("Playlist is empty or not set.");
             return;
         }
 
@@ -191,14 +189,10 @@ public class Player
         }
         else
         {
-            // Increment the current track index
             currentTrackIndex = (currentTrackIndex + 1) % currentPlaylist.GetPlaylistSongs().Count;
-
-            // If the index wraps around to 0 and you do not want to repeat the playlist automatically
-            if (currentTrackIndex == 0 && !repeat) // Assuming 'repeat' is a boolean indicating if the playlist should loop
+            if (currentTrackIndex == 0 && !repeat)
             {
-                Console.WriteLine("Reached end of playlist.");
-                StopMusic(); // Stop playing if repeat is not enabled
+                StopMusic();
             }
             else
             {
@@ -220,7 +214,6 @@ public class Player
     public void SetShuffle(bool enable)
     {
         shuffle = enable;
-        Console.WriteLine($"Shuffle mode: {(shuffle ? "Enabled" : "Disabled")}");
     }
 
     public bool GetShuffle()
@@ -306,20 +299,27 @@ public class Player
     }
 
 
-    public string GetCurrentTrackImage()
+    public async Task <string> GetCurrentTrackImage()
     {
         if (currentPlaylist != null && currentTrackIndex >= 0 && currentTrackIndex < currentPlaylist.GetPlaylistSongs().Count)
         {
             Song currentSong = currentPlaylist.GetPlaylistSongs()[currentTrackIndex];
+            AlbumManager albumManager = new AlbumManager(dbAccess);
+            string imageLocation = await albumManager.GetAlbumImageBySongName(currentSong.GetSongName());
 
-/*           // Album album = currentSong;//.GetAlbum();
-            if (album != null)
+            if (!string.IsNullOrEmpty(imageLocation))
             {
-                return album.GetImageLocation();
-            }*/
+                return imageLocation;
+            }
+            else
+            {
+                return "default_album_cover.png";
+            }
         }
         return "default_album_cover.png";
     }
+
+
 
 
 
@@ -327,23 +327,11 @@ public class Player
     {
         if (currentTrackIndex >= 0 && currentTrackIndex < currentPlaylist.GetPlaylistSongs().Count)
         {
-            var track = currentPlaylist.GetPlaylistSongs()[currentTrackIndex];
+            Song track = currentPlaylist.GetPlaylistSongs()[currentTrackIndex];
             LoadMusic(track.GetSongLocation());
             PlayMusic();
+            TrackChanged?.Invoke(this, EventArgs.Empty);
         }
     }
-
-    public TimeSpan GetCurrentTrackPosition()
-    {
-        if (audioFileReader != null)
-        {
-            return audioFileReader.CurrentTime;
-        }
-        else
-        {
-            return TimeSpan.Zero; // Or appropriate default value
-        }
-    }
-
 
 }

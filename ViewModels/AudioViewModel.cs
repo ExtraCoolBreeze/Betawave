@@ -21,20 +21,28 @@ namespace Betawave.ViewModels
         private ICommand skipPreviousCommand;
         private ICommand toggleShuffleCommand;
         private ICommand toggleRepeatCommand;
-        private float volume = 1.0f;
+
+        private float volume;
         private bool shuffle;
-        private string currentTrackName = "Track Name: ";
-        private string currentTrackArtist = "Artist Name: ";
-        private string currentAlbumName = "Album Name: ";
-        private double currentTrackPosition = 0.00;
-        private double trackLength = 0.00;
-        private System.Timers.Timer trackPositionTimer;
-        private string currentTrackImage = "C:\\Users\\Craig\\Desktop\\Betawave8.0\\Betawave\\Resources\\Images\\default.png"; // Default image
+        private string currentTrackName;
+        private string currentTrackArtist;
+        private string currentAlbumName;
+        private string shuffleOn;
+        private string currentTrackImage;
+        private double trackLengthInSeconds;
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public AudioViewModel(Player player)
+        public AudioViewModel()
         {
+            volume = 1.0f;
+            currentTrackName = "Track Name: ";
+            currentTrackArtist = "Artist Name: ";
+            currentAlbumName = "Album Name: ";
+            shuffleOn = "Shuffle Off";
+            currentTrackImage = "C:\\Users\\Craig\\Desktop\\Betawave8.0\\Betawave\\Resources\\Images\\default.png";
+
             playPauseCommand = new Command(TogglePlayPause);
             stopCommand = new Command(StopAudio);
             skipNextCommand = new Command(SkipNext);
@@ -46,13 +54,7 @@ namespace Betawave.ViewModels
             shuffle = audioPlayer.GetShuffle();
             audioPlayer.PlaybackStopped += HandlePlaybackStoppedAndStopTimer;
 
-            audioPlayer.TrackChanged += (sender, args) => UpdateTrackDetails(sender, args);
-            trackPositionTimer = new System.Timers.Timer();
-            trackPositionTimer.Interval = 1000;
-            trackPositionTimer.Elapsed += UpdateTrackPosition;
-            trackPositionTimer.AutoReset = true;
-            trackPositionTimer.Enabled = false;
-
+            audioPlayer.TrackChanged += UpdateTrackDetails;
         }
 
         public ICommand PlayPauseCommand => playPauseCommand;
@@ -82,19 +84,6 @@ namespace Betawave.ViewModels
                 if (currentTrackArtist != value)
                 {
                     currentTrackArtist = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public double CurrentTrackPosition
-        {
-            get => currentTrackPosition;
-            set
-            {
-                if (currentTrackPosition != value)
-                {
-                    currentTrackPosition = value;
                     OnPropertyChanged();
                 }
             }
@@ -153,28 +142,16 @@ namespace Betawave.ViewModels
             }
         }
 
-        public double TrackLength
+        public string TrackLength
         {
             get
             {
-                if (audioPlayer != null && audioPlayer.GetCurrentTrackLength() != TimeSpan.Zero)
-                {
-                    return audioPlayer.GetCurrentTrackLength().TotalSeconds;
-                }
-                else
-                {
-                    return 0; // Or appropriate default value
-                }
-            }
-            set
-            {
-                if (trackLength != value)
-                {
-                    trackLength = value;
-                    OnPropertyChanged();
-                }
+                TimeSpan length = TimeSpan.FromSeconds(trackLengthInSeconds);
+                return string.Format("{0}:{1:00}", (int)length.TotalMinutes, length.Seconds);
             }
         }
+
+
 
         public string CurrentAlbumName
         {
@@ -227,36 +204,23 @@ namespace Betawave.ViewModels
             return audioPlayer.GetCurrentPlaylist();
         }
 
-
-        private void UpdateTrackDetails(object sender, EventArgs e)
+        private async void UpdateTrackDetails(object sender, EventArgs e)
         {
-            CurrentTrackImage = audioPlayer.GetCurrentTrackImage();
+            Console.WriteLine("Updating track details.");
             CurrentTrackName = audioPlayer.GetCurrentTrackName();
             CurrentTrackArtist = audioPlayer.GetCurrentTrackArtist();
             CurrentAlbumName = audioPlayer.GetCurrentAlbumName();
-            CurrentTrackPosition = 0;
-            TrackLength = audioPlayer.GetCurrentTrackLength().TotalSeconds;
+            CurrentTrackImage = await audioPlayer.GetCurrentTrackImage();
+            trackLengthInSeconds = audioPlayer.GetCurrentTrackLength().TotalSeconds;
+            Console.WriteLine($"Updated Artist: {CurrentTrackArtist}");
+
             OnPropertyChanged(nameof(TrackLength));
+            OnPropertyChanged(nameof(CurrentTrackName));
+            OnPropertyChanged(nameof(CurrentTrackArtist));
+            OnPropertyChanged(nameof(CurrentAlbumName));
+            OnPropertyChanged(nameof(CurrentTrackImage));
         }
 
-        public void StartTrackPositionTimer()
-        {
-            trackPositionTimer.Start();
-        }
-
-        public void StopTrackPositionTimer(object sender, StoppedEventArgs e)
-        {
-            trackPositionTimer.Stop();
-        }
-
-        public void UpdateTrackPosition(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            if (audioPlayer != null && audioPlayer.IsPlaying())
-            {
-                CurrentTrackPosition = audioPlayer.GetCurrentTrackPosition().TotalSeconds;
-                OnPropertyChanged(nameof(CurrentTrackPosition));
-            }
-        }
 
         public void HandlePlaybackStopped(object sender, StoppedEventArgs e)
         {
@@ -270,7 +234,6 @@ namespace Betawave.ViewModels
         {
             // Invoke both event handlers
             HandlePlaybackStopped(sender, e);
-            StopTrackPositionTimer(sender, e);
         }
 
         public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

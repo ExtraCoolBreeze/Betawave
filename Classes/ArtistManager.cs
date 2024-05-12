@@ -10,11 +10,14 @@ using System.Data;
 
 namespace Betawave.Classes
 {
+    //declaring class
     public class ArtistManager
     {
+        //declaring class objects
         private List<Artist> artists = new List<Artist>();
         private DatabaseAccess dbAccess;
 
+        //class constructor
         public ArtistManager(DatabaseAccess dbAccess)
         {
             this.dbAccess = dbAccess;

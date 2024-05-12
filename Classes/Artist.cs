@@ -7,11 +7,14 @@ Class Description:  This class was created to store the information of the Artis
 
 namespace Betawave.Classes
 {
+    //declaring class
     public class Artist
     {
+        //declaring variables
         private int artistId;
         private string ArtistName;
 
+        //class constructor
         public Artist()
         {
             artistId = 0;

@@ -16,7 +16,5 @@ namespace Betawave.Classes
         // Method to remove a song from the playlist
         void RemoveFromPlaylist(Song song);
 
-        // Method to print the details of the playlist
-        void PrintPlaylistDetails();
     }
 }

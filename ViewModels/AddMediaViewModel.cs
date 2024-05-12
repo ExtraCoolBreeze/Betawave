@@ -15,17 +15,22 @@ namespace Betawave.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public DatabaseAccess dbAccess;
+        public DatabaseManager databaseManager;
         public AlbumManager albumManager;
         public SongManager songManager;
         public ArtistManager artistManager;
-        private AudioViewModel audioViewModel;
+        public AudioViewModel audioViewModel;
 
         public ICommand PlayAlbum1Command { get; private set; }
         public ICommand PlayAlbum2Command { get; private set; }
         public ICommand PlayAlbum3Command { get; private set; }
+
+
         public ICommand DeleteAlbum1Command { get; private set; }
         public ICommand DeleteAlbum2Command { get; private set; }
         public ICommand DeleteAlbum3Command { get; private set; }
+
 
         public ICommand PlayPauseCommand { get; private set; }
         public ICommand StopCommand { get; private set; }
@@ -33,11 +38,11 @@ namespace Betawave.ViewModels
         public ICommand SkipPreviousCommand { get; private set; }
         public ICommand ToggleShuffleCommand { get; private set; }
 
+
         public string CurrentTrackName => audioViewModel.CurrentTrackName;
         public string CurrentTrackArtist => audioViewModel.CurrentTrackArtist;
         public string CurrentTrackImage => audioViewModel.CurrentTrackImage;
-        public double CurrentTrackPosition => audioViewModel.CurrentTrackPosition;
-        public double TrackLength => audioViewModel.TrackLength;
+        public string TrackLength => audioViewModel.TrackLength;
 
 
         public float Volume
@@ -67,55 +72,55 @@ namespace Betawave.ViewModels
 
         public string AlbumImagePath1
         {
-            get => albumImagePath1;
+            get { return albumImagePath1; }
             set { albumImagePath1 = value; OnPropertyChanged(); }
         }
 
         public string AlbumName1
         {
-            get => albumName1;
+            get { return albumName1; }
             set { albumName1 = value; OnPropertyChanged(); }
         }
 
         public string ArtistName1
         {
-            get => artistName1;
+            get { return artistName1; }
             set { artistName1 = value; OnPropertyChanged(); }
         }
 
         public string AlbumImagePath2
         {
-            get => albumImagePath2;
+            get { return albumImagePath2; }
             set { albumImagePath2 = value; OnPropertyChanged(); }
         }
 
         public string AlbumName2
         {
-            get => albumName2;
+            get { return albumName2; }
             set { albumName2 = value; OnPropertyChanged(); }
         }
 
         public string ArtistName2
         {
-            get => artistName2;
+            get { return artistName2; }
             set { artistName2 = value; OnPropertyChanged(); }
         }
 
         public string AlbumImagePath3
         {
-            get => albumImagePath3;
+            get { return albumImagePath3; }
             set { albumImagePath3 = value; OnPropertyChanged(); }
         }
 
         public string AlbumName3
         {
-            get => albumName3;
+            get { return albumName3; }
             set { albumName3 = value; OnPropertyChanged(); }
         }
 
         public string ArtistName3
         {
-            get => artistName3;
+            get { return artistName3; }
             set { artistName3 = value; OnPropertyChanged(); }
         }
 
@@ -138,18 +143,20 @@ namespace Betawave.ViewModels
             this.audioViewModel = audioViewModel;
             this.audioViewModel.PropertyChanged += AudioViewModel_PropertyChanged;
 
-            var dbAccess = new DatabaseAccess();
-            var manager = new DatabaseManager(dbAccess);
-            manager.LoadInAllManagerClassData();
+            dbAccess = new DatabaseAccess();
+            databaseManager = new DatabaseManager(dbAccess);
+            databaseManager.LoadInAllManagerClassData();
 
-            var artistManager = new ArtistManager(dbAccess);
+            artistManager = new ArtistManager(dbAccess);
             albumManager = new AlbumManager(dbAccess);
+            songManager = new SongManager(dbAccess);
 
             LoadData();
         }
 
         public async void LoadData()
         {
+            
             await albumManager.LoadAlbums();
             await artistManager.LoadArtists();
             List<Album> albums = albumManager.GetAllAlbums();
@@ -185,20 +192,38 @@ namespace Betawave.ViewModels
 
         private async void PlayAlbum(int albumIndex)
         {
-            var albums = albumManager.GetAllAlbums();
+            List<Album> albums = albumManager.GetAllAlbums();
             if (albumIndex < albums.Count)
             {
                 Album album = albums[albumIndex];
-                var songsForAlbum = await songManager.GetSongsForAlbum(album.GetAlbumId());
+                List<Song> songsForAlbum = await songManager.GetSongsForAlbum(album.GetAlbumId());
                 BasePlaylist playlist = new BasePlaylist();
-                foreach (var song in songsForAlbum)
+
+                // Set the album details in the playlist
+                playlist.SetAlbumName(album.GetAlbumTitle());
+
+                // Fetch the artist and set the artist name in the playlist
+                Artist artist = artistManager.GetArtistById(album.GetArtistId());
+                if (artist != null)
+                {
+                    playlist.SetArtistName(artist.GetName());
+                }
+                else
+                {
+                    playlist.SetArtistName("Unknown Artist"); // Set a default or error name if the artist isn't found
+                }
+
+                // Add songs to the playlist
+                foreach (Song song in songsForAlbum)
                 {
                     playlist.AddToPlaylist(song);
                 }
 
+                // Play the playlist
                 audioViewModel.SetPlaylistAndPlay(playlist);
             }
         }
+
 
         public void DeleteAlbum(int albumIndex)
         {

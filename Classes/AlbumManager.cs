@@ -4,7 +4,6 @@ Date: 06 / 05 / 2024
 Project Description: Music player application for HND Software Development Year 2 Graded Unit
 Class Description: This class was created to manage album objects */
 
-using Betawave.Classes;
 using MySql.Data.MySqlClient;
 using System.Data;
 
@@ -115,6 +114,33 @@ namespace Betawave.Classes
                 return count;
             }
         }
+
+        /// <summary>
+        /// //When called and pass a song name, this function searches the database for the associated album image
+        /// if it songs the image it returns it, otherwise it returns as a default
+        /// </summary>
+        /// <param name="songName"></param>
+        /// <returns></returns>
+        public async Task<string> GetAlbumImageBySongName(string songName)
+        {
+            using (var connection = dbAccess.ConnectToMySql())
+            {
+                var command = new MySqlCommand("SELECT a.image_location FROM album a JOIN album_track at ON a.album_id = at.album_id JOIN song s ON at.song_id = s.song_id WHERE s.name = @SongName",connection);
+                command.Parameters.AddWithValue("@SongName", songName);
+                string albumImage = Convert.ToString(await command.ExecuteScalarAsync());
+
+                if (!string.IsNullOrEmpty(albumImage))
+                {
+                    return albumImage;
+                }
+                else
+                {
+                    return "default_album_cover.png";
+                }
+
+            }
+        }
+
 
         /// <summary>
         /// When called this functions the list of album object belonging to the class

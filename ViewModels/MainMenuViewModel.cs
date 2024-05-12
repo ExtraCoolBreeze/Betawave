@@ -34,8 +34,7 @@ namespace Betawave.ViewModels
         public string CurrentTrackName => audioViewModel.CurrentTrackName;
         public string CurrentTrackArtist => audioViewModel.CurrentTrackArtist;
         public string CurrentTrackImage => audioViewModel.CurrentTrackImage;
-        public double CurrentTrackPosition => audioViewModel.CurrentTrackPosition;
-        public double TrackLength => audioViewModel.TrackLength;
+        public string TrackLength => audioViewModel.TrackLength;
 
         public float Volume
         {
@@ -133,7 +132,20 @@ namespace Betawave.ViewModels
 
         public MainMenuViewModel(AudioViewModel audioViewModel)
         {
-            
+
+
+            albumImagePath1 = "";
+            albumName1 = "";
+            artistName1 = "";
+
+            albumImagePath2 = "";
+            albumName2 = "";
+            artistName2 = "";
+
+            albumImagePath3 = "";
+            albumName3 = "";
+            artistName3 = "";
+
             PlayAlbum1Command = new Command(() => PlayAlbum(0));
             PlayAlbum2Command = new Command(() => PlayAlbum(1));
             PlayAlbum3Command = new Command(() => PlayAlbum(2));

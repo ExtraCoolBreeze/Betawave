@@ -10,8 +10,10 @@ using System.Data;
 
 namespace Betawave.Classes
 {
+    //declaring class
     public class DatabaseAccess
     {
+        //declaring variable
         private string MySqlConnectionString;
 
 

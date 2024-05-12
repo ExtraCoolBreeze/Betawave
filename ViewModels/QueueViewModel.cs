@@ -9,7 +9,6 @@ using System.Windows.Input;
 using Betawave.ViewModels;
 using System.Runtime.CompilerServices;
 using Betawave.Classes;
-using Windows.Media.Playlists;
 public class QueueViewModel : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler PropertyChanged;
@@ -29,8 +28,7 @@ public class QueueViewModel : INotifyPropertyChanged
     public string CurrentTrackName => audioViewModel.CurrentTrackName;
     public string CurrentTrackArtist => audioViewModel.CurrentTrackArtist;
     public string CurrentTrackImage => audioViewModel.CurrentTrackImage;
-    public double CurrentTrackPosition => audioViewModel.CurrentTrackPosition;
-    public double TrackLength => audioViewModel.TrackLength;
+    public string TrackLength => audioViewModel.TrackLength;
 
     public float Volume
     {
@@ -83,17 +81,18 @@ public class QueueViewModel : INotifyPropertyChanged
         SkipNextCommand = new Command(() => audioViewModel.SkipNext());
         SkipPreviousCommand = new Command(() => audioViewModel.SkipPrevious());
         ToggleShuffleCommand = new Command(() => audioViewModel.ToggleShuffle());
-        audioViewModel.PropertyChanged += AudioViewModel_PropertyChanged;
+        this.audioViewModel.PropertyChanged += AudioViewModel_PropertyChanged;
         UpdateSongInformation();
     }
 
-    public void AudioViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    public async void AudioViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
+        OnPropertyChanged(e.PropertyName);
         // Check if the property changed is related to the playlist
         if (e.PropertyName == nameof(AudioViewModel.GetCurrentPlaylist))
         {
             // Update the song information when the playlist changes
-            UpdateSongInformation();
+            await UpdateSongInformation();
         }
     }
 

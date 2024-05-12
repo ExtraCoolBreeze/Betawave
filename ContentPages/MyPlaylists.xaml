@@ -80,7 +80,7 @@
                 <!-- Second Row Elements -->
                 <Image Source="volume.png" x:Name="Mute_Unmute" Scale="0.7" Grid.Column="0" Grid.Row="1" />
                 <Slider x:Name="volumeSlider" Margin="0" Minimum="0" Maximum="1" Value="{Binding Volume, Mode=TwoWay}" MaximumWidthRequest="200" VerticalOptions="Center" Grid.Column="1" Grid.Row="1"/>
-                <Label Text="{Binding CurrentTrackPosition}" x:Name="LabelTrackPosition" Margin="0" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="3" Grid.Row="1" TextColor="White" />
+                <Label Text="0:00" x:Name="LabelTrackPosition" Margin="0" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="3" Grid.Row="1" TextColor="White" />
                 <Slider x:Name="SliderTrackPosition" Margin="2" Minimum="0" Maximum="{Binding TrackLength}" Value="{Binding CurrentTrackPosition, Mode=TwoWay}" MaximumWidthRequest="400" VerticalOptions="Center" Grid.Column="4" Grid.ColumnSpan="3" Grid.Row="1"/>
                 <Label Text="{Binding TrackLength}" x:Name="TrackLength" Margin="2" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="7" Grid.Row="1" TextColor="White"/>
                 <Label Text="{Binding CurrentTrackArtist}" TextColor="White" Margin="0" HorizontalOptions="Center" VerticalOptions="Fill" Grid.Column="9" Grid.Row="1"/>
