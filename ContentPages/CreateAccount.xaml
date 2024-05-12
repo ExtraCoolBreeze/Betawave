@@ -11,10 +11,12 @@
         Project Description: Music player application for HND Software Development Year 2 Graded Unit
         Class Description: This is the user UI for the CreateAccount page  -->
 
+    <!-- Binding to content page-->
     <ContentPage.BindingContext>
         <vm:CreateAccountViewModel/>
     </ContentPage.BindingContext>
 
+    <!-- Page content with buttons and button input-->
     <Frame CornerRadius="15" Margin="0" Padding="0" HeightRequest="400" WidthRequest="350">
         <VerticalStackLayout Margin="0" Background="#27232E">
             <Image Source="betawave3.png" Margin="5" HeightRequest="80" WidthRequest="80"></Image>

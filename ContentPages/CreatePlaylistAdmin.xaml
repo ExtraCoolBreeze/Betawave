@@ -10,16 +10,13 @@
         Project Description: Music player application for HND Software Development Year 2 Graded Unit
         Class Description: This is the user UI for the CreatePlaylistAdmin page  -->
 
+    <!-- Content for the creat playlist page. Including user input and confirm and back button-->
     <Frame CornerRadius="15" Margin="0" Padding="0" HeightRequest="400" WidthRequest="350">
         <VerticalStackLayout Margin="0" Background="#27232E">
-            <Label Text="Name your new playlist" TextColor="#ffffff" 
-                   VerticalOptions="Center" HorizontalOptions="Center" Margin="10" FontSize="20" />
-            <Entry Placeholder="type new playlist name" Margin="10" 
-                    Background="#ffffff"/>
-            <Button Text="Create Playlist" Clicked="CreatePlaylistAdmin_Clicked" FontSize="20" Margin="10"
-                     />
-            <Button Text="Back" FontSize="20" Margin="10"
-                    Clicked="BackButtonAdmin_Clicked" />
+            <Label Text="Name your new playlist" TextColor="#ffffff" VerticalOptions="Center" HorizontalOptions="Center" Margin="10" FontSize="20" />
+            <Entry Placeholder="type new playlist name" Margin="10" Background="#ffffff"/>
+            <Button Text="Create Playlist" Clicked="CreatePlaylistAdmin_Clicked" FontSize="20" Margin="10"/>
+            <Button Text="Back" FontSize="20" Margin="10" Clicked="BackButtonAdmin_Clicked" />
         </VerticalStackLayout>
     </Frame>
 </ContentPage>

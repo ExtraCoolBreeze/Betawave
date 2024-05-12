@@ -7,8 +7,10 @@ Class Description: This player class was created to store the information and fu
 using Betawave.Classes;
 using NAudio.Wave;
 
+//declaring class and variables
 public class Player
 {
+    
     private IWavePlayer BetawavePlayer;
     private AudioFileReader audioFileReader;
     private BasePlaylist currentPlaylist;
@@ -17,41 +19,23 @@ public class Player
     private bool shuffle = false;
     private bool repeat = false;
     private int currentTrackIndex = -1;
-    private Logger logger;
+    private ErrorLogger errorLogger;
 
 
     public event EventHandler<StoppedEventArgs> PlaybackStopped;
     public event EventHandler TrackChanged;
 
+    //class constructor and initialising objects
     public Player()
     {
         BetawavePlayer = new WaveOutEvent();
         currentPlaylist = new BasePlaylist();
         dbAccess = new DatabaseAccess();
-        logger = new Logger("BetawaveErrorLog.txt");
+        errorLogger = new ErrorLogger("C:\\Users\\Craig\\Desktop\\Betawave8.0\\Betawave\\BetawaveErrorLog.txt");
 
-        BetawavePlayer.PlaybackStopped += OnPlaybackStopped;
+        //subscribing to changes in state
+        BetawavePlayer.PlaybackStopped += OnPlaybackStopped; 
     }
-
-    public void OnPlaybackStopped(object sender, StoppedEventArgs e)
-    {
-        if (e.Exception != null)
-        {
-            Console.WriteLine($"Playback stopped due to an error: {e.Exception.Message}");
-        }
-
-        if (PlaybackStopped != null)
-        {
-            PlaybackStopped(this, e);
-        }
-
-        if (audioFileReader != null && BetawavePlayer.PlaybackState != PlaybackState.Playing)
-        {
-            SkipNextTrack();
-        }
-    }
-
-
 
 
     public void LoadAndPlayMusic(string filePath)
@@ -77,7 +61,7 @@ public class Player
         }
         catch (Exception ex)
         {
-            logger.LogError(ex);
+            errorLogger.LogError(ex);
         }
     }
 
@@ -89,7 +73,7 @@ public class Player
         }
         else
         {
-            logger.Log("Audio file is not loaded.");
+            errorLogger.Log("Audio file is not loaded.");
         }
     }
 
@@ -109,7 +93,6 @@ public class Player
         audioFileReader?.Dispose();
         audioFileReader = null;
     }
-
 
     public void SetVolume(float volume)
     {
@@ -160,10 +143,9 @@ public class Player
         }
         else
         {
-            logger.Log("Playlist is empty or not set.");
+            errorLogger.Log("Playlist is empty or not set.");
         }
     }
-
 
     public void ToggleShuffle()
     {
@@ -179,7 +161,7 @@ public class Player
     {
         if (currentPlaylist == null || currentPlaylist.GetPlaylistSongs().Count == 0)
         {
-            logger.Log("Playlist is empty or not set.");
+            errorLogger.Log("Playlist is empty or not set.");
             return;
         }
 
@@ -200,7 +182,6 @@ public class Player
             }
         }
     }
-
 
     public void PlayPreviousTrack()
     {
@@ -319,10 +300,6 @@ public class Player
         return "default_album_cover.png";
     }
 
-
-
-
-
     public void PlayTrackAtCurrentIndex()
     {
         if (currentTrackIndex >= 0 && currentTrackIndex < currentPlaylist.GetPlaylistSongs().Count)
@@ -334,4 +311,21 @@ public class Player
         }
     }
 
+    public void OnPlaybackStopped(object sender, StoppedEventArgs e)
+    {
+        if (e.Exception != null)
+        {
+            errorLogger.LogError(e.Exception);
+        }
+
+        if (PlaybackStopped != null)
+        {
+            PlaybackStopped(this, e);
+        }
+
+        if (audioFileReader != null && BetawavePlayer.PlaybackState != PlaybackState.Playing)
+        {
+            SkipNextTrack();
+        }
+    }
 }

@@ -10,27 +10,25 @@
         Project Description: Music player application for HND Software Development Year 2 Graded Unit
         Class Description: This is the user UI for the AddToPlaylist page  -->
 
+    <!--- This page is incomplete and unused because it was cutr due to time constaints -->
     <Frame CornerRadius="15" Margin="1" HeightRequest="480" WidthRequest="390" BackgroundColor="#151417">
         <Frame CornerRadius="15" Margin="0" BackgroundColor="#27232E" BorderColor="#27232E">
             <ScrollView >
                 <VerticalStackLayout Margin="0" >
 
-                    <!-- Song Display Area -->
-                    
                     <Grid RowDefinitions="20*, 20*" ColumnDefinitions="*, *" BackgroundColor="#312842"  >
                         <Label Text="Song Name" TextColor="white" FontSize="17" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Grid.Row="0" Grid.Column="0" />
                         <Label Text="Artist Name" TextColor="white" FontSize="17" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Grid.Row="1" Grid.Column="0" />
                         <Image Source="cfartlarge.jpg" Scale="0.5" Aspect="AspectFill" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" IsVisible="True"/>
                     </Grid>
                     <BoxView HeightRequest="1" Color="white" HorizontalOptions="Fill" Margin="0,10"/>
-                    <!-- Dynamic Playlist Buttons -->
-                    <!-- You will likely generate these buttons in the code-behind and add them to this stack -->
+
 
                     <VerticalStackLayout Margin="0" x:Name="PlaylistsStackLayout">
-                        <!-- Playlist Buttons get added here in code-behind -->
+                        <!-- PLaylist Tracks get listed here. Use same method as queue page -->
                     </VerticalStackLayout>
 
-                    <!-- Action Buttons -->
+                    <!-- Navigation Buttons -->
                     <Button Text="Add to Playlist" Margin="1" FontSize="17" Clicked="OnAddToPlaylistClicked"/>
                     <Button Text="Back" Margin="1" FontSize="17" Clicked="OnBackButtonClicked"/>
                 </VerticalStackLayout>

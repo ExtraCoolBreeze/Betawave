@@ -10,19 +10,20 @@ namespace Betawave;
 
 public partial class PlaylistView : ContentPage
 {
-
+    //class constuctor and binding to page
     public PlaylistView(AudioViewModel audioViewModel)
 	{
 		InitializeComponent();
         BindingContext = audioViewModel;
     }
 
+    //Methods for button click navigation
     async void CreatePlaylistButton_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("///UserCreatePlaylist");
     }
 
-    async void myPlaylistsButton_Clicked(object sender, EventArgs e)
+    async void MyPlaylistsButton_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("///PlaylistView");
     }

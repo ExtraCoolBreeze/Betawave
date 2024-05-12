@@ -5,6 +5,7 @@ Project Description: Music player application for HND Software Development Year 
 Class Description: This class was created to manage a list artist objects
 */
 
+using Microsoft.Extensions.Logging;
 using MySql.Data.MySqlClient;
 using System.Data;
 
@@ -16,11 +17,13 @@ namespace Betawave.Classes
         //declaring class objects
         private List<Artist> artists = new List<Artist>();
         private DatabaseAccess dbAccess;
+        private ErrorLogger errorLogger;
 
         //class constructor
-        public ArtistManager(DatabaseAccess dbAccess)
+        public ArtistManager(DatabaseAccess dbAccess, ErrorLogger errorLogger)
         {
             this.dbAccess = dbAccess;
+            this.errorLogger = errorLogger;
         }
 
         /// <summary>
@@ -30,19 +33,28 @@ namespace Betawave.Classes
         /// <returns></returns>
         public async Task LoadArtists()
         {
-            using (var connection = dbAccess.ConnectToMySql())
+            try
             {
-                var command = new MySqlCommand("SELECT artist_id, name FROM artist", connection);
-                using (var reader = await command.ExecuteReaderAsync())
+                //connecting and querying
+                using (var connection = dbAccess.ConnectToMySql())
                 {
-                    while (await reader.ReadAsync())
-                    {
-                        var artist = new Artist();
-                        artist.SetArtistId(reader.GetInt32("artist_id"));
-                        artist.SetName(reader.GetString("name"));
-                        artists.Add(artist);
+                    var command = new MySqlCommand("SELECT artist_id, name FROM artist", connection);
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {   //if able to read add to artist object and then add that to artists list
+                        while (await reader.ReadAsync())
+                        {
+                            var artist = new Artist();
+                            artist.SetArtistId(reader.GetInt32("artist_id"));
+                            artist.SetName(reader.GetString("name"));
+
+                            artists.Add(artist);
+                        }
                     }
                 }
+            } 
+            catch (Exception ex) 
+            { 
+                errorLogger.LogError(ex);
             }
         }
 
@@ -52,11 +64,19 @@ namespace Betawave.Classes
         /// <param name="artist"></param>
         public void AddArtist(Artist artist)
         {
-            using (var connection = dbAccess.ConnectToMySql())
+            try
             {
-                var command = new MySqlCommand("INSERT INTO artist (name) VALUES (@Name)", connection);
-                command.Parameters.AddWithValue("@Name", artist.GetName());
-                command.ExecuteNonQuery();
+                //connects and inserts data in database
+                using (var connection = dbAccess.ConnectToMySql())
+                {
+                    var command = new MySqlCommand("INSERT INTO artist (name) VALUES (@Name)", connection);
+                    command.Parameters.AddWithValue("@Name", artist.GetName());
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                errorLogger.LogError(ex);
             }
         }
 
@@ -66,21 +86,30 @@ namespace Betawave.Classes
         /// <param name="artistId"></param>
         public void DeleteArtist(int artistId)
         {
-            for (int i = artists.Count - 1; i >= 0; i--)
+            try
             {
-                if (artists[i].GetArtistId() == artistId)
+                //checks for artist id 
+                for (int i = artists.Count - 1; i >= 0; i--)
+                {   //if found
+                    if (artists[i].GetArtistId() == artistId)
+                    {   //removes from list
+                        artists.RemoveAt(i);
+                        break;
+                    }
+                }
+                //connects and removes from database
+                using (var connection = dbAccess.ConnectToMySql())
                 {
-                    artists.RemoveAt(i);
-                    break;
+                    var command = new MySqlCommand("DELETE FROM artist WHERE artist_id = @ArtistId", connection);
+                    command.Parameters.AddWithValue("@ArtistId", artistId);
+                    command.ExecuteNonQuery();
                 }
             }
-
-            using (var connection = dbAccess.ConnectToMySql())
+            catch (Exception ex)
             {
-                var command = new MySqlCommand("DELETE FROM artist WHERE artist_id = @ArtistId", connection);
-                command.Parameters.AddWithValue("@ArtistId", artistId);
-                command.ExecuteNonQuery();
-            }
+                errorLogger.LogError(ex);
+            }    
+
         }
 
         //May need to write a function that searches the database for artists, counts them and then if there is already 3 artists in the database then return and true or false
@@ -104,16 +133,18 @@ namespace Betawave.Classes
         /// <param name="artistId"></param>
         /// <returns></returns>
         public Artist GetArtistById(int artistId)
-        {
-            foreach (var artist in artists)
-            {
+        {  
+            
+            //for each artist in list
+            foreach (Artist artist in artists)
+            {   //if artist matches
                 if (artist.GetArtistId() == artistId)
-                {
+                {   //return
                     return artist;
                 }
             }
-
-            return null; // Return null if no match is found
+            //if not return null
+            return null;
         }
 
 
@@ -124,22 +155,22 @@ namespace Betawave.Classes
         /// <param name="name"></param>
         /// <returns></returns>
         public async Task<Artist> GetArtistByName(string name)
-        {
+        {   //connect to database, run query
             using (var connection = dbAccess.ConnectToMySql())
             {
                 var command = new MySqlCommand("SELECT artist_id, name FROM artist WHERE name = @Name", connection);
                 command.Parameters.AddWithValue("@Name", name);
                 using (var reader = await command.ExecuteReaderAsync())
-                {
+                {   //if data found, read into artist object and return
                     if (await reader.ReadAsync())
-                    {
+                    {  
                         var artist = new Artist();
                         artist.SetArtistId(reader.GetInt32("artist_id"));
                         artist.SetName(reader.GetString("name"));
                         return artist;
                     }
                 }
-            }
+            }   // if not return null
             return null;
         }
     }

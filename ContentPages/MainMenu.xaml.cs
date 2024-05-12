@@ -6,20 +6,19 @@ Class Description: This is the code behind the MainMenu page and is to create an
 
 using Betawave.ViewModels;
 
-
 namespace Betawave
 {
+    //inheriting from content page
     public partial class MainMenu : ContentPage
     {
-
+        //class constructor, initialising and binding to page
         public MainMenu(MainMenuViewModel mainMenuViewModel)
         {
             InitializeComponent();
             BindingContext = mainMenuViewModel;
         }
 
-
-
+        // methods for navigation buttons
         async void MMCreatePlaylistButton_Clicked(object sender, EventArgs e)
         {
             await Shell.Current.GoToAsync("///UserCreatePlaylist");

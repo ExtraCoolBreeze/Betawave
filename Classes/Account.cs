@@ -26,7 +26,7 @@ namespace Betawave.Classes
         }
 
         /// <summary>
-        /// Returns the username varible of account
+        /// Returns the username variable of account
         /// </summary>
         /// <returns></returns>
         public string GetUsername()
@@ -49,6 +49,7 @@ namespace Betawave.Classes
         /// <param name="password"></param>
         public void SetPassword(string password)
         {
+            // calling checking password function to validate security
             if (IsValidPassword(password) == "pass")
             {
                 this.userpassword = password;

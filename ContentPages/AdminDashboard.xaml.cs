@@ -8,14 +8,17 @@ using Betawave.ViewModels;
 
 namespace Betawave;
 
+//inheriting from content page
 public partial class AdminDashboard : ContentPage
 {
+    //page constructor and linking view model
 	public AdminDashboard(AudioViewModel audioViewModel)
 	{
         InitializeComponent();
         BindingContext=audioViewModel;
 	}
 
+    //methods for navigation and are linked to buttons
     async void ADDashboardButton_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("///AdminDashboard");

@@ -208,15 +208,5 @@ namespace Betawave.Classes
             }
             return null;
         }
-
-/*        private async void DisplayErrorToUser()
-        {
-            await DisplayAlert("Error", "An unexpected error occurred. Please contact support if the problem persists.", "OK");
-        }
-
-        private async Task DisplayAlert(string v1, string v2, string v3)
-        {
-            throw new NotImplementedException();
-        }*/
     }
 }

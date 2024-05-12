@@ -8,14 +8,17 @@ using Betawave.ViewModels;
 
 namespace Betawave;
 
+//declaring class and inheriting
 public partial class PlayQueue : ContentPage
 {
+    //class constructor, initialising and binding page to view model
     public PlayQueue(AudioViewModel audioViewModel)
     {
         InitializeComponent();
         BindingContext = new QueueViewModel(audioViewModel);
     }
 
+    //Methods that navigate with buttons clicks
     async void CreatePlaylistButton_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("///UserCreatePlaylist");

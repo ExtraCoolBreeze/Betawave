@@ -16,9 +16,10 @@ public partial class CreateAccount : ContentPage
         Appearing += OnAppearingHandler;
     }
 
+    //method that clears the user entry boxes
     public void OnAppearingHandler(object sender, EventArgs e)
     {
-        var viewModel = BindingContext as CreateAccountViewModel;
+        CreateAccountViewModel viewModel = BindingContext as CreateAccountViewModel;
         if (viewModel != null)
         {
             viewModel.Username = "";
@@ -26,6 +27,7 @@ public partial class CreateAccount : ContentPage
         }
     }
 
+    //Method linked to button that navigates to login screen
     async void CABackButton_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("///LoginScreen");

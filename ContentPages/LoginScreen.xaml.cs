@@ -9,34 +9,36 @@ using Betawave.ViewModels;
 
 namespace Betawave;
 
+//declaring class and inheriting
 public partial class LoginScreen : ContentPage
 {
-
+    //initialising and subscribing to event
     public LoginScreen()
     {
         InitializeComponent();
         Appearing += OnAppearingHandler;
     }
 
+    //Method to clear the user text entry boxes for logging in
     private void OnAppearingHandler(object sender, EventArgs e)
     {
-        var viewModel = BindingContext as LoginViewModel;
+        LoginViewModel viewModel = BindingContext as LoginViewModel;
         if (viewModel != null)
         {
-            viewModel.Username = "";  // Clear the username
-            viewModel.Password = "";  // Clear the password
+            viewModel.Username = "";
+            viewModel.Password = "";
         }
     }
 
+    //navigation button
     async void CreateAccountButton_Clicked(object sender, EventArgs e)
     {
-        // Navigate to the CreateAccount page
         await Shell.Current.GoToAsync("///CreateAccount");
     }
 
+    //method for button click to close application
     private void LSCloseButton_Clicked(object sender, EventArgs e)
     {
-        // Close the application
         Application.Current.Quit();
     }
 }

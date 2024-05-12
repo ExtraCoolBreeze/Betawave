@@ -1,12 +1,2 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Betawave
-{
-    class BetawaveErrorLog
-    {
-    }
-}
+﻿12/05/24 2:23:42 PM: Playlist is empty or not set.
+12/05/24 2:23:42 PM: Audio file is not loaded.

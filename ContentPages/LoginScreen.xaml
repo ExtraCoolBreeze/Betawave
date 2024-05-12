@@ -11,17 +11,16 @@
         Project Description: Music player application for HND Software Development Year 2 Graded Unit
         Class Description: This is the user UI for the LoginScreen page  -->
 
+    <!-- binding to content page-->
     <ContentPage.BindingContext>
         <vm:LoginViewModel/>
     </ContentPage.BindingContext>
 
+    <!-- Main content of page like user entry and button navigation -->
     <Frame CornerRadius="15" Margin="0" Padding="0" HeightRequest="400" WidthRequest="350">
         <VerticalStackLayout Margin="0" Background="#27232E">
             <Image Source="betawave3.png" Margin="5" HeightRequest="80" WidthRequest="80"> </Image>
-            <Label 
-            Text="error"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" Margin="3" x:Name="LSErrorLabel" />
+            <Label Text="error" VerticalOptions="Center" HorizontalOptions="Center" Margin="3" x:Name="LSErrorLabel" />
             <Entry Placeholder="type your username" Margin="3" Background="#ffffff" x:Name="usernameEntry" Text="{Binding Username}" />
             <Entry Placeholder="type your password" Margin="3" Background="#ffffff" x:Name="passwordEntry" Text="{Binding Password}" IsPassword="True"/>
             <Button Text="Login" FontSize="20" Margin="3" x:Name="LoginButton" Command="{Binding LoginCommand}"> </Button>

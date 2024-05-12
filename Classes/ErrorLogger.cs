@@ -1,22 +1,29 @@
-﻿using System;
-using System.IO;
-
-using Betawave.Classes;
-public class Logger
+﻿using Betawave.Classes;
+public class ErrorLogger
 {
+    //declaring variables
     private string LoggingFile;
 
-    public Logger(string loggingFile)
+    //Calling constructor
+    public ErrorLogger(string loggingFile)
     {
-        LoggingFile = loggingFile;
+        this.LoggingFile = loggingFile;
     }
 
+    /// <summary>
+    /// When called and passed a string this method writes the string to the BetawaveErrorLog.txt file
+    /// along with the data and time.
+    /// </summary>
+    /// <param name="message"></param>
     public void Log(string message)
     {
-        // Only log to file
         File.AppendAllText(LoggingFile, $"{DateTime.Now}: {message}\n");
     }
 
+    /// <summary>
+    /// When this function is called and passed an exception it calls the log function
+    /// </summary>
+    /// <param name="ex"></param>
     public void LogError(Exception ex)
     {
         Log($"Error: {ex.Message}");

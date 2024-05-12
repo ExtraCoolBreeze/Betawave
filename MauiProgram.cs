@@ -16,7 +16,7 @@ namespace Betawave
     {
         public static MauiApp CreateMauiApp()
         {
-
+            //adding toolkits to builder
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
@@ -24,7 +24,7 @@ namespace Betawave
                 .UseMauiCommunityToolkitMediaElement()
                 
                 
-
+                //adding custom fonts
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("Roboto-Regular.ttf", "RobotoRegular");

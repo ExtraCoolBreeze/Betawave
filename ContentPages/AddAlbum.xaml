@@ -11,10 +11,12 @@
         Project Description: Music player application for HND Software Development Year 2 Graded Unit
         Class Description: This is the user UI for the AddAlbum page  --> 
     
+    <!--Binding to view model-->
     <ContentPage.BindingContext>
         <vm:AddAlbumViewModel/>
     </ContentPage.BindingContext>
 
+    <!--Layout and page content for adding album content-->
     <Frame CornerRadius="15" Margin="1" HeightRequest="700" WidthRequest="800" BackgroundColor="#151417">
         <Frame CornerRadius="15" Margin="0" BackgroundColor="#27232E" BorderColor="#27232E">
             <ScrollView >
@@ -85,7 +87,8 @@
                         <Entry Placeholder="Enter song 11 file path" Text="{Binding Song11Location}" Margin="5" BackgroundColor="#ffffff" Grid.Row="10" Grid.Column="2"/>
 
                     </Grid>
-
+                    
+                    <!--Buttons to navigate and confirm-->
                     <Button Text="Add Album" FontAttributes="Bold" Command="{Binding AddAlbumCommand}" />
                     <Button Text="Back" Margin="1" FontSize="17" FontAttributes="Bold" Clicked="OnBackButton_Clicked"/>
                 </VerticalStackLayout>

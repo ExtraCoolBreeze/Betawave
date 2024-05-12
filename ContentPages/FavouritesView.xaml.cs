@@ -10,18 +10,20 @@ namespace Betawave;
 
 public partial class FavouritesView : ContentPage
 {
+    //initalising and content binding
 	public FavouritesView(AudioViewModel audioViewModel)
 	{
 		InitializeComponent();
         BindingContext = audioViewModel;
 	}
 
+    //Navigation button methods
     async void CreatePlaylistButton_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("///UserCreatePlaylist");
     }
 
-    async void myPlaylistsButton_Clicked(object sender, EventArgs e)
+    async void MyPlaylistsButton_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("///PlaylistView");
     }
@@ -41,7 +43,6 @@ public partial class FavouritesView : ContentPage
         await Shell.Current.GoToAsync("///MainMenu");
     }
 
-  
     async void BackButton_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("///LoginScreen");

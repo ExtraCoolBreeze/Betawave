@@ -14,11 +14,10 @@
         Class Description: This is the user UI for the MainMenu page  -->
 
     <Grid RowDefinitions="9*, 1.5*" ColumnDefinitions="2*, 8*" Margin="2">
-        <!-- Left side VerticalStackLayout -->
+        <!-- Left side navigation -->
         <Frame Grid.Row="0" Grid.Column="0" CornerRadius="15" Margin="5" BackgroundColor="#27232E" BorderColor="#27232E">
             <ScrollView>
                 <VerticalStackLayout  Margin="9" BackgroundColor="#27232E">
-                    <!-- Your existing VerticalStackLayout content -->
                     <Entry Placeholder="Type and enter to search" Margin="5" Background="#ffffff"/>
                     <Button Text="Create Playlist" FontSize="20" Margin="5" x:Name="MMCreatePlaylistButton" Clicked="MMCreatePlaylistButton_Clicked"/>
                     <Button Text="My Playlists" FontSize="20" Margin="5" x:Name="MMmyPlaylistsButton" Clicked="MMmyPlaylistsButton_Clicked"/>
@@ -26,20 +25,17 @@
                     <Button Text="Play Queue" FontSize="20" Margin="5" x:Name="MMPlayQueueButton" Clicked="MMPlayQueueButton_Clicked"/>
                     <Button Text="Main Menu" FontSize="20" Margin="5" x:Name="MainMenuButton" Clicked="MainMenuButton_Clicked"/>
                     <Button Text="Logout"  Command="{Binding StopCommand}" FontSize="20" Margin="5" VerticalOptions="End" x:Name="MMLogoutButton" Clicked="MMLogoutButton_Clicked"/>
-                    
-
                 </VerticalStackLayout>
             </ScrollView>
         </Frame>
 
-        <!-- Main content Grid -->
+        <!-- Where main content is shown for playing, specifically 3 albums -->
         <Grid Grid.Row="0" Grid.Column="1" Margin="2" Padding="1">
             <Frame Grid.Row="0" Grid.Column="0" CornerRadius="15" Margin="5" Padding="2" BackgroundColor="#27232E" BorderColor="#27232E">
 
                 <ScrollView Orientation="Vertical">
                     <FlexLayout Wrap="Wrap" Direction="Row" AlignItems="Center" AlignContent="SpaceEvenly" JustifyContent="SpaceEvenly" Padding="10" Margin="10">
                         
-                        <!-- Dynamically generated content -->
                         <Frame  CornerRadius="10" BackgroundColor="#312842" WidthRequest="200" HeightRequest="300" Margin="10"  BorderColor="#27232E">
                             <StackLayout >
                                 
@@ -75,15 +71,11 @@
             </Frame>
         </Grid>
 
-
-
-
-
         <!-- Bottom layout grid for the music player UI-->
         <Frame Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" CornerRadius="15" Margin="0" Padding="1" BackgroundColor="#27232E" BorderColor="#27232E">
 
             <Grid RowDefinitions="*,*" Padding="0" ColumnDefinitions="*, *, *, *, *, *, *, *, *, *, *">
-                <!-- First Row Elements -->
+
                 <ImageButton Source="favorite.png" x:Name="FavouriteTrack" Scale="0.5" Margin="0" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="2" BackgroundColor="#27232E" />
                 <ImageButton Source="repeat.png" x:Name="Repeat" Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="3" BackgroundColor="#27232E" />
                 <ImageButton Source="backward.png" x:Name="SkipToPrevious" Command="{Binding SkipPreviousCommand}" Margin="0" Scale="0.5" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="4" BackgroundColor="#27232E" />
@@ -94,7 +86,6 @@
                 <Label Text="{Binding CurrentTrackName}" TextColor="White" Margin="0" Grid.Column="9" />
                 <ImageButton Source="{Binding CurrentTrackImage}" x:Name="SongArt" Scale="1" Grid.Row="0" Grid.Column="10" Grid.RowSpan="2"  BackgroundColor="#27232E"> </ImageButton>
 
-                <!-- Second Row Elements -->
                 <Image Source="volume.png" x:Name="Mute_Unmute" Scale="0.7" Grid.Column="0" Grid.Row="1" />
                 <Slider x:Name="volumeSlider" Margin="0" Minimum="0" Maximum="1" Value="{Binding Volume, Mode=TwoWay}" MaximumWidthRequest="200" VerticalOptions="Center" Grid.Column="1" Grid.Row="1"/>
                 <Label Text="0:00" x:Name="LabelTrackPosition" Margin="0" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="3" Grid.Row="1" TextColor="White" />

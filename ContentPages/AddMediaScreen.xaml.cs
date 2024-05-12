@@ -8,17 +8,17 @@ using Betawave.ViewModels;
 
 namespace Betawave;
 
+//inheriting from content page
 public partial class AddMediaScreen : ContentPage
 {
-
+    //initalising and binding view model
     public AddMediaScreen(AddMediaViewModel addMediaViewModel)
     {
         InitializeComponent();
         BindingContext = addMediaViewModel;
     }
 
-
-
+    //Below are navigation buttons methods that are called in the xaml page and link the navigation shell page
     async void DashboardButton_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("///AdminDashboard");
