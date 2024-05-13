@@ -53,7 +53,7 @@ public class SongManager
         catch (Exception ex)
         {
             errorLogger.LogError(ex);
-        }    
+        }
     }
 
 
@@ -102,7 +102,7 @@ public class SongManager
                 using (var reader = await command.ExecuteReaderAsync())
                 {   //reading information into song object
                     while (await reader.ReadAsync())
-                    {   
+                    {
                         var song = new Song();
                         song.SetSongId(reader.GetInt32("song_id"));
                         song.SetSongName(reader.GetString("name"));
@@ -119,4 +119,5 @@ public class SongManager
         } //returning list of song objects
         return albumSongs;
     }
+
 }

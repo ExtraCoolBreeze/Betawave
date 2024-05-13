@@ -235,27 +235,6 @@ namespace Betawave.ViewModels
             }
         }
 
-
-
-
-        // also this   SELECT COUNT(*) FROM your_table; Control the number of rows inserted by checking the current count of rows before inserting new data. 
-        // use this to limit how many accounts or items that can be input into a table. MUST USE!
-
-        /*        DELIMITER //
-        CREATE TRIGGER check_row_count_before_insert
-        BEFORE INSERT ON your_table
-        FOR EACH ROW
-        BEGIN
-         DECLARE row_count INT;
-        SET row_count = (SELECT COUNT(*) FROM your_table);
-        IF row_count >= 1000 THEN
-            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cannot insert more than 1000 rows';
-        END IF;
-        END;
-    //
-    DELIMITER ;*/
-
-
         /// <summary>
         /// When called and passed an album index from albums loaded into main menu page, this method grabs the associated album based on the passed album index then creates and plays a playlist of the album songs
         /// </summary>

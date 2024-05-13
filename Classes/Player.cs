@@ -432,7 +432,7 @@ public class Player
         {
             errorLogger.LogError(e.Exception);
         }
-        //is the playback stopped event has been subscribed too by another class
+        //if the playback stopped event has been subscribed too by another class
         if (PlaybackStopped != null)
         {
             PlaybackStopped(this, e);

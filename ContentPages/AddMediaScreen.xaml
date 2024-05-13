@@ -19,7 +19,7 @@
                 <VerticalStackLayout  Margin="9" BackgroundColor="#27232E">
                     <Entry Placeholder="Type and enter to search" Margin="5" Background="#ffffff"/>
                     <Button Text="Dashboard" FontSize="20" Margin="5" x:Name="DashboardButton" Clicked="DashboardButton_Clicked"/>
-                    <Button Text="Manage Media" FontSize="20" Margin="5" x:Name="AddMediaScreenButton" Clicked="AddMediaScreenButton_Clicked"/>
+                    <Button Text="Add Media" FontSize="20" Margin="5" x:Name="AddMediaScreenButton" Clicked="AddMediaScreenButton_Clicked"/>
                     <Button Text="Create Playlist" FontSize="20" Margin="5" x:Name="CreatePlaylistButto" Clicked="CreatePlaylistButton_Clicked"/>
                     <Button Text="Logout" Command="{Binding StopCommand}" FontSize="20" Margin="5" VerticalOptions="End" x:Name="LogoutButton" Clicked="LogoutButton_Clicked"/>
                 </VerticalStackLayout>
@@ -44,7 +44,6 @@
                                 <Label Text="{Binding AlbumName1}"  FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
                                 <Label Text="{Binding ArtistName1}" FontAttributes="Italic" TextColor="White" HorizontalTextAlignment="Center"/>
                                 <Button Text="Play Album" FontSize="15" Command="{Binding PlayAlbum1Command}"/>
-                                <Button Text="Delete Album" FontSize="15" Command="{Binding DeleteAlbum1Command}"/>
                             </StackLayout>
                         </Frame>
 
@@ -54,7 +53,6 @@
                                 <Label Text="{Binding AlbumName2}" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
                                 <Label Text="{Binding ArtistName2}" FontAttributes="Italic" TextColor="White" HorizontalTextAlignment="Center"/>
                                 <Button Text="Play Album" FontSize="15" Command="{Binding PlayAlbum2Command}"/>
-                                <Button Text="Delete Album" FontSize="15" Command="{Binding DeleteAlbum2Command}"/>
                             </StackLayout>
                         </Frame>
 
@@ -64,7 +62,6 @@
                                 <Label Text="{Binding AlbumName3}" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
                                 <Label Text="{Binding ArtistName3}" FontAttributes="Italic" TextColor="White" HorizontalTextAlignment="Center"/>
                                 <Button Text="Play Album" FontSize="15" Command="{Binding PlayAlbum3Command}"/>
-                                <Button Text="Delete Album" FontSize="15" Command="{Binding DeleteAlbum3Command}"/>
                             </StackLayout>
                         </Frame>
                     </FlexLayout>

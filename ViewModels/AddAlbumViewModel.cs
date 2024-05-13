@@ -12,8 +12,16 @@ using Betawave.Classes;
 namespace Betawave.ViewModels
 {
     public class AddAlbumViewModel : INotifyPropertyChanged
-    {
+    {   //declaring event, command and class objects
+        public event PropertyChangedEventHandler PropertyChanged;
 
+        private ArtistManager artistManager;
+        private AlbumManager albumManager;
+        private SongManager songManager;
+        private DatabaseAccess databaseAccess;
+        public ICommand AddAlbumCommand { get; private set; }
+
+        //declaring variables
         private string albumName;
         private string artistName;
         private string albumArtPath;
@@ -41,6 +49,7 @@ namespace Betawave.ViewModels
         private string song10Location;
         private string song11Location;
 
+        //declaring properties
         public string AlbumName
         {
             get => albumName;
@@ -182,12 +191,7 @@ namespace Betawave.ViewModels
         public string Song11
         {
             get => song11;
-            set
-            {
-                song11 = value;
-                OnPropertyChanged();
-            }
-
+            set { song11 = value; OnPropertyChanged(); }
         }
 
         public string Song11Location
@@ -196,25 +200,21 @@ namespace Betawave.ViewModels
             set { song11Location = value; OnPropertyChanged(); }
         }
 
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private ArtistManager artistManager;
-        private AlbumManager albumManager;
-        private SongManager songManager;
-        private DatabaseAccess databaseAccess;
-        public ICommand AddAlbumCommand { get; private set; }
-
+        // class constructor
         public AddAlbumViewModel()
-        {
+        {   //initialising objects and command
             artistManager = new ArtistManager(new DatabaseAccess());
             albumManager = new AlbumManager(new DatabaseAccess());
             AddAlbumCommand = new Command(async () => await AddNewAlbum());
         }
 
+        /// <summary>
+        /// when called this method resets all user entry fields
+        /// </summary>
         public void ResetFields()
         {
+            //clearing the user entry fields
+
             AlbumName = string.Empty;
             ArtistName = string.Empty;
             AlbumArtPath = string.Empty;
@@ -242,6 +242,10 @@ namespace Betawave.ViewModels
             Song11Location = string.Empty;
         }
 
+        /// <summary>
+        /// //This method adds the albums to the database limited to 3 because of constraints
+        /// </summary>
+        /// <returns></returns>
         private async Task AddNewAlbum()
         {
             if (await albumManager.CountAlbums() >= 3)
@@ -250,13 +254,13 @@ namespace Betawave.ViewModels
                 return;
             }
 
-            Artist artist = await CreateArtistAsync(ArtistName);
+            Artist artist = await CreateArtist(ArtistName);
             if (artist == null)
             {
                 await ShowAlert("Error", "Failed to create or find the artist.");
                 return;
             }
-
+            
             Album newAlbum = CreateAlbum(artist);
             bool isAdded = await albumManager.AddAlbum(newAlbum);
             if (!isAdded)
@@ -269,6 +273,11 @@ namespace Betawave.ViewModels
             }
         }
 
+        /// <summary>
+        /// //This function when passed an artist object adds adds that information to an album
+        /// </summary>
+        /// <param name="artist"></param>
+        /// <returns></returns>
         private Album CreateAlbum(Artist artist)
         {
             if (artist == null)
@@ -286,23 +295,39 @@ namespace Betawave.ViewModels
         }
 
 
-        private async Task<Artist> CreateArtistAsync(string artistName)
+        /// <summary>
+        /// When called and passed an artist name string this function creates a new artist
+        /// </summary>
+        /// <param name="artistName"></param>
+        /// <returns></returns>
+        private async Task<Artist> CreateArtist(string artistName)
         {
             Artist artist = await artistManager.GetArtistByName(artistName);
             if (artist == null)
             {
                 artist = new Artist();
-                artist.SetName(artistName);  // Assuming Artist class has a public setter for Name
+                artist.SetName(artistName);
                 artistManager.AddArtist(artist);
             }
             return artist;
         }
 
+        /// <summary>
+        /// When called this method shows an alert based on the title first string and message second string passed to it
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
         private async Task ShowAlert(string title, string message)
         {
             await Application.Current.MainPage.DisplayAlert(title, message, "OK");
         }
 
+
+        /// <summary>
+        /// Triggers when a property has changed
+        /// </summary>
+        /// <param name="propertyName"></param>
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

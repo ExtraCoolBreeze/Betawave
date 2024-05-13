@@ -12,25 +12,19 @@ using Betawave.Classes;
 namespace Betawave.ViewModels
 {
     public class AddMediaViewModel : INotifyPropertyChanged
-    {
+    {   //declaring event handler
         public event PropertyChangedEventHandler PropertyChanged;
-
+        //declaring class objects
         public DatabaseAccess dbAccess;
         public DatabaseManager databaseManager;
         public AlbumManager albumManager;
         public SongManager songManager;
         public ArtistManager artistManager;
         public AudioViewModel audioViewModel;
-
+        //declaring commands
         public ICommand PlayAlbum1Command { get; private set; }
         public ICommand PlayAlbum2Command { get; private set; }
         public ICommand PlayAlbum3Command { get; private set; }
-
-
-        public ICommand DeleteAlbum1Command { get; private set; }
-        public ICommand DeleteAlbum2Command { get; private set; }
-        public ICommand DeleteAlbum3Command { get; private set; }
-
 
         public ICommand PlayPauseCommand { get; private set; }
         public ICommand StopCommand { get; private set; }
@@ -38,13 +32,13 @@ namespace Betawave.ViewModels
         public ICommand SkipPreviousCommand { get; private set; }
         public ICommand ToggleShuffleCommand { get; private set; }
 
-
+        //accessing class properties
         public string CurrentTrackName => audioViewModel.CurrentTrackName;
         public string CurrentTrackArtist => audioViewModel.CurrentTrackArtist;
         public string CurrentTrackImage => audioViewModel.CurrentTrackImage;
         public string TrackLength => audioViewModel.TrackLength;
 
-
+        //creating volume property
         public float Volume
         {
             get => audioViewModel.Volume;
@@ -57,7 +51,7 @@ namespace Betawave.ViewModels
                 }
             }
         }
-
+        //declaring album detail variables
         private string albumImagePath1;
         private string albumName1;
         private string artistName1;
@@ -70,6 +64,7 @@ namespace Betawave.ViewModels
         private string albumName3;
         private string artistName3;
 
+        //creating album properties
         public string AlbumImagePath1
         {
             get { return albumImagePath1; }
@@ -124,73 +119,129 @@ namespace Betawave.ViewModels
             set { artistName3 = value; OnPropertyChanged(); }
         }
 
+        //class constuctor
         public AddMediaViewModel(AudioViewModel audioViewModel)
         {
+            this.audioViewModel = audioViewModel;
+            this.audioViewModel.PropertyChanged += AudioViewModel_PropertyChanged;
+
+            dbAccess = new DatabaseAccess();
+            databaseManager = new DatabaseManager(dbAccess);
+            artistManager = new ArtistManager(dbAccess);
+            albumManager = new AlbumManager(dbAccess);
+            songManager = new SongManager(dbAccess);
+
+            InitializeCommands();
+            LoadData();
+        }
+
+        /// <summary>
+        /// When called this method creates and binds commands
+        /// </summary>
+        private void InitializeCommands()
+        {   
             PlayAlbum1Command = new Command(() => PlayAlbum(0));
             PlayAlbum2Command = new Command(() => PlayAlbum(1));
             PlayAlbum3Command = new Command(() => PlayAlbum(2));
-
-            DeleteAlbum1Command = new Command(() => DeleteAlbum(0));
-            DeleteAlbum2Command = new Command(() => DeleteAlbum(1));
-            DeleteAlbum3Command = new Command(() => DeleteAlbum(2));
 
             PlayPauseCommand = new Command(() => audioViewModel.TogglePlayPause());
             StopCommand = new Command(() => audioViewModel.StopAudio());
             SkipNextCommand = new Command(() => audioViewModel.SkipNext());
             SkipPreviousCommand = new Command(() => audioViewModel.SkipPrevious());
             ToggleShuffleCommand = new Command(() => audioViewModel.ToggleShuffle());
-
-            this.audioViewModel = audioViewModel;
-            this.audioViewModel.PropertyChanged += AudioViewModel_PropertyChanged;
-
-            dbAccess = new DatabaseAccess();
-            databaseManager = new DatabaseManager(dbAccess);
-            databaseManager.LoadInAllManagerClassData();
-
-            artistManager = new ArtistManager(dbAccess);
-            albumManager = new AlbumManager(dbAccess);
-            songManager = new SongManager(dbAccess);
-
-            LoadData();
         }
 
-        public async void LoadData()
+        /// <summary>
+        /// This method makes sure all data is loaded from the database required to be displayed on the add media page
+        /// </summary>
+        public async Task LoadData()
         {
-            
+            //loads albums and artists
             await albumManager.LoadAlbums();
             await artistManager.LoadArtists();
-            List<Album> albums = albumManager.GetAllAlbums();
+            List<Album> albums = albumManager.GetAllAlbums(); //adds objects to list of objects
             List<Artist> artists = artistManager.GetAllArtists();
-
+            //is the lists are not empty
             if (albums.Count > 0 && artists.Count > 0)
             {
                 AlbumImagePath1 = albums[0].GetImageLocation();
                 AlbumName1 = albums[0].GetAlbumTitle();
 
                 Artist artist1 = artistManager.GetArtistById(albums[0].GetArtistId());
-                ArtistName1 = artist1?.GetName() ?? "Unknown Artist";
-            }
+                //if artist not null
+                string artistName1;
+                if (artist1 != null)
+                {   
+                    // get artist name
+                    artistName1 = artist1.GetName();
+                }
+                else
+                {
+                   // if null return error
+                    artistName1 = "Unknown Artist";
+                }
 
+                //add to property
+                ArtistName1 = artistName1;
+
+            }
+            //for second album repeat the process
             if (albums.Count > 1)
             {
                 AlbumImagePath2 = albums[1].GetImageLocation();
                 AlbumName2 = albums[1].GetAlbumTitle();
 
                 Artist artist2 = artistManager.GetArtistById(albums[1].GetArtistId());
-                ArtistName2 = artist2?.GetName() ?? "Unknown Artist";
-            }
+                // Initialize ArtistName2
+                string artistName2;
 
+                // Check if artist is not null
+                if (artist2 != null)
+                {
+                    // If artist null, get the artist name
+                    artistName2 = artist2.GetName();
+                }
+                else
+                {
+                    // If artist is null, print error
+                    artistName2 = "Unknown Artist";
+                }
+
+                // add to property
+                ArtistName2 = artistName2;
+
+            }
+            //for third album repeat the process
             if (albums.Count > 2)
             {
                 AlbumImagePath3 = albums[2].GetImageLocation();
                 AlbumName3 = albums[2].GetAlbumTitle();
 
                 Artist artist3 = artistManager.GetArtistById(albums[2].GetArtistId());
-                ArtistName3 = artist3?.GetName() ?? "Unknown Artist";
+                string artistName3;
+
+                // Check if artist is not null
+                if (artist3 != null)
+                {
+                    // If artist not null, get the artist name
+                    artistName3 = artist3.GetName();
+                }
+                else
+                {
+                    // if null, print error
+                    artistName3 = "Unknown Artist";
+                }
+
+                // add to property
+                ArtistName3 = artistName3;
             }
         }
 
-        private async void PlayAlbum(int albumIndex)
+        /// <summary>
+        /// When called and passed an album index from albums loaded into add media page, this method grabs the associated album based on the passed album index then creates and plays a playlist of the album songs
+        /// </summary>
+        /// <param name="albumIndex"></param>
+        public async void PlayAlbum(int albumIndex)
         {
             List<Album> albums = albumManager.GetAllAlbums();
             if (albumIndex < albums.Count)
@@ -210,7 +261,7 @@ namespace Betawave.ViewModels
                 }
                 else
                 {
-                    playlist.SetArtistName("Unknown Artist"); // Set a default or error name if the artist isn't found
+                    playlist.SetArtistName("Unknown Artist"); // set error
                 }
 
                 // Add songs to the playlist
@@ -225,23 +276,13 @@ namespace Betawave.ViewModels
         }
 
 
-        public void DeleteAlbum(int albumIndex)
-        {
-            var albums = albumManager.GetAllAlbums();
-            if (albumIndex < albums.Count)
-            {
-                int albumId = albums[albumIndex].GetAlbumId(); // Retrieve album ID
-                albumManager.DeleteAlbum(albumId); // Pass the album ID
-                LoadData(); // Reload data after deletion
-            }
-        }
-
-
+        //method to trigger when properties change
         public void AudioViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             OnPropertyChanged(e.PropertyName);
         }
 
+        //method to trigger when properties change
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

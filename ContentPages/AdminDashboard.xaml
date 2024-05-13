@@ -20,7 +20,7 @@
                 <VerticalStackLayout Margin="9" BackgroundColor="#27232E">
                     <Entry Placeholder="Type and enter to search" Margin="5" Background="#ffffff"/>
                     <Button Text="Dashboard" FontSize="20" Margin="5" x:Name="ADDashboardButton" Clicked="ADDashboardButton_Clicked"/>
-                    <Button Text="Manage Media" FontSize="20" Margin="5" x:Name="ADmyAddMedia" Clicked="ADmyAddMediaButton_Clicked"/>
+                    <Button Text="Add Media" FontSize="20" Margin="5" x:Name="ADmyAddMedia" Clicked="ADmyAddMediaButton_Clicked"/>
                     <Button Text="Create Playlist" FontSize="20" Margin="5" x:Name="ADCreatePlaylistButton" Clicked="ADCreatePlaylistButton_Clicked"/>
                     <Button Text="Logout" Command="{Binding StopCommand}" FontSize="20" Margin="5" VerticalOptions="End" x:Name="ADBackButton" Clicked="ADBackButton_Clicked"/>
                 </VerticalStackLayout>

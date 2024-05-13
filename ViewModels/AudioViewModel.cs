@@ -14,6 +14,7 @@ namespace Betawave.ViewModels
 {
     public class AudioViewModel : INotifyPropertyChanged
     {
+        //declaring class objects, commands and variables
         private Player audioPlayer;
         private ICommand playPauseCommand;
         private ICommand stopCommand;
@@ -31,11 +32,13 @@ namespace Betawave.ViewModels
         private string currentTrackImage;
         private double trackLengthInSeconds;
 
-
+        //declaring events
         public event PropertyChangedEventHandler PropertyChanged;
 
+        //class constructor
         public AudioViewModel()
         {
+            //initialising variables
             volume = 1.0f;
             currentTrackName = "Track Name: ";
             currentTrackArtist = "Artist Name: ";
@@ -43,6 +46,7 @@ namespace Betawave.ViewModels
             shuffleOn = "Shuffle Off";
             currentTrackImage = "C:\\Users\\Craig\\Desktop\\Betawave8.0\\Betawave\\Resources\\Images\\default.png";
 
+            //initialising commands
             playPauseCommand = new Command(TogglePlayPause);
             stopCommand = new Command(StopAudio);
             skipNextCommand = new Command(SkipNext);
@@ -52,17 +56,18 @@ namespace Betawave.ViewModels
             audioPlayer = new Player();
 
             shuffle = audioPlayer.GetShuffle();
-            audioPlayer.PlaybackStopped += HandlePlaybackStoppedAndStopTimer;
 
             audioPlayer.TrackChanged += UpdateTrackDetails;
         }
 
+        //defining command properties
         public ICommand PlayPauseCommand => playPauseCommand;
         public ICommand StopCommand => stopCommand;
         public ICommand SkipNextCommand => skipNextCommand;
         public ICommand SkipPreviousCommand => skipPreviousCommand;
         public ICommand ToggleShuffleCommand => toggleShuffleCommand;
 
+        //creating track name property
         public string CurrentTrackName
         {
             get => currentTrackName;
@@ -76,6 +81,7 @@ namespace Betawave.ViewModels
             }
         }
 
+        //creating track artist property
         public string CurrentTrackArtist
         {
             get => currentTrackArtist;
@@ -89,6 +95,7 @@ namespace Betawave.ViewModels
             }
         }
 
+        //creating volume property
         public float Volume
         {
             get => volume;
@@ -102,7 +109,7 @@ namespace Betawave.ViewModels
                 }
             }
         }
-
+        //creating shuffle property
         public bool Shuffle
         {
             get => shuffle;
@@ -117,6 +124,7 @@ namespace Betawave.ViewModels
             }
         }
 
+        //creating track image property
         public string CurrentTrackImage
         {
             get => currentTrackImage;
@@ -130,29 +138,18 @@ namespace Betawave.ViewModels
             }
         }
 
-        public void TogglePlayPause()
-        {
-            if (audioPlayer.IsPlaying())
-            {
-                audioPlayer.PauseMusic();
-            }
-            else
-            {
-                audioPlayer.PlayMusic();
-            }
-        }
-
+        //creating track length property
         public string TrackLength
         {
             get
-            {
+            {   
                 TimeSpan length = TimeSpan.FromSeconds(trackLengthInSeconds);
                 return string.Format("{0}:{1:00}", (int)length.TotalMinutes, length.Seconds);
             }
         }
 
 
-
+        //creating album name property
         public string CurrentAlbumName
         {
             get => currentAlbumName;
@@ -166,53 +163,76 @@ namespace Betawave.ViewModels
             }
         }
 
+        /// <summary>
+        /// When called this method toggles the playing and pausing of music methods in the audio player
+        /// </summary>
+        public void TogglePlayPause()
+        {
+            if (audioPlayer.IsPlaying())
+            {
+                audioPlayer.PauseMusic();
+            }
+            else
+            {
+                audioPlayer.PlayMusic();
+            }
+        }
 
-
+        //When called and passed a playlist this method calls further methods in from the audio player and loads in the playlist and starts playing it 
         public void SetPlaylistAndPlay(BasePlaylist playlist)
         {
             audioPlayer.SetPlaylist(playlist);
             audioPlayer.PlayMusic();
         }
 
+        //This method calls another method within the audio player to skip to the next track
         public void SkipNext()
         {
             audioPlayer.PlayNextTrack();
         }
 
+        //This method calls another method within the audio player to skip to the previous track
         public void SkipPrevious()
         {
             audioPlayer.PlayPreviousTrack();
         }
 
+        //This method calls another method within the audio player to top the music
         public void StopAudio()
         {
             audioPlayer.StopMusic();
         }
 
+        //This method calls another method within the audio player to toggle shuffle
         public void ToggleShuffle()
         {
             audioPlayer.ToggleShuffle();
         }
 
+        //This method calls another method within the audio player to toggle repeat
         public void ToggleRepeat()
         {
             audioPlayer.ToggleRepeat();
         }
 
+        //This method calls another method within the audio player to return the current loaded in playlist
         public BasePlaylist GetCurrentPlaylist()
         {
             return audioPlayer.GetCurrentPlaylist();
         }
 
+        /// <summary>
+        /// When called this method updates properties based on changes in the audio player
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void UpdateTrackDetails(object sender, EventArgs e)
         {
-            Console.WriteLine("Updating track details.");
             CurrentTrackName = audioPlayer.GetCurrentTrackName();
             CurrentTrackArtist = audioPlayer.GetCurrentTrackArtist();
             CurrentAlbumName = audioPlayer.GetCurrentAlbumName();
             CurrentTrackImage = await audioPlayer.GetCurrentTrackImage();
             trackLengthInSeconds = audioPlayer.GetCurrentTrackLength().TotalSeconds;
-            Console.WriteLine($"Updated Artist: {CurrentTrackArtist}");
 
             OnPropertyChanged(nameof(TrackLength));
             OnPropertyChanged(nameof(CurrentTrackName));
@@ -221,21 +241,10 @@ namespace Betawave.ViewModels
             OnPropertyChanged(nameof(CurrentTrackImage));
         }
 
-
-        public void HandlePlaybackStopped(object sender, StoppedEventArgs e)
-        {
-            if (e.Exception != null)
-            {
-                Console.WriteLine($"Playback Stopped due to an error: {e.Exception.Message}");
-            }
-        }
-
-        private void HandlePlaybackStoppedAndStopTimer(object sender, StoppedEventArgs e)
-        {
-            // Invoke both event handlers
-            HandlePlaybackStopped(sender, e);
-        }
-
+        /// <summary>
+        /// This method triggers of property changes
+        /// </summary>
+        /// <param name="propertyName"></param>
         public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

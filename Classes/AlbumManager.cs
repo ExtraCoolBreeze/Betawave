@@ -92,41 +92,8 @@ namespace Betawave.Classes
                 errorLogger.LogError(ex);
                 throw;
             }
-
         }
 
-        /// <summary>
-        /// When called and passed an int, this method search through the current list of albums for one with the id as the input
-        /// if it finds it, the album is removed front the list and then it connect and deletes it from the database
-        /// </summary>
-        /// <param name="albumId"></param>
-        public void DeleteAlbum(int albumId)
-        {
-            try
-            {
-                //searches for album id 
-                for (int i = albums.Count - 1; i >= 0; i--)
-                {   //if found removed at location
-                    if (albums[i].GetAlbumId() == albumId)
-                    {
-                        albums.RemoveAt(i);
-
-                        break;
-                    }
-                }
-                //connect to database 
-                using (var connection = dbAccess.ConnectToMySql())
-                {   //deleted from database
-                    var command = new MySqlCommand("DELETE FROM album WHERE album_id = @AlbumId", connection);
-                    command.Parameters.AddWithValue("@AlbumId", albumId);
-                    command.ExecuteNonQuery();
-                }
-            }
-            catch (Exception ex)
-            {
-                errorLogger.LogError(ex);
-            } 
-        }
 
         /// <summary>
         /// When this function is called it counts the number of album entries in the database and return the amount
