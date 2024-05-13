@@ -15,12 +15,14 @@ namespace Betawave.Classes
     {
         //declaring variable
         private string MySqlConnectionString;
+        private ErrorLogger errorLogger;
 
 
-        //constructor and root connection string
+        //constructor and root connection string and error log file location
         public DatabaseAccess()
         {
             MySqlConnectionString = "server=localhost;userid=root;password=;database=betawave";
+            errorLogger = new ErrorLogger("C:\\Users\\Craig\\Desktop\\Betawave8.0\\Betawave\\BetawaveErrorLog.txt");
         }
 
 
@@ -30,19 +32,50 @@ namespace Betawave.Classes
         /// <returns></returns>
         public MySqlConnection ConnectToMySql()
         {
+            //connecting to database
             MySqlConnection mySqlConnection = new MySqlConnection(MySqlConnectionString);
             try
-            {
+            {   //opening connection and returning connection
                 mySqlConnection.Open();
                 return mySqlConnection;
             }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Connection error: {e.Message}");
+            catch (Exception ex)
+            {   //logging error and closing connection
+                errorLogger.LogError(ex);
                 mySqlConnection?.Dispose();
-                throw;
+                return null;
             }
         }
+
+        /// <summary>
+        /// This function when called checks if there is a connection and then increments a count if successful and returns the count
+        /// </summary>
+        /// <returns></returns>
+        public async Task<int> CheckDatabaseConnection()
+        {
+            int connectionSuccessCount = 0;
+            MySqlConnection connection = null;
+
+            try
+            {   //trying to connect and opening connection and then returning value
+                connection = new MySqlConnection(MySqlConnectionString);
+                await connection.OpenAsync();
+                connectionSuccessCount++;
+            }
+            catch (Exception ex)
+            {   //logging error
+                errorLogger.LogError(ex);
+            }
+            finally
+            {   //closing connection
+                connection?.Dispose(); 
+            }
+            //returning count
+            return connectionSuccessCount;
+        }
+
+
+
 
         /// <summary>
         /// When passed a username this function checks if that username exists in the database
@@ -52,24 +85,32 @@ namespace Betawave.Classes
         /// <returns></returns>
         public async Task<bool> CheckIfUserExists(string username)
         {
-            using (var connection = new MySqlConnection(MySqlConnectionString))
-            {
-                await connection.OpenAsync();
-                using (var cmd = new MySqlCommand("SELECT COUNT(*) FROM account WHERE username = @Username", connection))
+            try
+            {   //connecting to database and opening connection
+                using (var connection = new MySqlConnection(MySqlConnectionString))
                 {
-                    cmd.Parameters.AddWithValue("@Username", username);
-                    int userCount = Convert.ToInt32(await cmd.ExecuteScalarAsync());
-                    if (userCount > 0) 
-                    {
-                        return true;
+                    await connection.OpenAsync();
+                    using (var cmd = new MySqlCommand("SELECT COUNT(*) FROM account WHERE username = @Username", connection))
+                    {   //checking is user exists and returning true or false based if anyting is found
+                        cmd.Parameters.AddWithValue("@Username", username);
+                        int userCount = Convert.ToInt32(await cmd.ExecuteScalarAsync());
+                        if (userCount > 0)
+                        {   
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
                     }
-                    else 
-                    {
-                        return false;
-                    }
-                     
                 }
+            }   //catching potential and logging connection issues
+            catch (Exception ex)
+            {   
+                errorLogger.LogError(ex);
+                throw;
             }
+
         }
 
         /// <summary>
@@ -82,8 +123,7 @@ namespace Betawave.Classes
         public async Task CreateUser(string username, string password)
         {
             try
-            {
-                //string hashedPassword = HashPassword(password);
+            {   //connecting to the database and inserting data
                 using (var connection = new MySqlConnection(MySqlConnectionString))
                 {
                     await connection.OpenAsync();
@@ -94,10 +134,10 @@ namespace Betawave.Classes
                         await cmd.ExecuteNonQueryAsync();
                     }
                 }
-            }
-            catch (Exception e)
+            }//catching error
+            catch (Exception ex)
             {
-                Console.WriteLine($"Error in CreateUser: {e.Message}");
+                errorLogger.LogError(ex);
             }
         }
 
@@ -110,43 +150,35 @@ namespace Betawave.Classes
         /// <returns></returns>
         public async Task<bool> ValidateUser(string username, string password)
         {
-            //string hashedPassword = HashPassword(password);
-            using (var connection = new MySqlConnection(MySqlConnectionString))
-            {
-                await connection.OpenAsync();
-                string query = "SELECT COUNT(*) FROM account WHERE username = @Username AND userpassword = @UserPassword";
-                using (var cmd = new MySqlCommand(query, connection))
+            try
+            {   //connecting to database and checking if username and password exist 
+                using (var connection = new MySqlConnection(MySqlConnectionString))
                 {
-                    cmd.Parameters.AddWithValue("@Username", username);
-                    cmd.Parameters.AddWithValue("@UserPassword", password);
-
-                    int userCount = Convert.ToInt32(await cmd.ExecuteScalarAsync());
-                    if (userCount > 0)
+                    await connection.OpenAsync();
+                    string query = "SELECT COUNT(*) FROM account WHERE username = @Username AND userpassword = @UserPassword";
+                    using (var cmd = new MySqlCommand(query, connection))
                     {
-                        return true;
-                    }
-                    else 
-                    {
-                        return false;
+                        cmd.Parameters.AddWithValue("@Username", username);
+                        cmd.Parameters.AddWithValue("@UserPassword", password);
+                        //if data is verified returns true if not false
+                        int userCount = Convert.ToInt32(await cmd.ExecuteScalarAsync());
+                        if (userCount > 0)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
                     }
                 }
-            }
-        }
-
-/*        private string HashPassword(string password)
-        {
-            using (SHA256 sha256Hash = SHA256.Create())
+            }   //catching exception
+            catch (Exception ex)
             {
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
-                StringBuilder builder = new StringBuilder();
-                foreach (byte b in bytes)
-                {
-                    builder.Append(b.ToString("x2"));
-                }
-                return builder.ToString();
+                errorLogger.LogError(ex);
+                throw;
             }
         }
-*/
 
         /// <summary>
         /// When passed a username this function searches the database to check if that user is an admin.
@@ -156,28 +188,35 @@ namespace Betawave.Classes
         /// <returns></returns>
         public bool IsAdmin(string username)
         {
-            using (var connection = ConnectToMySql())
+            try
             {
-                // SQL query to check admin status by joining the account, account_role, and role tables
-                string query = @" SELECT r.admin FROM role r INNER JOIN account_role ar ON r.role_id = ar.role_id INNER JOIN account a ON ar.account_id = a.account_id WHERE a.username = @Username";
-
-                using (var cmd = new MySqlCommand(query, connection))
+                using (var connection = ConnectToMySql())
                 {
-                    cmd.Parameters.AddWithValue("@Username", username);
-                    var result = cmd.ExecuteScalar(); // Returns the 'admin' field value, expected to be 0 or 1
+                    // SQL query to check admin status by joining the account, account_role, and role tables
+                    string query = @" SELECT r.admin FROM role r INNER JOIN account_role ar ON r.role_id = ar.role_id INNER JOIN account a ON ar.account_id = a.account_id WHERE a.username = @Username";
 
-                    // Check the result and return true if the user is an admin
-                    if (result != null && Convert.ToInt32(result) == 1)
+                    using (var cmd = new MySqlCommand(query, connection))
                     {
-                        return true;
-                    }
-                    else 
-                    {
-                        return false;
+                        cmd.Parameters.AddWithValue("@Username", username);
+                        var result = cmd.ExecuteScalar(); // Returns the 'admin' field value, expected to be 0 or 1
+
+                        // Check the result and return true if the user is an admin
+                        if (result != null && Convert.ToInt32(result) == 1)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
                     }
                 }
             }
-            
+            catch (Exception ex)
+            {
+                errorLogger.LogError(ex);
+                throw;
+            }
         }
 
 
@@ -189,22 +228,30 @@ namespace Betawave.Classes
         /// <returns></returns>
         public async Task<Account> GetUserByUsername(string username)
         {
-            using (var connection = ConnectToMySql())
-            {
-                var command = new MySqlCommand("SELECT a.account_id, a.username, a.userpassword, r.admin AS is_admin FROM account a JOIN account_role ar ON a.account_id = ar.account_id JOIN role r ON ar.role_id = r.role_id WHERE a.username = @Username", connection);
-                command.Parameters.AddWithValue("@Username", username);
-                using (var reader = await command.ExecuteReaderAsync())
+            try
+            {   //connecting to database and getting user information based on username
+                using (var connection = ConnectToMySql())
                 {
-                    if (reader.Read())
-                    {
-                        Account user = new Account();
-                        user.SetAccountId(reader.GetInt32("account_id"));
-                        user.SetUsername(reader.GetString("username"));
-                        user.SetPassword(reader.GetString("userpassword"));
-                        user.SetIsAdmin(reader.GetBoolean("is_admin"));
-                        return user;
+                    var command = new MySqlCommand("SELECT a.account_id, a.username, a.userpassword, r.admin AS is_admin FROM account a JOIN account_role ar ON a.account_id = ar.account_id JOIN role r ON ar.role_id = r.role_id WHERE a.username = @Username", connection);
+                    command.Parameters.AddWithValue("@Username", username);
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {   //reading results into account object and returning object
+                        if (reader.Read())
+                        {
+                            Account user = new Account();
+                            user.SetAccountId(reader.GetInt32("account_id"));
+                            user.SetUsername(reader.GetString("username"));
+                            user.SetPassword(reader.GetString("userpassword"));
+                            user.SetIsAdmin(reader.GetBoolean("is_admin"));
+                            return user;
+                        }
                     }
                 }
+            }   //catching errors and returning null
+            catch (Exception ex)
+            {
+                errorLogger.LogError(ex);
+                throw;
             }
             return null;
         }

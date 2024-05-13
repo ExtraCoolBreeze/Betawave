@@ -21,7 +21,7 @@ public class ErrorLogger
     }
 
     /// <summary>
-    /// When this function is called and passed an exception it calls the log function
+    /// When this function is called it calls the log method
     /// </summary>
     /// <param name="ex"></param>
     public void LogError(Exception ex)

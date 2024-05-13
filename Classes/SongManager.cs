@@ -15,11 +15,13 @@ public class SongManager
     //declaring variables
     private List<Song> songs = new List<Song>();
     private DatabaseAccess dbAccess;
+    private ErrorLogger errorLogger;
 
     //class constructor
     public SongManager(DatabaseAccess dbAccess)
     {
         this.dbAccess = dbAccess;
+        errorLogger = new ErrorLogger("C:\\Users\\Craig\\Desktop\\Betawave8.0\\Betawave\\BetawaveErrorLog.txt");
     }
 
     /// <summary>
@@ -29,22 +31,29 @@ public class SongManager
     /// <returns></returns>
     public async Task LoadSongsIntoProgram()
     {
-        using (var connection = dbAccess.ConnectToMySql())
-        {
-            var command = new MySqlCommand("SELECT song_id, name, song_location FROM song", connection);
-            using (var reader = await command.ExecuteReaderAsync())
+        try
+        {   //connecting to database and getting all songs 
+            using (var connection = dbAccess.ConnectToMySql())
             {
-                while (await reader.ReadAsync())
-                {
-                    var song = new Song();
-                    song.SetSongId(reader.GetInt32("song_id"));
-                    song.SetSongName(reader.GetString("name"));
-                    song.SetSongLocation(reader.GetString("song_location"));
-
-                    songs.Add(song);
+                var command = new MySqlCommand("SELECT song_id, name, song_location FROM song", connection);
+                using (var reader = await command.ExecuteReaderAsync())
+                {   //reading in data to song object
+                    while (await reader.ReadAsync())
+                    {
+                        var song = new Song();
+                        song.SetSongId(reader.GetInt32("song_id"));
+                        song.SetSongName(reader.GetString("name"));
+                        song.SetSongLocation(reader.GetString("song_location"));
+                        //adding song to list of song objects
+                        songs.Add(song);
+                    }
                 }
             }
-        }
+        }   //catching error
+        catch (Exception ex)
+        {
+            errorLogger.LogError(ex);
+        }    
     }
 
 
@@ -54,15 +63,24 @@ public class SongManager
     /// </summary>
     /// <param name="song"></param>
     public void AddSongToDatabase(Song song)
-    {
+    {   //adding song to list of song objects
         songs.Add(song);
-        using (var connection = dbAccess.ConnectToMySql())
+
+        try
+        {   //connecting to database and adding song details to database
+            using (var connection = dbAccess.ConnectToMySql())
+            {
+                var command = new MySqlCommand("INSERT INTO song (name, song_location) VALUES (@Name, @SongLocation)", connection);
+                command.Parameters.AddWithValue("@Name", song.GetSongName());
+                command.Parameters.AddWithValue("@SongLocation", song.GetSongLocation());
+                command.ExecuteNonQuery();
+            }
+        }//catching error
+        catch (Exception ex)
         {
-            var command = new MySqlCommand("INSERT INTO song (name, song_location) VALUES (@Name, @SongLocation)", connection);
-            command.Parameters.AddWithValue("@Name", song.GetSongName());
-            command.Parameters.AddWithValue("@SongLocation", song.GetSongLocation());
-            command.ExecuteNonQuery();
+            errorLogger.LogError(ex);
         }
+
     }
 
     /// <summary>
@@ -74,24 +92,31 @@ public class SongManager
     public async Task<List<Song>> GetSongsForAlbum(int albumId)
     {
         List<Song> albumSongs = new List<Song>();
-        using (var connection = dbAccess.ConnectToMySql())
-        {
-            var command = new MySqlCommand("SELECT s.song_id, s.name, s.song_location FROM song s JOIN album_track at ON s.song_id = at.song_id WHERE at.album_id = @AlbumId", connection);
-
-            command.Parameters.AddWithValue("@AlbumId", albumId);
-            using (var reader = await command.ExecuteReaderAsync())
+        try
+        {   //connecting to database and getting all associated data based on albumId
+            using (var connection = dbAccess.ConnectToMySql())
             {
-                while (await reader.ReadAsync())
-                {
-                    var song = new Song();
-                    song.SetSongId(reader.GetInt32("song_id"));
-                    song.SetSongName(reader.GetString("name"));
-                    song.SetSongLocation(reader.GetString("song_location"));
+                var command = new MySqlCommand("SELECT s.song_id, s.name, s.song_location FROM song s JOIN album_track at ON s.song_id = at.song_id WHERE at.album_id = @AlbumId", connection);
 
-                    albumSongs.Add(song);
+                command.Parameters.AddWithValue("@AlbumId", albumId);
+                using (var reader = await command.ExecuteReaderAsync())
+                {   //reading information into song object
+                    while (await reader.ReadAsync())
+                    {   
+                        var song = new Song();
+                        song.SetSongId(reader.GetInt32("song_id"));
+                        song.SetSongName(reader.GetString("name"));
+                        song.SetSongLocation(reader.GetString("song_location"));
+                        //adding songs to list of objects
+                        albumSongs.Add(song);
+                    }
                 }
             }
-        }
+        }//catching error
+        catch (Exception ex)
+        {
+            errorLogger.LogError(ex);
+        } //returning list of song objects
         return albumSongs;
     }
 }

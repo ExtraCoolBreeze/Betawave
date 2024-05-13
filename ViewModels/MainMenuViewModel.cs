@@ -11,16 +11,16 @@ using Betawave.Classes;
 
 
 namespace Betawave.ViewModels
-{
+{   
     public class MainMenuViewModel : INotifyPropertyChanged
-    {
+    {   //declaring event
         public event PropertyChangedEventHandler PropertyChanged;
-
+        //declaring class objects
         public AlbumManager albumManager;
         public SongManager songManager;
         public ArtistManager artistManager;
         public AudioViewModel audioViewModel;
-
+        //declaring commands
         public ICommand PlayAlbum1Command { get; private set; }
         public ICommand PlayAlbum2Command { get; private set; }
         public ICommand PlayAlbum3Command { get; private set; }
@@ -31,11 +31,13 @@ namespace Betawave.ViewModels
         public ICommand SkipPreviousCommand { get; private set; }
         public ICommand ToggleShuffleCommand { get; private set; }
 
+        //accessing class properties 
         public string CurrentTrackName => audioViewModel.CurrentTrackName;
         public string CurrentTrackArtist => audioViewModel.CurrentTrackArtist;
         public string CurrentTrackImage => audioViewModel.CurrentTrackImage;
         public string TrackLength => audioViewModel.TrackLength;
 
+        //creating volumne property
         public float Volume
         {
             get => audioViewModel.Volume;
@@ -49,6 +51,7 @@ namespace Betawave.ViewModels
             }
         }
 
+        //creating shuffle property
         public bool Shuffle
         {
             get => audioViewModel.Shuffle;
@@ -62,6 +65,7 @@ namespace Betawave.ViewModels
             }
         }
 
+        //declaring ui album properties
         private string albumImagePath1;
         private string albumName1;
         private string artistName1;
@@ -74,6 +78,8 @@ namespace Betawave.ViewModels
         private string albumName3;
         private string artistName3;
 
+
+        //creating class properties
         public string AlbumImagePath1
         {
             get => albumImagePath1;
@@ -129,11 +135,11 @@ namespace Betawave.ViewModels
         }
 
 
-
+        //class constructor
         public MainMenuViewModel(AudioViewModel audioViewModel)
         {
 
-
+            //initialising properties
             albumImagePath1 = "";
             albumName1 = "";
             artistName1 = "";
@@ -146,6 +152,7 @@ namespace Betawave.ViewModels
             albumName3 = "";
             artistName3 = "";
 
+            //initialising commands
             PlayAlbum1Command = new Command(() => PlayAlbum(0));
             PlayAlbum2Command = new Command(() => PlayAlbum(1));
             PlayAlbum3Command = new Command(() => PlayAlbum(2));
@@ -156,6 +163,7 @@ namespace Betawave.ViewModels
             SkipPreviousCommand = new Command(() => audioViewModel.SkipPrevious());
             ToggleShuffleCommand = new Command(() => audioViewModel.ToggleShuffle());
 
+            //initialising objects
             this.audioViewModel = audioViewModel;
             this.audioViewModel.PropertyChanged += AudioViewModel_PropertyChanged;
             var dbAccess = new DatabaseAccess();
@@ -165,19 +173,21 @@ namespace Betawave.ViewModels
             artistManager = new ArtistManager(dbAccess);
             albumManager = new AlbumManager(dbAccess);
             songManager = new SongManager(dbAccess);
-
+            //loading data commmand
             LoadData();
         }
 
+        //This method makes sure all data is loaded from the database required to be displayed on the main menu page
         public async void LoadData()
-        {
+        {   //loading data
             await albumManager.LoadAlbums();
             await artistManager.LoadArtists();
+            //creating object lists
             List<Album> albums = albumManager.GetAllAlbums();
             List<Artist> artists = artistManager.GetAllArtists();
-
+            //verify data is loaded in
             if (albums.Count > 0 && artists.Count > 0)
-            {
+            {   //display all album information in first panel, grabbing album art, artist and album name
                 AlbumImagePath1 = albums[0].GetImageLocation();
                 AlbumName1 = albums[0].GetAlbumTitle();
 
@@ -191,7 +201,7 @@ namespace Betawave.ViewModels
                     ArtistName1 = "Unknown Artist";
                 }
             }
-
+            //display information in second panel, grabbing album art, artist and album name
             if (albums.Count > 1)
             {
                 AlbumImagePath2 = albums[1].GetImageLocation();
@@ -207,7 +217,7 @@ namespace Betawave.ViewModels
                     ArtistName2 = "Unknown Artist";
                 }
             }
-
+            //display album information in third panel, grabbing album art, artist and album name
             if (albums.Count > 2)
             {
                 AlbumImagePath3 = albums[2].GetImageLocation();
@@ -245,11 +255,16 @@ namespace Betawave.ViewModels
     //
     DELIMITER ;*/
 
+
+        /// <summary>
+        /// When called and passed an album index from albums loaded into main menu page, this method grabs the associated album based on the passed album index then creates and plays a playlist of the album songs
+        /// </summary>
+        /// <param name="albumIndex"></param>
         private async void PlayAlbum(int albumIndex)
-        {
+        {   //creating a list of albums
             List<Album> albums = albumManager.GetAllAlbums();
             if (albumIndex < albums.Count)
-            {
+            {   
                 Album album = albums[albumIndex];
                 List<Song> songsForAlbum = await songManager.GetSongsForAlbum(album.GetAlbumId());
                 BasePlaylist playlist = new BasePlaylist();
@@ -266,12 +281,20 @@ namespace Betawave.ViewModels
             }
         }
 
+        /// <summary>
+        /// this method triggers based on property changes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AudioViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            // Relay the property changed event to the View
             OnPropertyChanged(e.PropertyName);
         }
 
+        /// <summary>
+        /// this method triggers based on property changes
+        /// </summary>
+        /// <param name="propertyName"></param>
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

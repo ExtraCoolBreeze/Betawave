@@ -1,2 +1,17 @@
 ﻿12/05/24 2:23:42 PM: Playlist is empty or not set.
 12/05/24 2:23:42 PM: Audio file is not loaded.
+13/05/24 4:18:46 PM: Error: The connection is already open.
+13/05/24 4:20:27 PM: Error: The connection is already open.
+13/05/24 4:28:21 PM: Error: Unable to connect to any of the specified MySQL hosts.
+13/05/24 4:28:27 PM: Error: Unable to connect to any of the specified MySQL hosts.
+13/05/24 4:28:28 PM: Error: Unable to connect to any of the specified MySQL hosts.
+13/05/24 4:28:28 PM: Error: Unable to connect to any of the specified MySQL hosts.
+13/05/24 4:28:28 PM: Error: Unable to connect to any of the specified MySQL hosts.
+13/05/24 4:28:29 PM: Error: Unable to connect to any of the specified MySQL hosts.
+13/05/24 4:28:29 PM: Error: Unable to connect to any of the specified MySQL hosts.
+13/05/24 4:28:29 PM: Error: Unable to connect to any of the specified MySQL hosts.
+13/05/24 4:28:37 PM: Error: Unable to connect to any of the specified MySQL hosts.
+13/05/24 4:29:10 PM: Error: Unable to connect to any of the specified MySQL hosts.
+13/05/24 4:36:22 PM: Error: Unable to connect to any of the specified MySQL hosts.
+13/05/24 4:39:38 PM: Error: Unable to connect to any of the specified MySQL hosts.
+13/05/24 5:32:28 PM: Error: Unable to connect to any of the specified MySQL hosts.

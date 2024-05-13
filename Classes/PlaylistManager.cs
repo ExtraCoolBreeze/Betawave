@@ -15,7 +15,6 @@ namespace Betawave.Classes
     public class PlaylistManager
     {
         //declaring class objects
-        private List<BasePlaylist> listofPlaylists;
         private DatabaseAccess dbAccess;
         private BasePlaylist playlist;
 
@@ -23,7 +22,6 @@ namespace Betawave.Classes
         public PlaylistManager(DatabaseAccess dbAccess)
         {
             //initialising objects
-            listofPlaylists = new List<BasePlaylist>();
             playlist = new BasePlaylist();
             this.dbAccess = dbAccess;
         }
@@ -35,25 +33,25 @@ namespace Betawave.Classes
         /// <param name="songName"></param>
         /// <returns></returns>
         public async Task<BasePlaylist> GetDetailsForPlaylist(string songName)
-        {
+        {   //connects to database
             using (var connection = dbAccess.ConnectToMySql())
-            {
+            {   //searches for information based on song name
                 var command = new MySqlCommand("SELECT s.name AS SongName, a.title AS AlbumTitle, ar.name AS ArtistName, a.image_location AS ImageLocation FROM song s JOIN album_track at ON s.song_id = at.song_id JOIN album a ON at.album_id = a.album_id JOIN artist ar ON a.artist_id = ar.artist_id WHERE s.name = @songName", connection);
                 command.Parameters.AddWithValue("@songName", songName);
                 using (var reader = await command.ExecuteReaderAsync())
-                {
+                {   //reads results into playlist object
                     if (await reader.ReadAsync())
                     {
                         playlist.SetAlbumName(reader.GetString("AlbumTitle"));
                         playlist.SetImageLocation(reader.GetString("ImageLocation"));
                         playlist.SetArtistName(reader.GetString("ArtistName"));
-                    }
+                    }//if nothing found returns null
                     else
                     {
                         return null;
                     }
                 }
-            }
+            }//Once complete returns playlist object
             return playlist;
         }
     }

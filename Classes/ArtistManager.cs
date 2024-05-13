@@ -20,10 +20,10 @@ namespace Betawave.Classes
         private ErrorLogger errorLogger;
 
         //class constructor
-        public ArtistManager(DatabaseAccess dbAccess, ErrorLogger errorLogger)
+        public ArtistManager(DatabaseAccess dbAccess)
         {
             this.dbAccess = dbAccess;
-            this.errorLogger = errorLogger;
+            errorLogger = new ErrorLogger("C:\\Users\\Craig\\Desktop\\Betawave8.0\\Betawave\\BetawaveErrorLog.txt");
         }
 
         /// <summary>
@@ -42,11 +42,11 @@ namespace Betawave.Classes
                     using (var reader = await command.ExecuteReaderAsync())
                     {   //if able to read add to artist object and then add that to artists list
                         while (await reader.ReadAsync())
-                        {
+                        {   //writing results to artist object
                             var artist = new Artist();
                             artist.SetArtistId(reader.GetInt32("artist_id"));
                             artist.SetName(reader.GetString("name"));
-
+                            //writing artist objects to list of objects
                             artists.Add(artist);
                         }
                     }
@@ -156,21 +156,28 @@ namespace Betawave.Classes
         /// <returns></returns>
         public async Task<Artist> GetArtistByName(string name)
         {   //connect to database, run query
-            using (var connection = dbAccess.ConnectToMySql())
+            try
             {
-                var command = new MySqlCommand("SELECT artist_id, name FROM artist WHERE name = @Name", connection);
-                command.Parameters.AddWithValue("@Name", name);
-                using (var reader = await command.ExecuteReaderAsync())
-                {   //if data found, read into artist object and return
-                    if (await reader.ReadAsync())
-                    {  
-                        var artist = new Artist();
-                        artist.SetArtistId(reader.GetInt32("artist_id"));
-                        artist.SetName(reader.GetString("name"));
-                        return artist;
+                using (var connection = dbAccess.ConnectToMySql())
+                {
+                    var command = new MySqlCommand("SELECT artist_id, name FROM artist WHERE name = @Name", connection);
+                    command.Parameters.AddWithValue("@Name", name);
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {   //if data found, read into artist object and return
+                        if (await reader.ReadAsync())
+                        {   //writing results to artist object and returning
+                            var artist = new Artist();
+                            artist.SetArtistId(reader.GetInt32("artist_id"));
+                            artist.SetName(reader.GetString("name"));
+                            return artist;
+                        }
                     }
-                }
-            }   // if not return null
+                }   
+            }
+            catch (Exception ex)
+            {
+                errorLogger.LogError(ex);
+            }// if not return null
             return null;
         }
     }

@@ -10,17 +10,18 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace Betawave.ViewModels
-{
+{   //inheriting from property changed
     public class LoginViewModel : INotifyPropertyChanged
-    {
+    {   //declaring objects and variables
         public event PropertyChangedEventHandler PropertyChanged;
         private string username;
         private string password;
         private DatabaseAccess dbAccess;
         private DatabaseManager databaseManager;
-
+        //creating command
         public ICommand LoginCommand { get; private set; }
 
+        //class constructor and initialising
         public LoginViewModel()
         {
             dbAccess = new DatabaseAccess();
@@ -28,6 +29,7 @@ namespace Betawave.ViewModels
             LoginCommand = new Command(async () => await RunLoginCommand());
         }
 
+        //creating username property
         public string Username
         {
             get => username;
@@ -41,6 +43,7 @@ namespace Betawave.ViewModels
             }
         }
 
+        //creating password property
         public string Password
         {
             get => password;
@@ -54,14 +57,24 @@ namespace Betawave.ViewModels
             }
         }
 
+        /// <summary>
+        /// When called this function checks user input, check there is a valid connection, checks is login information is valid and the user status before logging in
+        /// </summary>
+        /// <returns></returns>
         public async Task RunLoginCommand()
-        {
+        {   //input null or whitespace check
             if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
             {
                 await Application.Current.MainPage.DisplayAlert("Error", "Both username and password are required.", "OK");
                 return;
             }
-
+            //connection check
+            if (await dbAccess.CheckDatabaseConnection() == 0)
+            {
+                await Application.Current.MainPage.DisplayAlert("Connection Error", "Cannot connect to the database. Check your connection and try again.", "OK");
+                return;
+            }
+            //user validation check
             if (await dbAccess.ValidateUser(Username, Password))
             {
                 // Load data from the database
@@ -78,14 +91,15 @@ namespace Betawave.ViewModels
                 }
             }
             else
-            {
+            {   //password incorrect error
                 await Application.Current.MainPage.DisplayAlert("Error", "Username or password incorrect.", "OK");
             }
-
-
         }
 
-
+        /// <summary>
+        /// THis method updates when an event change is triggered
+        /// </summary>
+        /// <param name="propertyName"></param>
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

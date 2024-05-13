@@ -9,15 +9,16 @@ using System.Windows.Input;
 using Betawave.ViewModels;
 using System.Runtime.CompilerServices;
 using Betawave.Classes;
+//declaring class and inheriting
 public class QueueViewModel : INotifyPropertyChanged
-{
+{   //declaring event
     public event PropertyChangedEventHandler PropertyChanged;
-
+    //declaring class objects
     public DatabaseAccess dbAccess;
     public PlaylistManager playlistManager;
     public BasePlaylist playlist;
     private AudioViewModel audioViewModel;
-
+    //creating player comments
     public ICommand PlayPauseCommand { get; private set; }
     public ICommand StopCommand { get; private set; }
     public ICommand SkipNextCommand { get; private set; }
@@ -25,11 +26,13 @@ public class QueueViewModel : INotifyPropertyChanged
     public ICommand ToggleShuffleCommand { get; private set; }
     public ICommand ToggleRepeatCommand { get; private set; }
 
+    //accessing class properties
     public string CurrentTrackName => audioViewModel.CurrentTrackName;
     public string CurrentTrackArtist => audioViewModel.CurrentTrackArtist;
     public string CurrentTrackImage => audioViewModel.CurrentTrackImage;
     public string TrackLength => audioViewModel.TrackLength;
 
+    //creating volumne parameter
     public float Volume
     {
         get => audioViewModel.Volume;
@@ -43,6 +46,7 @@ public class QueueViewModel : INotifyPropertyChanged
         }
     }
 
+    //creating shuffle parameter
     public bool Shuffle
     {
         get => audioViewModel.Shuffle;
@@ -56,6 +60,7 @@ public class QueueViewModel : INotifyPropertyChanged
         }
     }
 
+    // creating song properties
     public string Song1 { get; private set; }
     public string Song2 { get; private set; }
     public string Song3 { get; private set; }
@@ -68,14 +73,16 @@ public class QueueViewModel : INotifyPropertyChanged
     public string Song10 { get; private set; }
     public string Song11 { get; private set; }
 
+    //class constructor, passing in view model
     public QueueViewModel(AudioViewModel audioViewModel)
     {
-
+        //initialising objects
         this.audioViewModel = audioViewModel;
         dbAccess = new DatabaseAccess();
         playlistManager = new PlaylistManager( dbAccess);
         playlist = new BasePlaylist();
 
+        //initialising commands
         PlayPauseCommand = new Command(() => audioViewModel.TogglePlayPause());
         StopCommand = new Command(() => audioViewModel.StopAudio());
         SkipNextCommand = new Command(() => audioViewModel.SkipNext());
@@ -85,19 +92,27 @@ public class QueueViewModel : INotifyPropertyChanged
         UpdateSongInformation();
     }
 
+    /// <summary>
+    /// this method checks for property changes in the audioviewmodel class
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     public async void AudioViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         OnPropertyChanged(e.PropertyName);
         // Check if the property changed is related to the playlist
         if (e.PropertyName == nameof(AudioViewModel.GetCurrentPlaylist))
         {
-            // Update the song information when the playlist changes
+            // Update the song information when playlist changes
             await UpdateSongInformation();
         }
     }
 
 
-
+    /// <summary>
+    /// When called this function updates the queue page based on the playlist loaded into the player
+    /// </summary>
+    /// <returns></returns>
     public async Task UpdateSongInformation()
     {
         
@@ -108,23 +123,26 @@ public class QueueViewModel : INotifyPropertyChanged
         {
             return; // Exit if no valid playlist is available
         }
-
+        //get playlist of songs and count tracks
         List<Song> playlistSongs = currentPlaylist.GetPlaylistSongs();
         int TrackCount = 0;
+        //if songlist is not empty
         if (playlistSongs != null)
-        {
+        {   //for each element tick up track count and add song details to object
             for (int i = 0; i < playlistSongs.Count && i < 11; i++)
             {
                 TrackCount++;
                 Song song = playlistSongs[i];
-                string songName = song.GetSongName();
-                playlist = await playlistManager.GetDetailsForPlaylist(songName);
+                string songName = song.GetSongName(); //get song name
+                playlist = await playlistManager.GetDetailsForPlaylist(songName); //get details related to song name in database
 
-                string artistName = playlist.GetArtistName();
-                string albumName = playlist.GetAlbumName();
-                string songInfo = $"{TrackCount}. {song.GetSongName()} - {artistName} - {albumName}";
+                string artistName = playlist.GetArtistName(); //get artist name
+                string albumName = playlist.GetAlbumName(); //get album name
+                string songInfo = $"{TrackCount}. {song.GetSongName()} - {artistName} - {albumName}"; //update ui based on track count and details
 
-                // Assign songInfo to the appropriate property based on the index
+
+
+                //uses switch statement to update song information
                 switch (i)
                 {
                     case 0:
@@ -163,7 +181,7 @@ public class QueueViewModel : INotifyPropertyChanged
                 }
             }
 
-            // Notify property changes for all properties
+            //this is to trigger event paged on the song name changes
             OnPropertyChanged(nameof(Song1));
             OnPropertyChanged(nameof(Song2));
             OnPropertyChanged(nameof(Song3));
@@ -179,7 +197,10 @@ public class QueueViewModel : INotifyPropertyChanged
     }
 
 
-
+    /// <summary>
+    /// This method updates pages based on event triggers
+    /// </summary>
+    /// <param name="propertyName"></param>
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
