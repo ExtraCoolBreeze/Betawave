@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 10, 2024 at 10:39 AM
+-- Generation Time: May 14, 2024 at 12:47 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -127,8 +127,6 @@ CREATE TABLE `artist` (
 --
 
 INSERT INTO `artist` (`artist_id`, `name`) VALUES
-(5, 'Da Octopuss'),
-(6, '111'),
 (7, 'The Distillers');
 
 -- --------------------------------------------------------
@@ -144,14 +142,6 @@ CREATE TABLE `playlist` (
   `favourite` varchar(6) NOT NULL,
   `account_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `playlist`
---
-
-INSERT INTO `playlist` (`playlist_id`, `title`, `queue`, `favourite`, `account_id`) VALUES
-(1, 'Queue', 'yes', 'no', 9),
-(2, 'Favourite', 'no', 'yes', 9);
 
 -- --------------------------------------------------------
 
@@ -285,19 +275,19 @@ ALTER TABLE `song`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
 
 --
 -- AUTO_INCREMENT for table `album`
 --
 ALTER TABLE `album`
-  MODIFY `album_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `album_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `artist`
 --
 ALTER TABLE `artist`
-  MODIFY `artist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `artist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `playlist`
@@ -315,7 +305,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `song`
 --
 ALTER TABLE `song`
-  MODIFY `song_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
+  MODIFY `song_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=204;
 
 --
 -- Constraints for dumped tables

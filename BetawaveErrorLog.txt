@@ -11,3 +11,4 @@
 13/05/24 10:30:58 PM: Error: The connection is already open.
 13/05/24 10:36:48 PM: Error: The connection is already open.
 13/05/24 10:48:57 PM: Error: The connection is already open.
+19/05/24 1:06:04 PM: Error: Cannot add or update a child row: a foreign key constraint fails (`betawave`.`album`, CONSTRAINT `fk_artist` FOREIGN KEY (`artist_id`) REFERENCES `artist` (`artist_id`))
